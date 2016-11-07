@@ -1,0 +1,13 @@
+http://choosealicense.com/licenses/gpl-3.0/
+
+
+How to apply this license
+
+Create a text file (typically named LICENSE or LICENSE.txt) in the root of your source code and copy the text of the license into the file.
+
+Note: The Free Software Foundation recommends taking the additional step of adding a boilerplate notice to the top of each file. The boilerplate can be found at the end of the license.
+
+Optional: Add GPL-3.0+ (or GPL-3.0 to disallow future versions) to your project's package description, if applicable (e.g., Node.js, Ruby, and Rust). This will ensure the license is displayed in package directories.
+
+Source:
+http://www.gnu.org/licenses/gpl-3.0.txt
