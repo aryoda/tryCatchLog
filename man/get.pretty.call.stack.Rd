@@ -26,7 +26,7 @@ Enriches the current call stack with the source file names and row numbers
 \details{
 How to read the call stack:
          1. Call stack items consist of:
-            \<call stack item number\> [\<file name\>#\<row number\>:] expression executed by this code line
+            <call stack item number> [<file name>#<row number>:] <expression executed by this code line>
          2. The last call stack items with a file name and row number points to the source code line causing the error.
          3. Ignore all call stack items that do not start with a file name and row number (R internal calls only)
 
