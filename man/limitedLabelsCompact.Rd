@@ -43,6 +43,6 @@ limitedLabelsCompact( sys.calls(), TRUE)
 }
 }
 \seealso{
-\code{\link{base::sys.calls}}
+\code{\link{sys.calls}}
 }
 
