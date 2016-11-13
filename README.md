@@ -1,7 +1,6 @@
 # tryCatchLog
 
-Table of contents:
-
+* Table of contents:
 {:toc}
 
 
