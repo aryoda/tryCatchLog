@@ -1,0 +1,3 @@
+# tryCatchLog Version xxx
+
+* No news are good news

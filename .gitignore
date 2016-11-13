@@ -24,5 +24,8 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 .Rproj.user
-# HTML rendered version of the github README file
+# HTML rendered version of the R Markdown files
 /README.html
+/NEWS.html
+
+*.log

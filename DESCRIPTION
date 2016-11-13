@@ -1,11 +1,16 @@
 Package: tryCatchLog
-Title: What the Package Does (one line, title case)
+Title: Advanced tryCatch function
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: person("ar", "yoda", email = "first.last@example.com", role = c("aut", "cre"))
+Description: Advanced tryCatch function for better error handling with logging and a stack trace with source code references
+Imports:
+    utils,
+    futile.logger
 Depends:
-    R (>= 3.3.2)
-License: What license is it under?
+    R (>= 3.1.0)
+License: GPL-3 | file LICENSE
+URL: https://github.com/aryoda/tryCatchLog
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1
+

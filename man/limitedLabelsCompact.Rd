@@ -38,9 +38,9 @@ R does track source code references only if you set the option "keep.source" to 
                 and how they are created internally are explained in this article:
 }
 \examples{
-\dontrun{
-limitedLabelsCompact( sys.calls(), TRUE)
-}
+                \dontrun{
+                  limitedLabelsCompact(sys.calls(), TRUE)
+                }
 }
 \seealso{
 \code{\link{sys.calls}}

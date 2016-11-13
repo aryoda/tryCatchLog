@@ -3,23 +3,25 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ***************************************************************************
 
 library(futile.logger)   # https://cran.r-project.org/web/packages/futile.logger/index.html
 
-source("tryCatchLog.R")
+# library(tryCatchLog)
+source("R/tryCatchLog.R")    # uncomment if you source "tryCatchLog" instead of using it within a package and adjust the path
+
 
 options("tryCatchLog.dump.errors.to.file" = FALSE)      # global default setting for all tryCatchLog call params "dump.errors.to.file"
 
-# TODO error handling slides
+# TODO Write some error handling slides to explain the two different main use cases
 #      - interactive mode: Errors and warnings caused by user input: catch at interaction layer + show message and recover
 #                          -> error (and warning) message is important for user (not call stack).
 #                          -> no need to catch warnings. Use "tail(warnings(), 1" to get the last warning message.

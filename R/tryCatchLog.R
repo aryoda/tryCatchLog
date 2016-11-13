@@ -13,7 +13,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ***************************************************************************
 
-
+#' @import utils
+#' @import futile.logger
 # https://cran.r-project.org/web/packages/futile.logger/index.html
 library(futile.logger)  # install.packages("futile.logger")
 
@@ -58,9 +59,9 @@ library(futile.logger)  # install.packages("futile.logger")
 #'
 #' @seealso        \code{\link{sys.calls}}
 #' @examples
-#' \dontrun{
-#' limitedLabelsCompact( sys.calls(), TRUE)
-#' }
+#'                 \dontrun{
+#'                   limitedLabelsCompact(sys.calls(), TRUE)
+#'                 }
 #' @export
 limitedLabelsCompact <- function(value, compact = FALSE, maxwidth = getOption("width") - 5L)
 {
@@ -110,22 +111,24 @@ limitedLabelsCompact <- function(value, compact = FALSE, maxwidth = getOption("w
 #'              to track the location of thrown conditions and generates a prettily formatted list
 #'              of strings
 #'
-#' @param call.stack       Call stack object created by \code{\link{sys.calls()"}}
+#' @param call.stack       Call stack object created by \code{\link{sys.calls}}
 #' @param omit.last.items  Number of call stack items to drop from the end of the full stack trace
-#' @param compact          TRUE will return only call stack items with source code references (FALSE all)
+#' @param compact          TRUE will return only call stack items that have a source code reference (FALSE all)
 #'
-#' @return  The call stack (sys.calls) without the last number of function calls (given by "omit.last.items")
+#' @return  The call stack (\code{\link{sys.calls}}) without the last number of function calls (given by "omit.last.items")
 #'          to remove irrelevant calls caused e. g. by exception handler (\code{\link{withCallingHandlers}})
 #'          or restarts (of warnings).
 #'
 #' @details How to read the call stack:
-#'          1. Call stack items consist of:
-#'             <call stack item number> [<file name>#<row number>:] <expression executed by this code line>
-#'          2. The last call stack items with a file name and row number points to the source code line causing the error.
-#'          3. Ignore all call stack items that do not start with a file name and row number (R internal calls only)
+#'          \enumerate{
+#'          \item{Call stack items consist of:
 #'
-#'         You should only call this function from within \code{\link{withCallingHandlers}}, NOT from within \code{\link{tryCatch}}
-#'         since tryCatch unwinds the call stack to the tryCatch position and the source of the condition cannot be identified anymore.
+#'             \code{<call stack item number> [<file name>#<row number>:] <expression executed by this code line>}}
+#'          \item{The last call stack items with a file name and row number points to the source code line causing the error.}
+#'          \item{Ignore all call stack items that do not start with a file name and row number (R internal calls only)}
+#'          }
+#'          You should only call this function from within \code{\link{withCallingHandlers}}, NOT from within \code{\link{tryCatch}}
+#'          since tryCatch unwinds the call stack to the tryCatch position and the source of the condition cannot be identified anymore.
 #' @export
 get.pretty.call.stack <- function(call.stack, omit.last.items = 0, compact = FALSE)
 {
@@ -166,16 +169,19 @@ buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
 #' @param expr                 expression to be evaluated
 #' @param error                error handler function
 #' @param finally              expression to be evaluated at the end
-#' @param dump.errors.to.file  if TRUE: Saves a dump of the workspace and the call stack named "dump_<YYYYMMDD_HHMMSS>.rda"
+#' @param dump.errors.to.file  if TRUE: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}
 #'
 #' @return                     the value of the expression passed in as parameter "expr"
 #'
-#' @details Before you can call \code{tryCatchLog} you have to initialize the \code{futile.logger} package first:
-#'          \code{library(futile.logger)
-#'          flog.appender(appender.file("my_app.log"))
+#' @details Before you can call \code{tryCatchLog} for the first time you should initialize the \code{futile.logger} first:
+#'
+#'          \code{library(futile.logger)\cr
+#'          flog.appender(appender.file("my_app.log"))\cr
 #'          flog.threshold(INFO)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL}
 #'
-#'          The following conditions are logged using the @seealso \code{\link[futile.logger]{}} package:
+#'          If you don't initialize the futile.logger at all the logging information will be written on the console.
+#'
+#'          The following conditions are logged using the \code{\link{futile.logger}} package:
 #'          \enumerate{
 #'          \item error   -> \code{\link[futile.logger]{flog.error}}
 #'          \item warning -> \code{\link[futile.logger]{flog.warn}}
@@ -205,12 +211,13 @@ buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
 #'
 #'          @section Best practices
 #'
-#'          To avoid that too many dump files fill your disk space you should omit the \code{dump.errors.to.file}
-#'          parameter and set its value using the option \code{tryCatchLog.dump.errors.to.file} in your
+#'          To avoid that too many dump files filling your disk space you should omit the \code{dump.errors.to.file}
+#'          parameter and instead set its default value using the option \code{tryCatchLog.dump.errors.to.file} in your
 #'          \link{.Rprofile} file instead (or in a startup R script that sources your actual script).
-#'          In case of an error (that you can reproduce) you set the option to \code{TRUE} and rerun your script.
-#'          Then you can examine the program state that led to the error.
-#' @examples {\dontrun{tryCatchLog(log(-1))   # logs a warning}}
+#'          In case of an error (that you can reproduce) you set the option to \code{TRUE} and re-run your script.
+#'          Then you are able to examine the program state that led to the error by debugging the saved dump file.
+#' @examples
+#'          \dontrun{tryCatchLog(log(-1))   # logs a warning}
 #' @export
 tryCatchLog <- function(expr,
                         error = getOption("error", default = stop),

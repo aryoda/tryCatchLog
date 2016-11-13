@@ -7,14 +7,14 @@
 get.pretty.call.stack(call.stack, omit.last.items = 0, compact = FALSE)
 }
 \arguments{
-\item{call.stack}{Call stack object created by \code{\link{sys.calls()"}}}
+\item{call.stack}{Call stack object created by \code{\link{sys.calls}}}
 
 \item{omit.last.items}{Number of call stack items to drop from the end of the full stack trace}
 
-\item{compact}{TRUE will return only call stack items with source code references (FALSE all)}
+\item{compact}{TRUE will return only call stack items that have a source code reference (FALSE all)}
 }
 \value{
-The call stack (sys.calls) without the last number of function calls (given by "omit.last.items")
+The call stack (\code{\link{sys.calls}}) without the last number of function calls (given by "omit.last.items")
          to remove irrelevant calls caused e. g. by exception handler (\code{\link{withCallingHandlers}})
          or restarts (of warnings).
 }
@@ -25,12 +25,14 @@ Enriches the current call stack with the source file names and row numbers
 }
 \details{
 How to read the call stack:
-         1. Call stack items consist of:
-            <call stack item number> [<file name>#<row number>:] <expression executed by this code line>
-         2. The last call stack items with a file name and row number points to the source code line causing the error.
-         3. Ignore all call stack items that do not start with a file name and row number (R internal calls only)
+         \enumerate{
+         \item{Call stack items consist of:
 
-        You should only call this function from within \code{\link{withCallingHandlers}}, NOT from within \code{\link{tryCatch}}
-        since tryCatch unwinds the call stack to the tryCatch position and the source of the condition cannot be identified anymore.
+            \code{<call stack item number> [<file name>#<row number>:] <expression executed by this code line>}}
+         \item{The last call stack items with a file name and row number points to the source code line causing the error.}
+         \item{Ignore all call stack items that do not start with a file name and row number (R internal calls only)}
+         }
+         You should only call this function from within \code{\link{withCallingHandlers}}, NOT from within \code{\link{tryCatch}}
+         since tryCatch unwinds the call stack to the tryCatch position and the source of the condition cannot be identified anymore.
 }
 

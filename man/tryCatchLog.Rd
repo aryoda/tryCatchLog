@@ -15,7 +15,7 @@ tryCatchLog(expr, error = getOption("error", default = stop),
 
 \item{finally}{expression to be evaluated at the end}
 
-\item{dump.errors.to.file}{if TRUE: Saves a dump of the workspace and the call stack named "dump_<YYYYMMDD_HHMMSS>.rda"}
+\item{dump.errors.to.file}{if TRUE: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}}
 }
 \value{
 the value of the expression passed in as parameter "expr"
@@ -27,12 +27,15 @@ This function evaluates an expression passed in the \code{expr} parameter and ex
              Conditions are logged including the call stack.
 }
 \details{
-Before you can call \code{tryCatchLog} you have to initialize the \code{futile.logger} package first:
-         \code{library(futile.logger)
-         flog.appender(appender.file("my_app.log"))
+Before you can call \code{tryCatchLog} for the first time you should initialize the \code{futile.logger} first:
+
+         \code{library(futile.logger)\cr
+         flog.appender(appender.file("my_app.log"))\cr
          flog.threshold(INFO)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL}
 
-         The following conditions are logged using the @seealso \code{\link[futile.logger]{}} package:
+         If you don't initialize the futile.logger at all the logging information will be written on the console.
+
+         The following conditions are logged using the \code{\link{futile.logger}} package:
          \enumerate{
          \item error   -> \code{\link[futile.logger]{flog.error}}
          \item warning -> \code{\link[futile.logger]{flog.warn}}
@@ -62,13 +65,13 @@ Before you can call \code{tryCatchLog} you have to initialize the \code{futile.l
 
          @section Best practices
 
-         To avoid that too many dump files fill your disk space you should omit the \code{dump.errors.to.file}
-         parameter and set its value using the option \code{tryCatchLog.dump.errors.to.file} in your
+         To avoid that too many dump files filling your disk space you should omit the \code{dump.errors.to.file}
+         parameter and instead set its default value using the option \code{tryCatchLog.dump.errors.to.file} in your
          \link{.Rprofile} file instead (or in a startup R script that sources your actual script).
-         In case of an error (that you can reproduce) you set the option to \code{TRUE} and rerun your script.
-         Then you can examine the program state that led to the error.
+         In case of an error (that you can reproduce) you set the option to \code{TRUE} and re-run your script.
+         Then you are able to examine the program state that led to the error by debugging the saved dump file.
 }
 \examples{
-{\dontrun{tryCatchLog(log(-1))   # logs a warning}}
+         \dontrun{tryCatchLog(log(-1))   # logs a warning}
 }
 
