@@ -1,8 +1,14 @@
 # tryCatchLog
 
+Table of contents:
+
+{:toc}
+
+
+
 ## R code for better error handling than `tryCatch`
 
-This repository provides an advanced `tryCatch` function for R called `tryCatchLog`.
+This repository provides the source code of an advanced `tryCatch` function for R called `tryCatchLog`.
 
 The main advantages over `tryCatch` are
 
@@ -55,6 +61,10 @@ Install the generated package with
 ```R
 install.packages("../tryCatchLog_0.9.1.tar.gz", repos = NULL, type = "source")  # adjust the file name!
 ```
+
+**Note: A prebuild package file is currently not available but planned (e. g. via a separate github release project).**
+
+
 
 #### Option 2: `source` the code instead of installing a package
 
