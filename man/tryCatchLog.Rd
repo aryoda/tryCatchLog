@@ -27,15 +27,15 @@ This function evaluates an expression passed in the \code{expr} parameter and ex
              Conditions are logged including the call stack.
 }
 \details{
-Before you can call \code{tryCatchLog} for the first time you should initialize the \code{futile.logger} first:
+Before you can call \code{tryCatchLog} for the first time you should initialize the \pkg{futile.logger} first:
 
-         \code{library(futile.logger)\cr
-         flog.appender(appender.file("my_app.log"))\cr
-         flog.threshold(INFO)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL}
+         \preformatted{  library(futile.logger)
+  flog.appender(appender.file("my_app.log"))
+  flog.threshold(INFO)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL}
 
-         If you don't initialize the futile.logger at all the logging information will be written on the console.
+         If you don't initialize the \pkg{futile.logger} at all the logging information will be written on the console.
 
-         The following conditions are logged using the \code{\link{futile.logger}} package:
+         The following conditions are logged using the \pkg{futile.logger} package:
          \enumerate{
          \item error   -> \code{\link[futile.logger]{flog.error}}
          \item warning -> \code{\link[futile.logger]{flog.warn}}
@@ -46,7 +46,7 @@ Before you can call \code{tryCatchLog} for the first time you should initialize 
 
          R does track source code references only if you set the option \code{keep.source} to TRUE via
          \code{options(keep.source = TRUE)}. Without this option this function cannot enrich source code references.
-         If you use @seealso \code{\link{Rscript}} to start a non-interactive R script as batch job you
+         If you use \command{Rscript} to start a non-interactive R script as batch job you
          have to set this option since it is FALSE by default. You can add this option to your
          \link{.Rprofile} file or use a startup R script that sets this option and sources your
          actual R script then.
@@ -62,8 +62,9 @@ Before you can call \code{tryCatchLog} for the first time you should initialize 
          To start a post mortem analysis after an error open a new R session and enter:
             \code{load("dump_20161016_164050.rda")   # replace the dump file name with your real file name
             debugger(last.dump)}
+}
+\section{Best practices}{
 
-         @section Best practices
 
          To avoid that too many dump files filling your disk space you should omit the \code{dump.errors.to.file}
          parameter and instead set its default value using the option \code{tryCatchLog.dump.errors.to.file} in your
@@ -72,6 +73,9 @@ Before you can call \code{tryCatchLog} for the first time you should initialize 
          Then you are able to examine the program state that led to the error by debugging the saved dump file.
 }
 \examples{
-         \dontrun{tryCatchLog(log(-1))   # logs a warning}
+tryCatchLog(log(-1))   # logs a warning
+}
+\seealso{
+\code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}}
 }
 

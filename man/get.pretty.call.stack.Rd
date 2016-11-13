@@ -26,13 +26,15 @@ Enriches the current call stack with the source file names and row numbers
 \details{
 How to read the call stack:
          \enumerate{
-         \item{Call stack items consist of:
-
-            \code{<call stack item number> [<file name>#<row number>:] <expression executed by this code line>}}
-         \item{The last call stack items with a file name and row number points to the source code line causing the error.}
-         \item{Ignore all call stack items that do not start with a file name and row number (R internal calls only)}
+         \item Call stack items consist of:\cr
+            \code{<call stack item number> [<file name>#<row number>:] <expression executed by this code line>}
+         \item The last call stack items with a file name and row number points to the source code line causing the error.
+         \item Ignore all call stack items that do not start with a file name and row number (R internal calls only)
          }
          You should only call this function from within \code{\link{withCallingHandlers}}, NOT from within \code{\link{tryCatch}}
          since tryCatch unwinds the call stack to the tryCatch position and the source of the condition cannot be identified anymore.
+}
+\seealso{
+\code{\link{tryCatchLog}}, \code{\link{limitedLabelsCompact}}
 }
 

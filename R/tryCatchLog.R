@@ -18,16 +18,6 @@
 # https://cran.r-project.org/web/packages/futile.logger/index.html
 library(futile.logger)  # install.packages("futile.logger")
 
-# Solution components:
-# - tryCatch/try
-# - withCallingHandlers
-# - logging
-# - limitedLabels
-# - sys.calls
-# - srcrefs attribute
-# - dump.frames
-# - options(warn=2) ... for configuring the handling of warning messages (see "?getOption" -> "warn")
-
 
 
 #' Convert a call stack into a list of printable strings
@@ -46,7 +36,7 @@ library(futile.logger)  # install.packages("futile.logger")
 #'
 #' @details        R does track source code references only if you set the option "keep.source" to TRUE via
 #'                 \code{options(keep.source = TRUE)}. Without this option this function cannot enrich source code references.
-#'                 If you use \code{\link{Rscript}} to start a non-interactive R script as batch job you
+#'                 If you use \command{Rscript} to start a non-interactive R script as batch job you
 #'                 have to set this option since it is FALSE by default. You can add this option to your
 #'                 \link{.Rprofile} file or use a startup R script that sets this option and sources your
 #'                 actual R script then.
@@ -55,13 +45,11 @@ library(futile.logger)  # install.packages("futile.logger")
 #'                 The source code can be viewed by entering \code{limitedLabels} in the R console.
 #'                 The attributes required to add source file names and line numbers to the calls (srcref and srcfile)
 #'                 and how they are created internally are explained in this article:
-#                  \url{https://journal.r-project.org/archive/2010-2/RJournal_2010-2_Murdoch.pdf}
+#'                 \url{https://journal.r-project.org/archive/2010-2/RJournal_2010-2_Murdoch.pdf}
 #'
-#' @seealso        \code{\link{sys.calls}}
+#' @seealso        \code{\link{sys.calls}}, \code{\link{tryCatchLog}}, \code{\link{get.pretty.call.stack}}
 #' @examples
-#'                 \dontrun{
-#'                   limitedLabelsCompact(sys.calls(), TRUE)
-#'                 }
+#' limitedLabelsCompact(sys.calls(), TRUE)
 #' @export
 limitedLabelsCompact <- function(value, compact = FALSE, maxwidth = getOption("width") - 5L)
 {
@@ -121,14 +109,14 @@ limitedLabelsCompact <- function(value, compact = FALSE, maxwidth = getOption("w
 #'
 #' @details How to read the call stack:
 #'          \enumerate{
-#'          \item{Call stack items consist of:
-#'
-#'             \code{<call stack item number> [<file name>#<row number>:] <expression executed by this code line>}}
-#'          \item{The last call stack items with a file name and row number points to the source code line causing the error.}
-#'          \item{Ignore all call stack items that do not start with a file name and row number (R internal calls only)}
+#'          \item Call stack items consist of:\cr
+#'             \code{<call stack item number> [<file name>#<row number>:] <expression executed by this code line>}
+#'          \item The last call stack items with a file name and row number points to the source code line causing the error.
+#'          \item Ignore all call stack items that do not start with a file name and row number (R internal calls only)
 #'          }
 #'          You should only call this function from within \code{\link{withCallingHandlers}}, NOT from within \code{\link{tryCatch}}
 #'          since tryCatch unwinds the call stack to the tryCatch position and the source of the condition cannot be identified anymore.
+#' @seealso \code{\link{tryCatchLog}}, \code{\link{limitedLabelsCompact}}
 #' @export
 get.pretty.call.stack <- function(call.stack, omit.last.items = 0, compact = FALSE)
 {
@@ -148,6 +136,18 @@ get.pretty.call.stack <- function(call.stack, omit.last.items = 0, compact = FAL
 
 
 
+#' Internal helper function to build a log message
+#'
+#' @description  Combines a log message with a compact and a detailled stack trace with the option
+#'               to ignore the last x stack trace items (normally created due to internal error handling
+#'               and therefore irrelevant for the user).
+#'
+#' @param log.message      a text message
+#' @param call.stack       a call stack created by \code{\link{sys.calls}}
+#' @param omit.last.items  number of stack trace items to ignore (= last x items)
+#'
+#' @return       A ready to use log message with a pretty printed compact and detailled stack trace
+#' @note         THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFOR NOT EXPORTED.
 buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
   paste(log.message,
         "Compact call stack:",
@@ -173,15 +173,15 @@ buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
 #'
 #' @return                     the value of the expression passed in as parameter "expr"
 #'
-#' @details Before you can call \code{tryCatchLog} for the first time you should initialize the \code{futile.logger} first:
+#' @details Before you can call \code{tryCatchLog} for the first time you should initialize the \pkg{futile.logger} first:
 #'
-#'          \code{library(futile.logger)\cr
-#'          flog.appender(appender.file("my_app.log"))\cr
-#'          flog.threshold(INFO)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL}
+#'          \preformatted{  library(futile.logger)
+#'   flog.appender(appender.file("my_app.log"))
+#'   flog.threshold(INFO)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL}
 #'
-#'          If you don't initialize the futile.logger at all the logging information will be written on the console.
+#'          If you don't initialize the \pkg{futile.logger} at all the logging information will be written on the console.
 #'
-#'          The following conditions are logged using the \code{\link{futile.logger}} package:
+#'          The following conditions are logged using the \pkg{futile.logger} package:
 #'          \enumerate{
 #'          \item error   -> \code{\link[futile.logger]{flog.error}}
 #'          \item warning -> \code{\link[futile.logger]{flog.warn}}
@@ -192,7 +192,7 @@ buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
 #'
 #'          R does track source code references only if you set the option \code{keep.source} to TRUE via
 #'          \code{options(keep.source = TRUE)}. Without this option this function cannot enrich source code references.
-#'          If you use @seealso \code{\link{Rscript}} to start a non-interactive R script as batch job you
+#'          If you use \command{Rscript} to start a non-interactive R script as batch job you
 #'          have to set this option since it is FALSE by default. You can add this option to your
 #'          \link{.Rprofile} file or use a startup R script that sets this option and sources your
 #'          actual R script then.
@@ -209,15 +209,16 @@ buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
 #'             \code{load("dump_20161016_164050.rda")   # replace the dump file name with your real file name
 #'             debugger(last.dump)}
 #'
-#'          @section Best practices
+#' @section Best practices:
 #'
 #'          To avoid that too many dump files filling your disk space you should omit the \code{dump.errors.to.file}
 #'          parameter and instead set its default value using the option \code{tryCatchLog.dump.errors.to.file} in your
 #'          \link{.Rprofile} file instead (or in a startup R script that sources your actual script).
 #'          In case of an error (that you can reproduce) you set the option to \code{TRUE} and re-run your script.
 #'          Then you are able to examine the program state that led to the error by debugging the saved dump file.
+#' @seealso \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}}
 #' @examples
-#'          \dontrun{tryCatchLog(log(-1))   # logs a warning}
+#' tryCatchLog(log(-1))   # logs a warning
 #' @export
 tryCatchLog <- function(expr,
                         error = getOption("error", default = stop),

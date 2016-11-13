@@ -27,7 +27,7 @@ Converts a call stack into a list of printable strings ("labels") with a limited
 \details{
 R does track source code references only if you set the option "keep.source" to TRUE via
                 \code{options(keep.source = TRUE)}. Without this option this function cannot enrich source code references.
-                If you use \code{\link{Rscript}} to start a non-interactive R script as batch job you
+                If you use \command{Rscript} to start a non-interactive R script as batch job you
                 have to set this option since it is FALSE by default. You can add this option to your
                 \link{.Rprofile} file or use a startup R script that sets this option and sources your
                 actual R script then.
@@ -36,13 +36,12 @@ R does track source code references only if you set the option "keep.source" to 
                 The source code can be viewed by entering \code{limitedLabels} in the R console.
                 The attributes required to add source file names and line numbers to the calls (srcref and srcfile)
                 and how they are created internally are explained in this article:
+                \url{https://journal.r-project.org/archive/2010-2/RJournal_2010-2_Murdoch.pdf}
 }
 \examples{
-                \dontrun{
-                  limitedLabelsCompact(sys.calls(), TRUE)
-                }
+limitedLabelsCompact(sys.calls(), TRUE)
 }
 \seealso{
-\code{\link{sys.calls}}
+\code{\link{sys.calls}}, \code{\link{tryCatchLog}}, \code{\link{get.pretty.call.stack}}
 }
 
