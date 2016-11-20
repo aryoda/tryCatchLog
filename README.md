@@ -157,7 +157,9 @@ demo(package = "tryCatchLog", topic = "tryCatchLog_demo")   # start a demo
 
 ### Can I install the package via CRAN or from another repository
 
-A prebuild package file is currently not available but planned (e. g. via a separate github release project).
+A prebuilt package file is currently not available but planned (e. g. via a separate github release project).
+
+The package shall be published on [CRAN](https://cran.r-project.org/) only if there is enough demand for that.
 
 
 
