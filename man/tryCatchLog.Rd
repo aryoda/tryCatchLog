@@ -33,7 +33,7 @@ Before you can call \code{tryCatchLog} for the first time you should initialize 
   flog.appender(appender.file("my_app.log"))
   flog.threshold(INFO)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL}
 
-         If you don't initialize the \pkg{futile.logger} at all the logging information will be written on the console.
+         If you don't initialize the \pkg{futile.logger} at all the logging information will be written on the console only.
 
          The following conditions are logged using the \pkg{futile.logger} package:
          \enumerate{
@@ -66,11 +66,18 @@ Before you can call \code{tryCatchLog} for the first time you should initialize 
 \section{Best practices}{
 
 
-         To avoid that too many dump files filling your disk space you should omit the \code{dump.errors.to.file}
+         To \bold{avoid that too many dump files filling your disk space} you should omit the \code{dump.errors.to.file}
          parameter and instead set its default value using the option \code{tryCatchLog.dump.errors.to.file} in your
          \link{.Rprofile} file instead (or in a startup R script that sources your actual script).
          In case of an error (that you can reproduce) you set the option to \code{TRUE} and re-run your script.
          Then you are able to examine the program state that led to the error by debugging the saved dump file.
+
+         To see the \bold{source code references (source file names and line numbers)} in the stack traces you must
+         set this option before executing your code:\cr
+         \code{options(keep.source = TRUE)}
+
+         You can \bold{execute your code as batch with \code{\link{Rscript}} using this shell script command}:\cr
+         \code{Rscript -e "options(keep.source = TRUE); source('my_main_function.R')"}
 }
 \examples{
 tryCatchLog(log(-1))   # logs a warning

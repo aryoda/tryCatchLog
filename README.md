@@ -1,21 +1,33 @@
 # tryCatchLog
 
-* Table of contents:
-{:toc}
+An R package to improve error handling compared to the standard tryCatch function
 
 
 
-## R code for better error handling than `tryCatch`
+## Table of contents
 
-This repository provides the source code of an advanced `tryCatch` function for R called `tryCatchLog`.
+* [Overview](#overview)
+* [Installation](#installation)
+* [Examples](#examples)
+* [Demo](#demo)
+* [FAQ](#faq)
+* [License](#license)
+
+
+
+## Overview
+
+This repository provides the source code of an advanced `tryCatch` function for the programming language [R](https://www.r-project.org/) called `tryCatchLog`.
 
 The main advantages over `tryCatch` are
 
 * easy **logging** of errors, warnings and messages into a file or console
-* identifying the root of errors and warnings by logging a **stack trace with a reference to the source file name and line number**
-* optionally allows **post-mortem analysis after errors by creating a dump file** with all variables of the global environment (workspace) and each function called (`dump.frames`)
+* warnings do **not** stop the program execution (`tryCatch` stops the execution if you pass a warning handler function)
+* identifies the source of errors and warnings by logging a **stack trace with a reference to the source file name and line number**
+  (since `traceback` does not contain the full stack trace)
+* allows **post-mortem analysis after errors by creating a dump file** with all variables of the global environment (workspace) and each function called (`dump.frames`)
 
-This code was created to answer the stackoverflow question
+This code was created as an answer to the stackoverflow question
 
 [R: Catch errors and continue execution while logging the stacktrace (no traceback available with tryCatch)](https://stackoverflow.com/questions/39964040/r-catch-errors-and-continue-execution-while-logging-the-stacktrace-no-tracebac)
 
@@ -25,10 +37,11 @@ This code was created to answer the stackoverflow question
 
 ### Dependencies
 
-The source code of `tryCatchLog` uses the [package `futile.logger`](https://cran.r-project.org/web/packages/futile.logger/index.html)
+The source code of `tryCatchLog` uses the package [`futile.logger`](https://cran.r-project.org/web/packages/futile.logger/index.html)
 to write logging messages in a nice and structured format to a file or console.
 
-To use your own logging function you just have to change the logging functions calls in the file `R/tryCatchLog.R`.
+Note: To use your own logging function you just have to change the logging functions calls in the file `R/tryCatchLog.R`
+      and `source` the file or rebuild the package (see [Installation](#installation)).
 
 
 
@@ -45,11 +58,11 @@ https://github.com/aryoda/tryCatchLog.git
 into the text field "Repository URL".
     
 
-### Compile and install `tryCatchLog`
+### Build and install `tryCatchLog`
 
 #### Option 1: Install `tryCatchLog` as a package
 
-Compile a package:
+Build a package:
 
 * Open the included *tryCatchLog.Rproj* project file with the [RStudio IDE](https://www.rstudio.com/products/rstudio/)
 
@@ -73,7 +86,7 @@ Simply add the following line to your code:
 source("R/tryCatchLog.R")   # adjust the relative path accordingly!
 ```
 
-## Example
+## Examples
 
 ```R
 library(tryCatchLog)
@@ -142,9 +155,14 @@ demo(package = "tryCatchLog", topic = "tryCatchLog_demo")   # start a demo
 
 ## FAQ
 
-TODO
+### Can I install the package via CRAN or from another repository
+
+A prebuild package file is currently not available but planned (e. g. via a separate github release project).
+
 
 
 ## License
 
 *This code is released under the [GNU GENERAL PUBLIC LICENSE Version 3](LICENSE)*
+
+To get a quick overview over this license you can read [A Quick Guide to GPLv3](https://www.gnu.org/licenses/quick-guide-gplv3.html)

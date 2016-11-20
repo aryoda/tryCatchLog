@@ -29,3 +29,5 @@ vignettes/*.pdf
 /NEWS.html
 
 *.log
+/dump_*
+

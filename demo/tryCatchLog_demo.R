@@ -60,6 +60,8 @@ tryCatchLog( {
              # , dump.errors.to.file = TRUE    # uncomment this line to test the error dump feature for post mortem analysis using load + debugger
 )
 
+# tryCatchLog( { log(-1); print("Done") }) # Continue after warning?
+
 # tryCatchLog(log(-1)) # stack trace OK?
 # tryCatchLog("not a number")
 
@@ -143,6 +145,7 @@ print("Done")    # Proof that the error does not stop the program execution
 # https://stackoverflow.com/questions/21618796/optionserror-dump-frames-vs-optionserror-utilsrecover
 # https://stackoverflow.com/questions/4442518/general-suggestions-for-debugging-in-r
 
+# http://blog.obeautifulcode.com/R/A-Warning-About-Warning/
 
 # https://stackoverflow.com/questions/35785142/suppress-warnings-using-trycatch-in-r
 #

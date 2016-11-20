@@ -13,10 +13,21 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ***************************************************************************
 
-#' @import utils
-#' @import futile.logger
+# source("R/dump.frames.dev.R")
+
+# # Do not use this since it makes all function of these packages available
+# # (even those who are not used by this package!)
+# #' @import utils
+# #' @import futile.logger
+# NULL
+
+# Better import only the required functions to reduce the dependencies and make them explicit:
+#' @importFrom futile.logger flog.error flog.warn flog.info
+#' @importFrom utils         dump.frames
+NULL
+
 # https://cran.r-project.org/web/packages/futile.logger/index.html
-library(futile.logger)  # install.packages("futile.logger")
+# library(futile.logger)  # install.packages("futile.logger")
 
 
 
@@ -179,7 +190,7 @@ buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
 #'   flog.appender(appender.file("my_app.log"))
 #'   flog.threshold(INFO)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL}
 #'
-#'          If you don't initialize the \pkg{futile.logger} at all the logging information will be written on the console.
+#'          If you don't initialize the \pkg{futile.logger} at all the logging information will be written on the console only.
 #'
 #'          The following conditions are logged using the \pkg{futile.logger} package:
 #'          \enumerate{
@@ -211,11 +222,19 @@ buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
 #'
 #' @section Best practices:
 #'
-#'          To avoid that too many dump files filling your disk space you should omit the \code{dump.errors.to.file}
+#'          To \bold{avoid that too many dump files filling your disk space} you should omit the \code{dump.errors.to.file}
 #'          parameter and instead set its default value using the option \code{tryCatchLog.dump.errors.to.file} in your
 #'          \link{.Rprofile} file instead (or in a startup R script that sources your actual script).
 #'          In case of an error (that you can reproduce) you set the option to \code{TRUE} and re-run your script.
 #'          Then you are able to examine the program state that led to the error by debugging the saved dump file.
+#'
+#'          To see the \bold{source code references (source file names and line numbers)} in the stack traces you must
+#'          set this option before executing your code:\cr
+#'          \code{options(keep.source = TRUE)}
+#'
+#'          You can \bold{execute your code as batch with \code{\link{Rscript}} using this shell script command}:\cr
+#'          \code{Rscript -e "options(keep.source = TRUE); source('my_main_function.R')"}
+#'
 #' @seealso \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}}
 #' @examples
 #' tryCatchLog(log(-1))   # logs a warning
@@ -239,25 +258,30 @@ tryCatchLog <- function(expr,
                           if (dump.errors.to.file == TRUE)
                           {
                             dump.file.name <- format(Sys.time(), format = "dump_%Y%m%d_%H%M%S")   # use %OS3 (= seconds incl. milliseconds) for finer precision
-                            dump.frames()
+                            utils::dump.frames()
                             save.image(file = paste0(dump.file.name, ".rda"))
+                            # https://bugs.r-project.org/bugzilla/show_bug.cgi?id=17116
+                            # wait for the enhanced version to be released in spring 2017
+                            # dump.frames(dumpto = dump.file.name, to.file = TRUE, include.GlobalEnv = TRUE)  # test it now by using "dump.frames.dev()"
                             log.message <- paste0(log.message, "\nEnvironment dumped into file: ", dump.file.name, ".rda")
                           }
 # x <<- sys.calls() # just for internal debugging purposes
-                          flog.error(buildLogMessage(log.message, call.stack, 1))   # ignore  function calls to this this handler
+                          futile.logger::flog.error(buildLogMessage(log.message, call.stack, 1))   # ignore  function calls to this this handler
 
                         },
                         warning = function(w)
                         {
 
                           call.stack <- sys.calls()                                 # "sys.calls" within "withCallingHandlers" is like a traceback!
-                          flog.warn(buildLogMessage(w$message, call.stack, 1))      # ignore last function calls to this handler
+                          futile.logger::flog.warn(buildLogMessage(w$message, call.stack, 1))      # ignore last function calls to this handler
+                          # Note: The execution resumes now only if now warning handler is established higher in the call stack via try or tryCatch!
+                          #       To "muffle" the warning and resume execution use: invokeRestart("muffleWarning")
                         }
                         , message = function(m)                                     # Remember: You can ignore messages by setting the log level above "info"
                         {
 
                           call.stack <- sys.calls()                                 # "sys.calls" within "withCallingHandlers" is like a traceback!
-                          flog.info(buildLogMessage(m$message, call.stack, 1))      # ignore last function calls to this handler
+                          futile.logger::flog.info(buildLogMessage(m$message, call.stack, 1))      # ignore last function calls to this handler
                         }
     ),       # end of withCallingHandlers
     error = error,                # pass error handler argument of tryCatchLog to tryCatch
