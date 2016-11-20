@@ -41,7 +41,7 @@ This code was created as an answer to the stackoverflow question
 The source code of `tryCatchLog` uses the package [`futile.logger`](https://cran.r-project.org/web/packages/futile.logger/index.html)
 to write logging messages in a nice and structured format to a file or console.
 
-Note: To use your own logging function you just have to change the logging functions calls in the file `R/tryCatchLog.R`
+Note: To use your own logging function you just have to change the logging function calls in the file `R/tryCatchLog.R`
       and [`source` the file](#option-2-source-the-code-instead-of-installing-a-package) or
       [rebuild the package from source using RStudio](#build-the-trycatchlog-package-from-source-code-using-rstudio)
 
