@@ -11,6 +11,7 @@ An R package to improve error handling compared to the standard tryCatch functio
 * [Examples](#examples)
 * [Demo](#demo)
 * [FAQ](#faq)
+* [Build the package from source using RStudio](#build-the-trycatchlog-package-from-source-code-using-rstudio)
 * [License](#license)
 
 
@@ -41,48 +42,30 @@ The source code of `tryCatchLog` uses the package [`futile.logger`](https://cran
 to write logging messages in a nice and structured format to a file or console.
 
 Note: To use your own logging function you just have to change the logging functions calls in the file `R/tryCatchLog.R`
-      and `source` the file or rebuild the package (see [Installation](#installation)).
+      and [`source` the file](#option-2-source-the-code-instead-of-installing-a-package) or
+      [rebuild the package from source using RStudio](#build-the-trycatchlog-package-from-source-code-using-rstudio)
 
 
 
-### Clone the github repository:
+### Option 1: Install the `tryCatchLog` package from github using `devtools`
 
-Open the [RStudio IDE](https://www.rstudio.com/products/rstudio/) and select the menu items
+**This is the recommended installation procedure!**
 
-File > New Project... > Version Control > Git
-
-Then enter
-```
-https://github.com/aryoda/tryCatchLog.git
-```
-into the text field "Repository URL".
-    
-
-### Build and install `tryCatchLog`
-
-#### Option 1: Install `tryCatchLog` as a package
-
-Build a package:
-
-* Open the included *tryCatchLog.Rproj* project file with the [RStudio IDE](https://www.rstudio.com/products/rstudio/)
-
-* Select the menu item *Build > Build source package*
-
-Install the generated package with
+To install the package using the source code at github you can use the package `devtools`:
 
 ```R
-install.packages("../tryCatchLog_0.9.1.tar.gz", repos = NULL, type = "source")  # adjust the file name!
+# install.packages("devtools")
+library(devtools)
+install_github("aryoda/tryCatchLog")
 ```
 
-**Note: A prebuild package file is currently not available but planned (e. g. via a separate github release project).**
 
-
-
-#### Option 2: `source` the code instead of installing a package
+### Option 2: `source` the code instead of installing a package
 
 Simply add the following line to your code:
 
 ```R
+library(futile.logger)
 source("R/tryCatchLog.R")   # adjust the relative path accordingly!
 ```
 
@@ -90,6 +73,7 @@ source("R/tryCatchLog.R")   # adjust the relative path accordingly!
 
 ```R
 library(tryCatchLog)
+library(futile.logger)
 tryCatchLog(log("abc"))
 ```
 results in a log entry that shows the function call hierarchy with the last call (number 5 in the compact call stack)
@@ -163,8 +147,57 @@ The package shall be published on [CRAN](https://cran.r-project.org/) only if th
 
 
 
+## Build the `tryCatchLog` package from source code using RStudio
+
+If you want to inspect or modify the source code you should clone the project
+using [RStudio IDE](https://www.rstudio.com/products/rstudio/).
+
+
+
+### Clone the github repository:
+
+Open the [RStudio IDE](https://www.rstudio.com/products/rstudio/) and select the menu items
+
+File > New Project... > Version Control > Git
+
+Then enter
+```
+https://github.com/aryoda/tryCatchLog.git
+```
+into the text field "Repository URL".
+
+    
+
+### Build the `tryCatchLog` package
+
+* Open the included *tryCatchLog.Rproj* project file with the [RStudio IDE](https://www.rstudio.com/products/rstudio/)
+
+* Increment the package's version number in the file `DESCRIPTION` (Attribute `Version`).
+
+* Choose *Build > Test package* and then *Build < Check package*
+  and fix any error that occur.
+
+* Select the menu item *Build > Build source package*
+
+The package installation file is now available in the parent folder of the project root folder.
+
+
+
+### Install the generated package on other computers
+
+Copy the package file generated in the parent folder of the project on the target computer,
+start R and enter:
+
+  ```R
+  install.packages("../tryCatchLog_0.9.1.tar.gz", repos = NULL, type = "source")  # adjust the file name!
+  ```
+
+
 ## License
 
 *This code is released under the [GNU GENERAL PUBLIC LICENSE Version 3](LICENSE)*
 
 To get a quick overview over this license you can read [A Quick Guide to GPLv3](https://www.gnu.org/licenses/quick-guide-gplv3.html)
+
+
+
