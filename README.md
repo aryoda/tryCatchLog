@@ -199,5 +199,5 @@ start R and enter:
 
 To get a quick overview over this license you can read [A Quick Guide to GPLv3](https://www.gnu.org/licenses/quick-guide-gplv3.html)
 
-
+Another good overview gives https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3)
 
