@@ -26,7 +26,7 @@ The main advantages over `tryCatch` are
 * warnings do **not** stop the program execution (`tryCatch` stops the execution if you pass a warning handler function)
 * identifies the source of errors and warnings by logging a **stack trace with a reference to the source file name and line number**
   (since `traceback` does not contain the full stack trace)
-* allows **post-mortem analysis after errors by creating a dump file** with all variables of the global environment (workspace) and each function called (`dump.frames`)
+* allows **post-mortem analysis after errors by creating a dump file** with all variables of the global environment (workspace) and each function called (`dump.frames`) - very helpful for batch jobs that cannot debug on the server!
 
 This code was created as an answer to the stackoverflow question
 
@@ -200,4 +200,11 @@ start R and enter:
 To get a quick overview over this license you can read [A Quick Guide to GPLv3](https://www.gnu.org/licenses/quick-guide-gplv3.html)
 
 Another good overview gives https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3)
+
+Further links:
+
+  * [list of GPL-Compatible Free Software Licenses](https://www.gnu.org/licenses/license-list.html#GPLCompatibleLicenses)
+  * [License compatibility matrix](https://www.gnu.org/licenses/gpl-faq.html#AllCompatibility)
+  
+  
 

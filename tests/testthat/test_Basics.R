@@ -1,5 +1,8 @@
 # Basic tests of tryCatchLog
 
+# Tests are run within the folder "tryCatchLog/tests/testthat".
+# Clean it up at the beginning of a test!
+
 library(futile.logger)
 
 
