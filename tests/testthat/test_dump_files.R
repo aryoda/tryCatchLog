@@ -16,7 +16,7 @@ library(futile.logger)
 clean.up.dump.files <- function() {
   existing.dump.files <- list.files(pattern = "dump_.*\\.rda")
 
-  if(length(existing.dump.files) > 0)
+  if (length(existing.dump.files) > 0)
     file.remove(existing.dump.files)
 }
 
@@ -40,7 +40,7 @@ flog.threshold("FATAL")                               # suppress logging of erro
 
 # unit tests ------------------------------------------------------------------------------------------------------
 
-context("dump file tests")
+context("'dump to file' tests")
 
 
 test_that("no dump file is created without an error", {
@@ -59,19 +59,31 @@ test_that("no dump file is created for an warning", {
 
 
 
-test_that("no dump file is created with an error but disabled dump.errors.to.file parameter", {
-  tryCatchLog(log("a"), error = function(e) {}, dump.errors.to.file = FALSE)
-  expect_equal(number.of.dump.files(), 0)
-  clean.up.dump.files()
-})
+test_that("no dump file is created with an error but disabled dump.errors.to.file parameter",
+          {
+            tryCatchLog(
+              log("a"),
+              error = function(e) {
+              },
+              dump.errors.to.file = FALSE
+            )
+            expect_equal(number.of.dump.files(), 0)
+            clean.up.dump.files()
+          })
 
 
 
-test_that("dump file is created with an error and dump.errors.to.file parameter enabled", {
-  tryCatchLog(log("a"), error = function(e) {}, dump.errors.to.file = TRUE)
-  expect_equal(number.of.dump.files(), 1)
-  clean.up.dump.files()
-})
+test_that("dump file is created with an error and dump.errors.to.file parameter enabled",
+          {
+            tryCatchLog(
+              log("a"),
+              error = function(e) {
+              },
+              dump.errors.to.file = TRUE
+            )
+            expect_equal(number.of.dump.files(), 1)
+            clean.up.dump.files()
+          })
 
 
 
@@ -88,7 +100,11 @@ test_that("no dump file is created (no error)", {
 
 
 test_that("no dump file is created (warning)", {
-  expect_warning(tryCatchLog(log(-1), error = function(e) {}))
+  expect_warning(tryCatchLog(
+    log(-1),
+    error = function(e) {
+    }
+  ))
   expect_equal(number.of.dump.files(), 0)
   clean.up.dump.files()
 })
@@ -96,7 +112,11 @@ test_that("no dump file is created (warning)", {
 
 
 test_that("no dump file is created (error)", {
-  tryCatchLog(log("a"), error = function(e) {})
+  tryCatchLog(
+    log("a"),
+    error = function(e) {
+    }
+  )
   expect_equal(number.of.dump.files(), 0)
   clean.up.dump.files()
 })
@@ -116,7 +136,11 @@ test_that("no dump file is created (no error but dump default enabled)", {
 
 
 test_that("no dump file is created (warning but dump default enabled)", {
-  expect_warning(tryCatchLog(log(-1), error = function(e) {}))
+  expect_warning(tryCatchLog(
+    log(-1),
+    error = function(e) {
+    }
+  ))
   expect_equal(number.of.dump.files(), 0)
   clean.up.dump.files()
 })
@@ -124,11 +148,11 @@ test_that("no dump file is created (warning but dump default enabled)", {
 
 
 test_that("dump file is created (error and dump default enabled)", {
-  tryCatchLog(log("a"), error = function(e) {})
+  tryCatchLog(
+    log("a"),
+    error = function(e) {
+    }
+  )
   expect_equal(number.of.dump.files(), 1)
   clean.up.dump.files()
 })
-
-
-
-

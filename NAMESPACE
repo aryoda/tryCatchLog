@@ -3,6 +3,7 @@
 export(get.pretty.call.stack)
 export(limitedLabelsCompact)
 export(tryCatchLog)
+export(tryLog)
 importFrom(futile.logger,flog.error)
 importFrom(futile.logger,flog.info)
 importFrom(futile.logger,flog.warn)

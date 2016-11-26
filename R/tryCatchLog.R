@@ -248,8 +248,8 @@ tryCatchLog <- function(expr,
     withCallingHandlers(expr,
                         error = function(e)
                         {
-                          call.stack <- sys.calls()                                 # "sys.calls" within "withCallingHandlers" is like a traceback!
-                          log.message <- e$message
+                          call.stack <- sys.calls()              # "sys.calls" within "withCallingHandlers" is like a traceback!
+                          log.message <- e$message               # TODO: Should we use conditionMessage instead?
 
                           # Save dump to allow post mortem debugging?
                           # See"?dump.frames" on how to load and debug the dump in a later interactive R session!
@@ -292,3 +292,34 @@ tryCatchLog <- function(expr,
 
 
 
+#' Try an expression with condition logging and error recovery
+#'
+#' \code{tryLog} is a wrapper function around \code{\link{tryCatchLog}} to run an expression that might fail.
+#' It traps any errors that occur during the evaluation without stopping the execution of the script.
+#' Errors, warnings and messages are logged.
+#'
+#' @inheritParams tryCatchLog
+#'
+#' @details \code{tryLog} is implemented using \code{tryCatchLog}. If you need need more flexibility for
+#'          catching and handling errors use the latter.
+#'          Error messages are never printed to the \code{stderr} connection but logged only.
+#'
+#' @return The value of the expression (if \code{expr} is evaluated without an error.\cr
+#'         In case of an error: An invisible object of the class \code{"try-error"} containing the error message
+#'         and error condition as the \code{"condition"} attribute.
+#'
+#' @seealso \code{\link{tryCatchLog}}
+#' @examples
+#' tryLog(log(-1))   # logs a warning
+#' tryLog(log("a"))  # logs an error
+#' @export
+tryLog <- function(expr,
+                   dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE))
+{
+  tryCatchLog(expr = expr,
+              dump.errors.to.file = dump.errors.to.file,
+              error = function(e) {
+                msg <- conditionMessage(e)
+                invisible(structure(msg, class = "try-error", condition = e))
+              })
+}
