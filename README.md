@@ -215,6 +215,31 @@ flog.threshold(ERROR)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 ```
 
 
+
+### How can I start my R script as batch using the `Rscript` command and enable logging with file name and line numbers?
+
+Enter the following command in a shell console (or via a shell script like `bash` or Windows `.CMD` file:
+
+```R
+Rscript -e "options(keep.source = TRUE); source('demo/tryCatchLog_demo')"  # source your own script
+```
+
+
+### The stack trace does not contain script file names and line number. How can I enable this?
+
+You have to set the option `keep.source` to `TRUE` in your `.Rprofile` file (or the in the Rscript command
+line if you call your R script via command line):
+
+```R
+options(keep.source = TRUE)
+```
+
+**Note:** If you add this option to your R script file the line numbers will be wrong since R seems to count
+the line numbers only after this option has been set to TRUE. It is better to set this option
+in the `.Rprofile` file or use a start script the sets this option and sources your R script then.
+
+
+
 ## Build the `tryCatchLog` package from source code using RStudio
 
 If you want to inspect or modify the source code you should clone the project
