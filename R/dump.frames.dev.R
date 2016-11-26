@@ -17,9 +17,9 @@ dump.frames.dev <- function(dumpto = "last.dump", to.file = FALSE,
   last.dump <- last.dump[-length(last.dump)] # remove this function
   attr(last.dump, "error.message") <- geterrmessage()
   class(last.dump) <- "dump.frames"
-  if(dumpto != "last.dump") assign(dumpto, last.dump)
+  if (dumpto != "last.dump") assign(dumpto, last.dump)
   if (to.file) # compress=TRUE is now the default.
-    save(list=dumpto, file = paste(dumpto, "rda", sep = "."))
-  else assign(dumpto, last.dump, envir=.GlobalEnv)
+    save(list = dumpto, file = paste(dumpto, "rda", sep = "."))
+  else assign(dumpto, last.dump, envir = .GlobalEnv)
   invisible()
 }

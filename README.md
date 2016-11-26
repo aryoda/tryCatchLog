@@ -20,7 +20,7 @@ An R package to improve error handling compared to the standard tryCatch functio
 
 This repository provides the source code of an advanced `tryCatch` function for the programming language [R](https://www.r-project.org/) called `tryCatchLog`.
 
-The main advantages over `tryCatch` are
+The main advantages of the `tryCatchLog` function over `tryCatch` are
 
 * easy **logging** of errors, warnings and messages into a file or console
 * warnings do **not** stop the program execution (`tryCatch` stops the execution if you pass a warning handler function)
@@ -71,6 +71,8 @@ source("R/tryCatchLog.R")   # adjust the relative path accordingly!
 
 ## Examples
 
+### `tryCatchLog` function
+
 ```R
 library(tryCatchLog)
 library(futile.logger)
@@ -78,7 +80,7 @@ tryCatchLog(log("abc"))
 ```
 results in a log entry that shows the function call hierarchy with the last call (number 5 in the compact call stack)
 showing the R code line causing the error:
-```
+```R
 ERROR [2016-11-13 17:53:35] non-numeric argument to mathematical function
 Compact call stack:
   1 source("~/dev/R/tryCatchLog/demo/tryCatchLog_demo.R", echo = TRUE)
@@ -119,13 +121,56 @@ Full call stack:
 ```
 
 
+### `tryLog` function
+
+The pendant to `try` in R is the `tryLog` function which evaluates an expression and traps errors without
+stopping the script execution:
+
+```R
+print("Start")
+tryLog(log("not a number!"))
+print("Errors cannot stop me")
+```
+
+results in
+
+```R
+> print("Start")
+[1] "Start"
+> tryLog(log("not a number!"))
+ERROR [2016-11-26 23:32:04] non-numeric argument to mathematical function
+Compact call stack:
+  1 tryLog(log("not a number!"))
+  2 tryCatchLog.R#319: tryCatchLog(expr = expr, dump.errors.to.file = dump.errors.to.file, error = function(e) {
+  3 tryCatchLog.R#247: tryCatch(withCallingHandlers(expr, error = function(e) {
+Full call stack:
+  1 tryLog(log("not a number!"))
+  2 tryCatchLog.R#319: tryCatchLog(expr = expr, dump.errors.to.file = dump.errors.to.file, error = function(e) {
+<... omitted ...>
+> print("Errors cannot stop me")
+[1] "Errors cannot stop me"
+>
+```
+
+Observe that the error did **not** stop the execution of the script so that the next line has been executed too.
+
+You could have achived the same (but with more code) using
+
+```R
+print("Start")
+tryCatchLog(log("not a number!"), error = function(e) {})
+print("Errors cannot stop me")
+```
+
+
+
 ## Demo
 
 To learn how `tryCatchLog` works you should open the demo source file that includes many
 explanatory comments and run it.
 
 To run the demo source code open the file in the demo sub folder of the source code
-```
+```R
 demo/tryCatchLog_demo.R
 ```
 with the [RStudio IDE](https://www.rstudio.com/products/rstudio/).
@@ -145,6 +190,29 @@ A prebuilt package file is currently not available but planned (e. g. via a sepa
 
 The package shall be published on [CRAN](https://cran.r-project.org/) only if there is enough demand for that.
 
+
+
+### How can I log into a file instead of the console?
+
+```R
+library(futile.logger)
+
+# log to a file (not the console  which is the default target of futile.logger).
+# You could also redirect console output into a file if start your R script with a shell script using Rscript!
+flog.appender(appender.file("my_app.log"))
+```
+
+
+### How can I reduce the amount of logged conditions?
+
+Set the threshold of the `futile.logger` accordingly:
+
+```R
+library(futile.logger)
+
+# Log only errors (not warnings or info messages)
+flog.threshold(ERROR)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL
+```
 
 
 ## Build the `tryCatchLog` package from source code using RStudio
@@ -188,9 +256,10 @@ The package installation file is now available in the parent folder of the proje
 Copy the package file generated in the parent folder of the project on the target computer,
 start R and enter:
 
-  ```R
-  install.packages("../tryCatchLog_0.9.1.tar.gz", repos = NULL, type = "source")  # adjust the file name!
-  ```
+```R
+install.packages("../tryCatchLog_0.9.1.tar.gz", repos = NULL, type = "source")  # adjust the file name!
+```
+
 
 
 ## License

@@ -60,25 +60,30 @@ tryCatchLog( {
              # , dump.errors.to.file = TRUE    # uncomment this line to test the error dump feature for post mortem analysis using load + debugger
 )
 
-# tryCatchLog( { log(-1); print("Done") }) # Continue after warning?
-
-# tryCatchLog(log(-1)) # stack trace OK?
-# tryCatchLog("not a number")
-
-# tryCatchLog({
-#   print("start")
-#   log("a")
-#   print("end")
-# }
-# , error = stop # function(e) {}
-# )
-# print("out")
 
 
 
-print("Done")    # Proof that the error does not stop the program execution
+# tryLog examples -------------------------------------------------------------------------------------------------
+
+# tryLog is similar to try and does not stop in case of an error but only logs it:
+
+print("Start")
+tryLog(log("not a number!"))
+print("Errors cannot stop me")
+
+# The same could be done with more code using tryCatchLog:
+print("Start")
+tryCatchLog(log("not a number!"), error = function(e) {})
+print("Errors cannot stop me")
 
 
+
+print("Demo has finished...")    # Proof that the error does not stop the program execution
+
+
+
+
+# Collection of helpful links (not yet ordered) -------------------------------------------------------------------
 
 
 # A dump file can loaded later in another R session, so post-mortem debugging is possible for batch usage of R.
