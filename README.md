@@ -12,6 +12,7 @@ An R package to improve error handling compared to the standard tryCatch functio
 * [Demo](#demo)
 * [FAQ](#faq)
 * [Build the package from source using RStudio](#build-the-trycatchlog-package-from-source-code-using-rstudio)
+* [Links](#links)
 * [License](#license)
 
 
@@ -411,6 +412,14 @@ install.packages("../tryCatchLog_0.9.1.tar.gz", repos = NULL, type = "source")  
 ```
 
 
+## Links
+
+### Logging packages
+
+* https://github.com/zatonovo/futile.logger
+* https://github.com/smbache/loggr
+
+
 
 ## License
 
@@ -422,7 +431,7 @@ Another good overview gives https://tldrlegal.com/license/gnu-general-public-lic
 
 Further links:
 
-  * [list of GPL-Compatible Free Software Licenses](https://www.gnu.org/licenses/license-list.html#GPLCompatibleLicenses)
+  * [List of GPL-Compatible Free Software Licenses](https://www.gnu.org/licenses/license-list.html#GPLCompatibleLicenses)
   * [License compatibility matrix](https://www.gnu.org/licenses/gpl-faq.html#AllCompatibility)
   
   

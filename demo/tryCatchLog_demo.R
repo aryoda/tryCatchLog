@@ -121,6 +121,8 @@ print("Demo has finished...")    # Proof that the error does not stop the progra
 # Get last error message: geterrmessage()
 # Get the last (or all) warnings: tail(warnings(), 1)
 
+# z <- tryCatch(for(i in seq_len(1e8))log(exp(i/10)), error=function(e) {print("error"); e}, interrupt=function(e) {print("interrupt"); e})
+# class(z)
 
 
 # References
