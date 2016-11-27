@@ -4,6 +4,7 @@ An R package to improve error handling compared to the standard tryCatch functio
 
 
 
+
 ## Table of contents
 
 * [Overview](#overview)
