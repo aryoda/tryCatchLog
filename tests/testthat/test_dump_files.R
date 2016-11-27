@@ -11,6 +11,8 @@ library(futile.logger)
 # Test preparation ------------------------------------------------------------------------------------------------
 
 options("tryCatchLog.dump.errors.to.file" = FALSE)
+options("tryCatchLog.silent.warnings" = FALSE)
+
 
 
 # helper function to delete all existing dump files in the working directory

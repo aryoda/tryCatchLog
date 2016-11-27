@@ -5,7 +5,8 @@
 \title{Try an expression with condition logging and error recovery}
 \usage{
 tryLog(expr,
-  dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE))
+  dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE),
+  silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE))
 }
 \arguments{
 \item{expr}{expression to be evaluated}

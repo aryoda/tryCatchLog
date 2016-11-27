@@ -13,6 +13,8 @@ context("Basic tests of tryCatchLog")
 
 # set up test context
 options("tryCatchLog.dump.errors.to.file" = FALSE)    # global default setting for all tryCatchLog call params "dump.errors.to.file"
+options("tryCatchLog.silent.warnings" = FALSE)
+
 flog.threshold("FATAL")                               # suppress logging of errors and warnings to avoid overly output
 
 

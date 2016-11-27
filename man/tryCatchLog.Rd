@@ -6,7 +6,8 @@
 \usage{
 tryCatchLog(expr, error = getOption("error", default = stop),
   finally = NULL,
-  dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE))
+  dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE),
+  silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE))
 }
 \arguments{
 \item{expr}{expression to be evaluated}

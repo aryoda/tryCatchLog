@@ -245,7 +245,8 @@ buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
 tryCatchLog <- function(expr,
                         error = getOption("error", default = stop),
                         finally = NULL,
-                        dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE))
+                        dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE),
+                        silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE))
 {
   tryCatch(
     withCallingHandlers(expr,
@@ -277,9 +278,14 @@ tryCatchLog <- function(expr,
 
                           call.stack <- sys.calls()                                 # "sys.calls" within "withCallingHandlers" is like a traceback!
                           futile.logger::flog.warn(buildLogMessage(w$message, call.stack, 1))      # ignore last function calls to this handler
-                          # Note: The execution resumes now only if now warning handler is established higher in the call stack via try or tryCatch!
-                          #       To "muffle" the warning and resume execution use: invokeRestart("muffleWarning")
-                          # invokeRestart("muffleWarning")            # suppresses the warning (logs it only)
+
+                          # Suppresses the warning (logs it only)?
+                          if (silent.warnings) {
+                            invokeRestart("muffleWarning")           # the warning will NOT bubble up now!
+                          } else {
+                            # The warning bubbles up and the execution resumes only if no warning handler is established
+                            # higher in the call stack via try or tryCatch
+                          }
                         }
                         , message = function(m)                                     # Remember: You can ignore messages by setting the log level above "info"
                         {
@@ -319,12 +325,14 @@ tryCatchLog <- function(expr,
 #' tryLog(log("a"))  # logs an error
 #' @export
 tryLog <- function(expr,
-                   dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE))
+                   dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE),
+                   silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE))
 {
   tryCatchLog(expr = expr,
               dump.errors.to.file = dump.errors.to.file,
               error = function(e) {
                 msg <- conditionMessage(e)
                 invisible(structure(msg, class = "try-error", condition = e))
-              })
+              },
+              silent.warnings = silent.warnings)
 }
