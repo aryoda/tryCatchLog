@@ -266,7 +266,7 @@ in the `.Rprofile` file or use a start script the sets this option and sources y
 
 
 
-### How do i perform a post-mortem analysis of my crashed R script?
+### How do I perform a post-mortem analysis of my crashed R script?
 
 **"Post-mortem analyis"** means to examine the variables and functions calls ("call stack") that led
 to a "crash" (= stop of R script execution due to an error) after the R script has stopped.
