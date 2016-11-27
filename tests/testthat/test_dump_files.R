@@ -10,6 +10,8 @@ library(futile.logger)
 
 # Test preparation ------------------------------------------------------------------------------------------------
 
+options("tryCatchLog.dump.errors.to.file" = FALSE)
+
 
 # helper function to delete all existing dump files in the working directory
 # (used for test set-up)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tryCatchLog.R
 \name{tryCatchLog}
 \alias{tryCatchLog}
-\title{Expression execution with error handling and logging of conditions}
+\title{Try an expression with condition logging and error handling}
 \usage{
 tryCatchLog(expr, error = getOption("error", default = stop),
   finally = NULL,
@@ -22,12 +22,15 @@ the value of the expression passed in as parameter "expr"
 }
 \description{
 This function evaluates an expression passed in the \code{expr} parameter and executes
-             the error handler function passed as parameter \code{error} in case of an error condition.
-             The \code{finally} expression is then always evaluated at the end.
-             Conditions are logged including the call stack.
+the error handler function passed as parameter \code{error} in case of an error condition.
+The \code{finally} expression is then always evaluated at the end.
+Conditions are logged with the function call stack (including file names and line numbers).
 }
 \details{
-Before you can call \code{tryCatchLog} for the first time you should initialize the \pkg{futile.logger} first:
+This function shall overcome some drawbacks of the standard \code{\link{tryCatch}} function.\cr
+         For more details see \url{https://github.com/aryoda/tryCatchLog}.
+
+         Before you can call \code{tryCatchLog} for the first time you should initialize the \pkg{futile.logger} first:
 
          \preformatted{  library(futile.logger)
   flog.appender(appender.file("my_app.log"))
@@ -56,10 +59,10 @@ Before you can call \code{tryCatchLog} for the first time you should initialize 
          will tell R to keep the source references. You can also use \code{options(keep.source.pkgs = TRUE)}
          before you install a package.
 
-         Setting the parameter \code{dump.errors.to.file} to TRUE allows a post mortem analysis of the program state
+         Setting the parameter \code{dump.errors.to.file} to TRUE allows a post-mortem analysis of the program state
          that led to the error. The dump contains the workspace and in the variable "last.dump"
          the call stack (\code{\link{sys.frames}}). This feature is very helpful for non-interactive R scripts ("batches").
-         To start a post mortem analysis after an error open a new R session and enter:
+         To start a post-mortem analysis after an error open a new R session and enter:
             \code{load("dump_20161016_164050.rda")   # replace the dump file name with your real file name
             debugger(last.dump)}
 }
@@ -83,6 +86,6 @@ Before you can call \code{tryCatchLog} for the first time you should initialize 
 tryCatchLog(log(-1))   # logs a warning
 }
 \seealso{
-\code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}}
+\code{\link{tryLog}}, \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}}
 }
 

@@ -127,7 +127,7 @@ limitedLabelsCompact <- function(value, compact = FALSE, maxwidth = getOption("w
 #'          }
 #'          You should only call this function from within \code{\link{withCallingHandlers}}, NOT from within \code{\link{tryCatch}}
 #'          since tryCatch unwinds the call stack to the tryCatch position and the source of the condition cannot be identified anymore.
-#' @seealso \code{\link{tryCatchLog}}, \code{\link{limitedLabelsCompact}}
+#' @seealso \code{\link{tryCatchLog}}, \code{\link{tryLog}}, \code{\link{limitedLabelsCompact}}
 #' @export
 get.pretty.call.stack <- function(call.stack, omit.last.items = 0, compact = FALSE)
 {
@@ -170,12 +170,12 @@ buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
 
 
 
-#' Expression execution with error handling and logging of conditions
+#' Try an expression with condition logging and error handling
 #'
-#' @description This function evaluates an expression passed in the \code{expr} parameter and executes
-#'              the error handler function passed as parameter \code{error} in case of an error condition.
-#'              The \code{finally} expression is then always evaluated at the end.
-#'              Conditions are logged including the call stack.
+#' This function evaluates an expression passed in the \code{expr} parameter and executes
+#' the error handler function passed as parameter \code{error} in case of an error condition.
+#' The \code{finally} expression is then always evaluated at the end.
+#' Conditions are logged with the function call stack (including file names and line numbers).
 #'
 #' @param expr                 expression to be evaluated
 #' @param error                error handler function
@@ -184,7 +184,10 @@ buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
 #'
 #' @return                     the value of the expression passed in as parameter "expr"
 #'
-#' @details Before you can call \code{tryCatchLog} for the first time you should initialize the \pkg{futile.logger} first:
+#' @details This function shall overcome some drawbacks of the standard \code{\link{tryCatch}} function.\cr
+#'          For more details see \url{https://github.com/aryoda/tryCatchLog}.
+#'
+#'          Before you can call \code{tryCatchLog} for the first time you should initialize the \pkg{futile.logger} first:
 #'
 #'          \preformatted{  library(futile.logger)
 #'   flog.appender(appender.file("my_app.log"))
@@ -213,10 +216,10 @@ buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
 #'          will tell R to keep the source references. You can also use \code{options(keep.source.pkgs = TRUE)}
 #'          before you install a package.
 #'
-#'          Setting the parameter \code{dump.errors.to.file} to TRUE allows a post mortem analysis of the program state
+#'          Setting the parameter \code{dump.errors.to.file} to TRUE allows a post-mortem analysis of the program state
 #'          that led to the error. The dump contains the workspace and in the variable "last.dump"
 #'          the call stack (\code{\link{sys.frames}}). This feature is very helpful for non-interactive R scripts ("batches").
-#'          To start a post mortem analysis after an error open a new R session and enter:
+#'          To start a post-mortem analysis after an error open a new R session and enter:
 #'             \code{load("dump_20161016_164050.rda")   # replace the dump file name with your real file name
 #'             debugger(last.dump)}
 #'
@@ -235,7 +238,7 @@ buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
 #'          You can \bold{execute your code as batch with \code{\link{Rscript}} using this shell script command}:\cr
 #'          \code{Rscript -e "options(keep.source = TRUE); source('my_main_function.R')"}
 #'
-#' @seealso \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}}
+#' @seealso \code{\link{tryLog}}, \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}}
 #' @examples
 #' tryCatchLog(log(-1))   # logs a warning
 #' @export
@@ -276,12 +279,14 @@ tryCatchLog <- function(expr,
                           futile.logger::flog.warn(buildLogMessage(w$message, call.stack, 1))      # ignore last function calls to this handler
                           # Note: The execution resumes now only if now warning handler is established higher in the call stack via try or tryCatch!
                           #       To "muffle" the warning and resume execution use: invokeRestart("muffleWarning")
+                          # invokeRestart("muffleWarning")            # suppresses the warning (logs it only)
                         }
                         , message = function(m)                                     # Remember: You can ignore messages by setting the log level above "info"
                         {
 
                           call.stack <- sys.calls()                                 # "sys.calls" within "withCallingHandlers" is like a traceback!
                           futile.logger::flog.info(buildLogMessage(m$message, call.stack, 1))      # ignore last function calls to this handler
+                          # invokeRestart("muffleMessage")            # suppresses the message (logs it only)
                         }
     ),       # end of withCallingHandlers
     error = error,                # pass error handler argument of tryCatchLog to tryCatch
@@ -294,15 +299,15 @@ tryCatchLog <- function(expr,
 
 #' Try an expression with condition logging and error recovery
 #'
-#' \code{tryLog} is a wrapper function around \code{\link{tryCatchLog}} to run an expression that might fail.
-#' It traps any errors that occur during the evaluation without stopping the execution of the script.
-#' Errors, warnings and messages are logged.
+#' \code{tryLog} is a wrapper function around \code{\link{tryCatchLog}} to run an expression that might fail
+#' Similar to \code{\link{try}} it traps any errors that occur during the evaluation without stopping the execution
+#' of the script. Errors, warnings and messages are logged.
 #'
 #' @inheritParams tryCatchLog
 #'
-#' @details \code{tryLog} is implemented using \code{tryCatchLog}. If you need need more flexibility for
+#' @details \code{tryLog} is implemented using \code{\link{tryCatchLog}}. If you need need more flexibility for
 #'          catching and handling errors use the latter.
-#'          Error messages are never printed to the \code{stderr} connection but logged only.
+#'          Error messages are never printed to the \code{\link{stderr}} connection but logged only.
 #'
 #' @return The value of the expression (if \code{expr} is evaluated without an error.\cr
 #'         In case of an error: An invisible object of the class \code{"try-error"} containing the error message

@@ -82,6 +82,21 @@ print("Demo has finished...")    # Proof that the error does not stop the progra
 
 
 
+# Good test function for demos and slides
+# foo <- function(x) {
+#   if (x == 1) {
+#     warning('Warning')
+#   } else if (x == 0) {
+#     stop('Error')
+#   }
+#   return(1)
+# }
+
+# invokeRestart("muffleWarning"))
+
+# library(futile.logger)
+# flog.threshold(ERROR)
+# tryCatchLog(log(-1))
 
 # Collection of helpful links (not yet ordered) -------------------------------------------------------------------
 
@@ -130,6 +145,10 @@ print("Demo has finished...")    # Proof that the error does not stop the progra
 #      -> file naming pattern for dump files
 #      https://stackoverflow.com/questions/1975110/printing-stack-trace-and-continuing-after-error-occurs-in-r
 #      -> Links to documentation around post mortem analysis
+#
+# !!! Beyond Exception Handling: Conditions and Restarts
+#   http://adv-r.had.co.nz/beyond-exception-handling.html
+#   -> explains the ideas behind conditions and restarts and why it should be better than simple exception handling
 #
 # Note: The script still stops in case of an error when using withCallingHandlers alone (without try or tryCatch):
 # !!! https://stackoverflow.com/questions/32167959/in-r-why-does-withcallinghandlers-still-stops-execution

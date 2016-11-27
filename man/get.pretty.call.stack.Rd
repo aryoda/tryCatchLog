@@ -35,6 +35,6 @@ How to read the call stack:
          since tryCatch unwinds the call stack to the tryCatch position and the source of the condition cannot be identified anymore.
 }
 \seealso{
-\code{\link{tryCatchLog}}, \code{\link{limitedLabelsCompact}}
+\code{\link{tryCatchLog}}, \code{\link{tryLog}}, \code{\link{limitedLabelsCompact}}
 }
 

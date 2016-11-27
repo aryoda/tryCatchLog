@@ -18,14 +18,14 @@ The value of the expression (if \code{expr} is evaluated without an error.\cr
         and error condition as the \code{"condition"} attribute.
 }
 \description{
-\code{tryLog} is a wrapper function around \code{\link{tryCatchLog}} to run an expression that might fail.
-It traps any errors that occur during the evaluation without stopping the execution of the script.
-Errors, warnings and messages are logged.
+\code{tryLog} is a wrapper function around \code{\link{tryCatchLog}} to run an expression that might fail
+Similar to \code{\link{try}} it traps any errors that occur during the evaluation without stopping the execution
+of the script. Errors, warnings and messages are logged.
 }
 \details{
-\code{tryLog} is implemented using \code{tryCatchLog}. If you need need more flexibility for
+\code{tryLog} is implemented using \code{\link{tryCatchLog}}. If you need need more flexibility for
          catching and handling errors use the latter.
-         Error messages are never printed to the \code{stderr} connection but logged only.
+         Error messages are never printed to the \code{\link{stderr}} connection but logged only.
 }
 \examples{
 tryLog(log(-1))   # logs a warning
