@@ -181,6 +181,9 @@ buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
 #' @param error                error handler function
 #' @param finally              expression to be evaluated at the end
 #' @param dump.errors.to.file  if TRUE: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}
+#' @param silent.warnings      if TRUE: Warnings are logged, but not propagated to the caller.\cr
+#'                             if FALSE: Warnings are logged and treated according to the global
+#'                             setting in \code{\link{getOption}("warn")}. See also \code{\link{warning}}.
 #'
 #' @return                     the value of the expression passed in as parameter "expr"
 #'

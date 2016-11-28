@@ -17,6 +17,10 @@ tryCatchLog(expr, error = getOption("error", default = stop),
 \item{finally}{expression to be evaluated at the end}
 
 \item{dump.errors.to.file}{if TRUE: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}}
+
+\item{silent.warnings}{if TRUE: Warnings are logged, but not propagated to the caller.\cr
+if FALSE: Warnings are logged and treated according to the global
+setting in \code{\link{getOption}("warn")}. See also \code{\link{warning}}.}
 }
 \value{
 the value of the expression passed in as parameter "expr"
