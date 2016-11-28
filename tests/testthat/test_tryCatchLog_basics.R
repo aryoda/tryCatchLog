@@ -9,7 +9,7 @@ library(futile.logger)
 
 # Basic tests -----------------------------------------------------------------------------------------------------
 
-context("Basic tests of tryCatchLog")
+context("tryCatchLog")
 
 # set up test context
 options("tryCatchLog.dump.errors.to.file" = FALSE)    # global default setting for all tryCatchLog call params "dump.errors.to.file"
