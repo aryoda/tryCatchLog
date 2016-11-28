@@ -12,6 +12,8 @@ library(futile.logger)
 
 options("tryCatchLog.dump.errors.to.file" = FALSE)
 options("tryCatchLog.silent.warnings" = FALSE)
+options("tryCatchLog.silent.messages" = FALSE)
+
 
 
 

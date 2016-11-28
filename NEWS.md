@@ -25,3 +25,7 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 
 * Added: Parameter `silent.warnings` to  `tryCatchLog` and `tryLog`
 
+
+## Version 0.9.4 (Nov. 28, 2016)
+
+* Added: Parameter `silent.messages` to `tryCatchLog` and `tryLog`

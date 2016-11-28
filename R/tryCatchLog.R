@@ -180,10 +180,12 @@ buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
 #' @param expr                 expression to be evaluated
 #' @param error                error handler function
 #' @param finally              expression to be evaluated at the end
-#' @param dump.errors.to.file  if TRUE: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}
-#' @param silent.warnings      if TRUE: Warnings are logged, but not propagated to the caller.\cr
-#'                             if FALSE: Warnings are logged and treated according to the global
+#' @param dump.errors.to.file  TRUE: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}
+#' @param silent.warnings      TRUE: Warnings are logged, but not propagated to the caller.\cr
+#'                             FALSE: Warnings are logged and treated according to the global
 #'                             setting in \code{\link{getOption}("warn")}. See also \code{\link{warning}}.
+#' @param silent.messages      TRUE: Messages are logged, but not propagated to the caller.\cr
+#'                             FALSE: Messages are logged and propagated to the caller.
 #'
 #' @return                     the value of the expression passed in as parameter "expr"
 #'
@@ -249,7 +251,8 @@ tryCatchLog <- function(expr,
                         error = getOption("error", default = stop),
                         finally = NULL,
                         dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE),
-                        silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE))
+                        silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
+                        silent.messages = getOption("tryCatchLog.silent.messages", FALSE))
 {
   tryCatch(
     withCallingHandlers(expr,
@@ -295,7 +298,12 @@ tryCatchLog <- function(expr,
 
                           call.stack <- sys.calls()                                 # "sys.calls" within "withCallingHandlers" is like a traceback!
                           futile.logger::flog.info(buildLogMessage(m$message, call.stack, 1))      # ignore last function calls to this handler
-                          # invokeRestart("muffleMessage")            # suppresses the message (logs it only)
+
+                          if (silent.messages) {
+                            invokeRestart("muffleMessage")            # the message will not bubble up now (logs it only)
+                          } else {
+                            # Just to make it clear here: The message bubbles up now
+                          }
                         }
     ),       # end of withCallingHandlers
     error = error,                # pass error handler argument of tryCatchLog to tryCatch
@@ -329,7 +337,8 @@ tryCatchLog <- function(expr,
 #' @export
 tryLog <- function(expr,
                    dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE),
-                   silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE))
+                   silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
+                   silent.messages = getOption("tryCatchLog.silent.messages", FALSE))
 {
   tryCatchLog(expr = expr,
               dump.errors.to.file = dump.errors.to.file,
@@ -337,5 +346,6 @@ tryLog <- function(expr,
                 msg <- conditionMessage(e)
                 invisible(structure(msg, class = "try-error", condition = e))
               },
-              silent.warnings = silent.warnings)
+              silent.warnings = silent.warnings,
+              silent.messages = silent.messages)
 }

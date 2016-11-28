@@ -12,6 +12,8 @@ context("Silent warnings")
 # set up test context
 options("tryCatchLog.dump.errors.to.file" = FALSE)    # global default setting for all tryCatchLog call params "dump.errors.to.file"
 options("tryCatchLog.silent.warnings" = FALSE)
+options("tryCatchLog.silent.messages" = FALSE)
+
 
 flog.threshold("FATAL")                               # suppress logging of errors and warnings to avoid overly output
 
@@ -53,3 +55,20 @@ test_that("Globally enabled silent warnings throws a warning when overwritten vi
   expect_warning(tryLog(log(-1), silent.warnings = FALSE))
 })
 
+
+
+# Some "cross checks"
+
+
+
+test_that("errors are silent but returned as object of 'try-error' class", {
+  expect_silent(tryLog(log("a")))
+  expect_equal(class(tryLog(log("a"))), "try-error")
+  # expect_true("condition" %in% names(attributes(tryLog(log("a")))))
+})
+
+
+
+test_that("tryCatchLog did throw an error", {
+  expect_error(tryCatchLog(log("abc")))
+})

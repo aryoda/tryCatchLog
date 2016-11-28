@@ -7,7 +7,8 @@
 tryCatchLog(expr, error = getOption("error", default = stop),
   finally = NULL,
   dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE),
-  silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE))
+  silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
+  silent.messages = getOption("tryCatchLog.silent.messages", FALSE))
 }
 \arguments{
 \item{expr}{expression to be evaluated}
@@ -16,11 +17,14 @@ tryCatchLog(expr, error = getOption("error", default = stop),
 
 \item{finally}{expression to be evaluated at the end}
 
-\item{dump.errors.to.file}{if TRUE: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}}
+\item{dump.errors.to.file}{TRUE: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}}
 
-\item{silent.warnings}{if TRUE: Warnings are logged, but not propagated to the caller.\cr
-if FALSE: Warnings are logged and treated according to the global
+\item{silent.warnings}{TRUE: Warnings are logged, but not propagated to the caller.\cr
+FALSE: Warnings are logged and treated according to the global
 setting in \code{\link{getOption}("warn")}. See also \code{\link{warning}}.}
+
+\item{silent.messages}{TRUE: Messages are logged, but not propagated to the caller.\cr
+FALSE: Messages are logged and propagated to the caller.}
 }
 \value{
 the value of the expression passed in as parameter "expr"

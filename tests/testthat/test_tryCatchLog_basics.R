@@ -11,19 +11,24 @@ library(futile.logger)
 
 context("tryCatchLog")
 
+
+
 # set up test context
 options("tryCatchLog.dump.errors.to.file" = FALSE)    # global default setting for all tryCatchLog call params "dump.errors.to.file"
 options("tryCatchLog.silent.warnings" = FALSE)
+options("tryCatchLog.silent.messages" = FALSE)
+
+
 
 flog.threshold("FATAL")                               # suppress logging of errors and warnings to avoid overly output
 
 
 
-test_that("log(-1) did not throw a warning", {
+test_that("log(-1) did throw a warning", {
   expect_warning(log(-1))
 })
 
-test_that("log('abc') did not throw an error", {
+test_that("log('abc') did throw an error", {
   expect_error(log("abc"))
 })
 
@@ -33,16 +38,16 @@ test_that("tryCatchLog creates no warning", {
   expect_silent(tryCatchLog(log(1)))
 })
 
-test_that("tryCatchLog did not throw a warning", {
+test_that("tryCatchLog did throw a warning", {
   expect_warning(tryCatchLog(log(-1)))
 })
 
-test_that("tryCatchLog did not throw an error", {
+test_that("tryCatchLog did throw an error", {
   expect_error(tryCatchLog(log("abc")))
 })
 
 
-test_that("tryCatchLog did not call error handler", {
+test_that("tryCatchLog did call the error handler", {
   expect_equal(2, tryCatchLog({
     flag <- 1
     log("abc")
@@ -55,7 +60,7 @@ test_that("tryCatchLog did not call error handler", {
 
 
 
-test_that("tryCatchLog warning shall continue but generated a warning", {
+test_that("tryCatchLog with warning continues", {
   withCallingHandlers(
     tryCatchLog({
       did.warn <- FALSE
@@ -78,7 +83,7 @@ test_that("tryCatchLog warning shall continue but generated a warning", {
 
 
 
-test_that("tryCatchLog message shall continue but generated a message", {
+test_that("tryCatchLog with message continues", {
   withCallingHandlers(
     tryCatchLog({
       msg.sent <- FALSE

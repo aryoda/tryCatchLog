@@ -14,6 +14,9 @@ context("tryLog")
 # set up test context
 options("tryCatchLog.dump.errors.to.file" = FALSE)    # global default setting for all tryCatchLog call params "dump.errors.to.file"
 options("tryCatchLog.silent.warnings" = FALSE)
+options("tryCatchLog.silent.messages" = FALSE)
+
+
 
 flog.threshold("FATAL")                               # suppress logging of errors and warnings to avoid overly output
 
@@ -43,7 +46,7 @@ test_that("warnings are shown and return value is produced", {
 
 
 
-test_that("warnings are shown but do not stop execution", {
+test_that("warnings are thrown", {
   expect_warning(tryLog(log(-1)))
 })
 
