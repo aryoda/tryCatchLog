@@ -20,3 +20,8 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 * Added: First working version of the `tryLog` function
 
 
+
+## Version 0.9.3 (nov. 28, 2016)
+
+* Added: Parameter `silent.warnings` to  `tryCatchLog` and `tryLog`
+
