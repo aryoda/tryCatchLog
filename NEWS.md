@@ -29,3 +29,4 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 ## Version 0.9.4 (Nov. 28, 2016)
 
 * Added: Parameter `silent.messages` to `tryCatchLog` and `tryLog`
+* License: Added the copyright header to each R file to clarify the legal side
