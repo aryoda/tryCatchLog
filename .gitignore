@@ -27,7 +27,6 @@ vignettes/*.pdf
 # HTML rendered version of the R Markdown files
 /README.html
 /NEWS.html
-
 *.log
 /dump_*
-
+inst/doc

@@ -28,7 +28,7 @@ The main advantages of the `tryCatchLog` function over `tryCatch` are
 * warnings do **not** stop the program execution (`tryCatch` stops the execution if you pass a warning handler function)
 * identifies the source of errors and warnings by logging a **stack trace with a reference to the source file name and line number**
   (since `traceback` does not contain the full stack trace)
-* allows **[post-mortem analysis](#how-do-i-perform-a-post-mortem-analysis-of-my-crashed-r-script) after errors by creating a dump file** with all variables of the global environment (workspace) and each function called (via `dump.frames`) - very helpful for batch jobs that cannot debug on the server!
+* allows **[post-mortem analysis](#how-do-i-perform-a-post-mortem-analysis-of-my-crashed-r-script) after errors by creating a dump file** with all variables of the global environment (workspace) and each function called (via `dump.frames`) - very helpful for batch jobs that you cannot debug on the server directly to reproduce the error!
 
 This code was created as an answer to the stackoverflow question
 
