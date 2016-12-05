@@ -1,6 +1,6 @@
 ---
 title: "Error handling in R with tryCatchLog<br>(catch, log, post-mortem analysis)"
-author: Jürgen Altfeld
+author: Jürgen Altfeld (TODO (c) and License)
 date: Dec. 2016
 output:
         revealjs::revealjs_presentation:
@@ -466,6 +466,8 @@ tryCatch(withCallingHandlers(f(), error = function(e)   { write.to.log(sys.calls
          , error = function(e) { print("recovered from error") })
 print("Done")
 ```
+
+**This is how `tryCatchLog` works internally!**
 
 
 
