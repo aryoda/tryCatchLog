@@ -1,5 +1,5 @@
 # ***************************************************************************
-# Copyright (C) 2016 Jürgen Altfeld (R@altfeld-im.de)
+# Copyright (C) 2016 Juergen Altfeld (R@altfeld-im.de)
 # ---------------------------------------------------------------------------
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
