@@ -39,7 +39,7 @@ Conditions are logged with the function call stack (including file names and lin
 This function shall overcome some drawbacks of the standard \code{\link{tryCatch}} function.\cr
          For more details see \url{https://github.com/aryoda/tryCatchLog}.
 
-         Before you can call \code{tryCatchLog} for the first time you should initialize the \pkg{futile.logger} first:
+         Before you call \code{tryCatchLog} for the first time you should initialize the \pkg{futile.logger} first:
 
          \preformatted{  library(futile.logger)
   flog.appender(appender.file("my_app.log"))

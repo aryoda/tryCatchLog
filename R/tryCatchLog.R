@@ -24,6 +24,9 @@
 # NULL
 
 # Better import only the required functions to reduce the dependencies and make them explicit:
+# Note: This is an optional step if you qualify all your external function calls with the package name and "::"
+#       together with declaring the required packaged in the "Imports" section of the DESCRIPTION file.
+#       Source: https://cran.r-project.org/doc/manuals/R-exts.html#Specifying-imports-and-exports
 #' @importFrom futile.logger flog.error flog.warn flog.info
 #' @importFrom utils         dump.frames
 NULL
@@ -194,7 +197,7 @@ buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
 #' @details This function shall overcome some drawbacks of the standard \code{\link{tryCatch}} function.\cr
 #'          For more details see \url{https://github.com/aryoda/tryCatchLog}.
 #'
-#'          Before you can call \code{tryCatchLog} for the first time you should initialize the \pkg{futile.logger} first:
+#'          Before you call \code{tryCatchLog} for the first time you should initialize the \pkg{futile.logger} first:
 #'
 #'          \preformatted{  library(futile.logger)
 #'   flog.appender(appender.file("my_app.log"))
@@ -275,7 +278,7 @@ tryCatchLog <- function(expr,
                             # https://bugs.r-project.org/bugzilla/show_bug.cgi?id=17116
                             # wait for the enhanced version to be released in spring 2017
                             # dump.frames(dumpto = dump.file.name, to.file = TRUE, include.GlobalEnv = TRUE)  # test it now by using "dump.frames.dev()"
-                            log.message <- paste0(log.message, "\nEnvironment dumped into file: ", dump.file.name, ".rda")
+                            log.message <- paste0(log.message, "\nCall stack environments dumped into file: ", dump.file.name, ".rda")
                           }
 # x <<- sys.calls() # just for internal debugging purposes
                           futile.logger::flog.error(buildLogMessage(log.message, call.stack, 1))   # ignore  function calls to this this handler

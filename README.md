@@ -321,7 +321,7 @@ Note: `tryCatchLog` does also allow you to write a memory dump for every catched
     
     ```
     Message:  non-numeric argument to mathematical functionAvailable environments had calls:
-    1: source("/media/local_data/dev/R/tryCatchLog/demo/tryCatchLog_demo.R", echo = TRUE)
+    1: source("~/tryCatchLog/demo/tryCatchLog_demo.R", echo = TRUE)
     2: withVisible(eval(ei, envir))
     3: eval(ei, envir)
     4: eval(expr, envir, enclos)

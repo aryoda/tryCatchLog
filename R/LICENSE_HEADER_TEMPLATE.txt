@@ -22,3 +22,5 @@ https://www.gnu.org/licenses/gpl-howto.html
 Licenses accepted by CRAN:
 https://svn.r-project.org/R/trunk/share/licenses/license.db
 
+Do use this license also for the documentation (NOT the GNU Free documentation License
+due to possible issues: https://www.debian.org/vote/2006/vote_001)!
