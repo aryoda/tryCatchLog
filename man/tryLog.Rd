@@ -27,9 +27,11 @@ The value of the expression (if \code{expr} is evaluated without an error.\cr
         and error condition as the \code{"condition"} attribute.
 }
 \description{
-\code{tryLog} is a wrapper function around \code{\link{tryCatchLog}} to run an expression that might fail
-Similar to \code{\link{try}} it traps any errors that occur during the evaluation without stopping the execution
-of the script. Errors, warnings and messages are logged.
+\code{tryLog} is a wrapper function around \code{\link{tryCatchLog}}
+that traps any errors that occur during the evaluation of an expression without stopping the execution
+of the script (similar to \code{\link{try}}). Errors, warnings and messages are logged.
+In contrast to \code{\link{tryCatchLog}} it returns but does not stop in case of an error and therefor does
+not have the \code{error} and \code{finally} parameters to pass in custom handler functions.
 }
 \details{
 \code{tryLog} is implemented using \code{\link{tryCatchLog}}. If you need need more flexibility for

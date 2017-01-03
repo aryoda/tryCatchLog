@@ -229,9 +229,20 @@ buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
 #'          Setting the parameter \code{dump.errors.to.file} to TRUE allows a post-mortem analysis of the program state
 #'          that led to the error. The dump contains the workspace and in the variable "last.dump"
 #'          the call stack (\code{\link{sys.frames}}). This feature is very helpful for non-interactive R scripts ("batches").
+#'
 #'          To start a post-mortem analysis after an error open a new R session and enter:
 #'             \code{load("dump_20161016_164050.rda")   # replace the dump file name with your real file name
 #'             debugger(last.dump)}
+#'
+#'          Note that the dump does \bold{not} contain the loaded packages when the dump file was created
+#'          and a dump loaded into memory does therefore \bold{not} use exactly the same search path.
+#'          This means:
+#'
+#'          \enumerate{
+#'          \item{the program state is not exactly reproducible if objects are stored within a package namespace}
+#'          \item{you cannot step through your source code in a reproducible way after loading the image
+#'                if your source code calls functions of non-default packages}
+#'          }
 #'
 #' @section Best practices:
 #'
@@ -248,7 +259,7 @@ buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
 #'          You can \bold{execute your code as batch with \code{\link{Rscript}} using this shell script command}:\cr
 #'          \code{Rscript -e "options(keep.source = TRUE); source('my_main_function.R')"}
 #'
-#' @seealso \code{\link{tryLog}}, \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}}
+#' @seealso \code{\link{tryLog}}, \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}}, \code{\link{getOption}}
 #' @examples
 #' tryCatchLog(log(-1))   # logs a warning
 #' @export
@@ -321,9 +332,11 @@ tryCatchLog <- function(expr,
 
 #' Try an expression with condition logging and error recovery
 #'
-#' \code{tryLog} is a wrapper function around \code{\link{tryCatchLog}} to run an expression that might fail
-#' Similar to \code{\link{try}} it traps any errors that occur during the evaluation without stopping the execution
-#' of the script. Errors, warnings and messages are logged.
+#' \code{tryLog} is a wrapper function around \code{\link{tryCatchLog}}
+#' that traps any errors that occur during the evaluation of an expression without stopping the execution
+#' of the script (similar to \code{\link{try}}). Errors, warnings and messages are logged.
+#' In contrast to \code{\link{tryCatchLog}} it returns but does not stop in case of an error and therefor does
+#' not have the \code{error} and \code{finally} parameters to pass in custom handler functions.
 #'
 #' @inheritParams tryCatchLog
 #'

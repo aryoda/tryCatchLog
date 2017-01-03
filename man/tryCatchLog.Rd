@@ -71,9 +71,20 @@ This function shall overcome some drawbacks of the standard \code{\link{tryCatch
          Setting the parameter \code{dump.errors.to.file} to TRUE allows a post-mortem analysis of the program state
          that led to the error. The dump contains the workspace and in the variable "last.dump"
          the call stack (\code{\link{sys.frames}}). This feature is very helpful for non-interactive R scripts ("batches").
+
          To start a post-mortem analysis after an error open a new R session and enter:
             \code{load("dump_20161016_164050.rda")   # replace the dump file name with your real file name
             debugger(last.dump)}
+
+         Note that the dump does \bold{not} contain the loaded packages when the dump file was created
+         and a dump loaded into memory does therefore \bold{not} use exactly the same search path.
+         This means:
+
+         \enumerate{
+         \item{the program state is not exactly reproducible if objects are stored within a package namespace}
+         \item{you cannot step through your source code in a reproducible way after loading the image
+               if your source code calls functions of non-default packages}
+         }
 }
 \section{Best practices}{
 
@@ -95,6 +106,6 @@ This function shall overcome some drawbacks of the standard \code{\link{tryCatch
 tryCatchLog(log(-1))   # logs a warning
 }
 \seealso{
-\code{\link{tryLog}}, \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}}
+\code{\link{tryLog}}, \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}}, \code{\link{getOption}}
 }
 

@@ -310,7 +310,7 @@ Note: `tryCatchLog` does also allow you to write a memory dump for every catched
 6. Start the debugger
 
     ```R
-    debugger(last.dump)}
+    debugger(last.dump)
     ```
 
     **Note:** The debugger does only allow you to examine the visible variables within the different call stack levels.
