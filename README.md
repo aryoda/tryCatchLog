@@ -13,6 +13,7 @@ An R package to improve error handling compared to the standard tryCatch functio
 * [Demo](#demo)
 * [FAQ](#faq)
 * [Build the package from source using RStudio](#build-the-trycatchlog-package-from-source-code-using-rstudio)
+* [How can I contribute?](#how-can-i-contribute)
 * [Links](#links)
 * [License](#license)
 
@@ -411,6 +412,17 @@ start R and enter:
 ```R
 install.packages("../tryCatchLog_0.9.1.tar.gz", repos = NULL, type = "source")  # adjust the file name!
 ```
+
+
+## How can I contribute?
+
+Everyone can help:
+
+* [Write an issue](https://github.com/aryoda/tryCatchLog/issues) to report bugs, suggest improvements and request new features
+* improves the [unit tests](https://github.com/aryoda/tryCatchLog/tree/master/tests/testthat) (implemented with `testthat`)
+* helps programming (eg. send pull requests)
+* ...
+
 
 
 ## Links
