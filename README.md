@@ -424,6 +424,16 @@ Everyone can help:
 * ...
 
 
+To contribute code changes and extensions:
+
+* Fork this project (https://github.com/aryoda/tryCatchLog/fork).
+  A fork is a copy of a repository that allows you to experiment with changes without affecting the original repository.
+* Create your feature branch (git checkout -b my-new-feature)
+* Commit your changes (git commit -am 'Add some feature')
+* Push to the branch (git push origin my-new-feature)
+* Create a new Pull Request in github
+
+
 
 ## Links
 
