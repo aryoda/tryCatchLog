@@ -102,10 +102,10 @@ This function shall overcome some drawbacks of the standard \code{\link{tryCatch
          You can \bold{execute your code as batch with \code{\link{Rscript}} using this shell script command}:\cr
          \code{Rscript -e "options(keep.source = TRUE); source('my_main_function.R')"}
 }
+
 \examples{
 tryCatchLog(log(-1))   # logs a warning
 }
 \seealso{
 \code{\link{tryLog}}, \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}}, \code{\link{getOption}}
 }
-

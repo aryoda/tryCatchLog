@@ -45,4 +45,3 @@ tryLog(log("a"))  # logs an error
 \seealso{
 \code{\link{tryCatchLog}}
 }
-

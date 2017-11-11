@@ -44,4 +44,3 @@ limitedLabelsCompact(sys.calls(), TRUE)
 \seealso{
 \code{\link{sys.calls}}, \code{\link{tryCatchLog}}, \code{\link{get.pretty.call.stack}}
 }
-

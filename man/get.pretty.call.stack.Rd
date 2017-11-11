@@ -37,4 +37,3 @@ How to read the call stack:
 \seealso{
 \code{\link{tryCatchLog}}, \code{\link{tryLog}}, \code{\link{limitedLabelsCompact}}
 }
-

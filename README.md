@@ -245,15 +245,6 @@ flog.threshold(ERROR)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 
 
 
-### How can I start my R script as batch using the `Rscript` command and enable logging with file name and line numbers?
-
-Enter the following command in a shell console (or via a shell script like `bash` or Windows `.CMD` file:
-
-```R
-Rscript -e "options(keep.source = TRUE); source('demo/tryCatchLog_demo')"  # source your own script
-```
-
-
 ### The stack trace does not contain script file names and line number. How can I enable this?
 
 You have to set the option `keep.source` to `TRUE` in your `.Rprofile` file (or the in the Rscript command
@@ -267,6 +258,27 @@ options(keep.source = TRUE)
 the line numbers only after this option has been set to TRUE. It is better to set this option
 in the `.Rprofile` file or use a start script the sets this option and sources your R script then.
 
+
+
+### How to show line numbers for conditions (errors) when sourcing an R file?
+
+You have to enable the `keep.source` option and source the R file with the `keep.source` parameter
+set to `TRUE` (or more precisely: Take care not to pass `FALSE` - the default value is taken from the option):
+
+```R
+options(keep.source = TRUE)
+source('demo/tryCatchLog_demo.R', keep.source = TRUE)
+```
+
+
+
+### How to show file names and line numbers in log messages when using `Rscript` to run my R file?
+
+Enter the following command in a shell console (or via a shell script like `bash` or Windows `.CMD` file):
+
+```R
+Rscript -e "options(keep.source = TRUE); source('demo/tryCatchLog_demo.R')"  # source your own script
+```
 
 
 ### How do I perform a post-mortem analysis of my crashed R script?

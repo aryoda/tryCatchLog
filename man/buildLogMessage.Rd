@@ -24,4 +24,3 @@ Combines a log message with a compact and a detailled stack trace with the optio
 \note{
 THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFOR NOT EXPORTED.
 }
-
