@@ -254,9 +254,11 @@ line if you call your R script via command line):
 options(keep.source = TRUE)
 ```
 
-**Note:** If you add this option to your R script file the line numbers will be wrong since R seems to count
+**Important:** If you add this option to your R script file the line numbers will be wrong since R seems to count
 the line numbers only after this option has been set to TRUE. It is better to set this option
 in the `.Rprofile` file or use a start script the sets this option and sources your R script then.
+
+If this doesn't work you can also play around with the option `show.error.locations` (see `help("options")`).
 
 
 
@@ -372,6 +374,10 @@ Note: `tryCatchLog` does also allow you to write a memory dump for every catched
     
     To go back to the call stack menu type "f" (= "finish") into the console at the `Browse[1]>` prompt
     and choose a new call stack environment.
+    
+    To learn more about the concept of an R `environment` you can read the excellent tutorial
+    of Suraj Gupta:
+    http://blog.obeautifulcode.com/R/How-R-Searches-And-Finds-Stuff/
     
 8.  Identify reason for the error
 

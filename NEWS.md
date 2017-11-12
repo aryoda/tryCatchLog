@@ -31,6 +31,12 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 * Added: Parameter `silent.messages` to `tryCatchLog` and `tryLog`
 * License: Added the copyright header to each R file to clarify the legal side
 
+## Version 0.9.5 (Nov. ??, 2017)
+
+* Added: Function `last.tryCatchLog.log` to retrieve the log output of the call of `tryLog` or `tryCatchLog`
+* Improved: Documentation
+
 ## current version (ready-to-be-released features)
 
+* Debugging error handler problem if used in RStudio (tryCatchLog(log("a"))
 * Improved: Documentation

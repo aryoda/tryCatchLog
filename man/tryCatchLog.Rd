@@ -32,10 +32,12 @@ the value of the expression passed in as parameter "expr"
 \description{
 This function evaluates an expression passed in the \code{expr} parameter and executes
 the error handler function passed as parameter \code{error} in case of an error condition.
-The \code{finally} expression is then always evaluated at the end.
-Conditions are logged with the function call stack (including file names and line numbers).
 }
 \details{
+The \code{finally} expression is then always evaluated at the end.
+
+Conditions are logged with the function call stack (including file names and line numbers).
+
 This function shall overcome some drawbacks of the standard \code{\link{tryCatch}} function.\cr
          For more details see \url{https://github.com/aryoda/tryCatchLog}.
 
@@ -53,6 +55,9 @@ This function shall overcome some drawbacks of the standard \code{\link{tryCatch
          \item warning -> \code{\link[futile.logger]{flog.warn}}
          \item message -> \code{\link[futile.logger]{flog.info}}
          }
+
+         \strong{`tryCatchLog` does only catch the above conditions, other (user-defined)
+         conditions are currently not catched and therefore not logged.}
 
          The log contains the call stack with the file names and line numbers (if available).
 
