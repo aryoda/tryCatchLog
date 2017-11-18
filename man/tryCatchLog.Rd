@@ -4,16 +4,13 @@
 \alias{tryCatchLog}
 \title{Try an expression with condition logging and error handling}
 \usage{
-tryCatchLog(expr, error = function(e) {     if (!is.null(getOption("error",
-  stop)))          eval(getOption("error", stop)) }, finally = NULL,
+tryCatchLog(expr, ..., finally = NULL,
   dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE),
   silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
   silent.messages = getOption("tryCatchLog.silent.messages", FALSE))
 }
 \arguments{
 \item{expr}{expression to be evaluated}
-
-\item{error}{error handler function}
 
 \item{finally}{expression to be evaluated at the end}
 
@@ -25,6 +22,8 @@ setting in \code{\link{getOption}("warn")}. See also \code{\link{warning}}.}
 
 \item{silent.messages}{TRUE: Messages are logged, but not propagated to the caller.\cr
 FALSE: Messages are logged and propagated to the caller.}
+
+\item{error}{error handler function}
 }
 \value{
 the value of the expression passed in as parameter "expr"

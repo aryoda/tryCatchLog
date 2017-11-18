@@ -1,0 +1,209 @@
+# Tests to verify unchanged semantics of base R's tryCatch error handler logic
+# which is mimicked by tryCatchLog
+
+library(testthat)
+library(tryCatchLog)
+library(futile.logger)
+
+
+
+# inits -----------------------------------------------------------------------------------------------------------
+
+context("test_tryCatch_semantics")
+
+
+
+# do restore changed error option at the end
+saved.options <- getOption("error")
+on.exit(options(error = saved.options))
+
+
+
+# set up test context
+options("tryCatchLog.dump.errors.to.file" = FALSE)    # global default setting for all tryCatchLog call params "dump.errors.to.file"
+options("tryCatchLog.silent.warnings" = FALSE)
+options("tryCatchLog.silent.messages" = FALSE)
+
+
+
+flog.threshold("FATAL")                               # suppress logging of errors and warnings to avoid overly output
+
+
+
+# tests -----------------------------------------------------------------------------------------------------------
+
+options(error = NULL)
+
+test_that("error option NULL is consistent", {
+
+  expect_error(
+    stop("stop now"),
+    "stop now",
+    fixed = TRUE
+  )
+
+  expect_equal(
+    geterrmessage(),
+    "stop now",
+    fixed = TRUE
+  )
+
+})
+
+
+
+options(error = quote(print("option error called")))
+
+test_that("quoted function as handler in error option is consistent", {
+
+  expect_error(
+    stop("stop now"),
+    "stop now",
+    fixed = TRUE,
+    info = "changed error option may not change this behaviour"
+  )
+
+  expect_equal(
+    geterrmessage(),
+    "stop now",
+    fixed = TRUE
+  )
+
+
+  # Must throw an error and print output via option error handler
+  expect_error(
+    expect_output(
+      stop("stop now"),
+      "option error called",
+      fixed = TRUE
+    ),
+    "stop now",
+    fixed = TRUE
+  )
+
+})
+
+
+
+test_that("tryCatch and tryCatchLog have same error handler semantics", {
+
+  # Must still throw an error
+  expect_error(
+    tryCatch(stop("stop now")),
+    "stop now",
+    fixed = TRUE
+  )
+
+  # Must throw an error and print output via option error handler
+  expect_error(
+    expect_output(
+      tryCatch(stop("stop now")),
+      "option error called",
+      fixed = TRUE
+    ),
+    "stop now",
+    fixed = TRUE
+  )
+
+  # Must throw an error and print output via option error handler
+  expect_error(
+    expect_output(
+      tryCatchLog(stop("stop now")),
+      "option error called",
+      fixed = TRUE
+    ),
+    "stop now",
+    fixed = TRUE
+  )
+
+  # Must throw an error (sub test of above for debugging purposes)
+  expect_error(
+    tryCatchLog(stop("stop now")),
+    "stop now",
+    fixed = TRUE
+  )
+
+
+
+  # Must throw: # Error in value[[3L]](cond) : attempt to apply non-function
+  expect_error(
+   tryCatch(stop("stop now"), error = NULL),
+   "attempt to apply non-function",
+   fixed = TRUE
+  )
+
+  # Must throw: # Error in value[[3L]](cond) : attempt to apply non-function
+  expect_error(
+    tryCatchLog(stop("stop now"), error = NULL),
+    "attempt to apply non-function",
+    fixed = TRUE
+  )
+
+})
+
+
+
+
+
+# tear down unit test ---------------------------------------------------------------------------------------------
+
+options(error = saved.options)
+
+
+
+
+
+# my personal thoughts --------------------------------------------------------------------------------------------
+
+# Error: stop now
+# [1] "option error called"
+
+
+
+#   options(error = quote(print("option error called")))
+
+#
+#   tryCatch(stop("stop now"))
+#   # Error in tryCatchList(expr, classes, parentenv, handlers) : stop now
+#   # [1] "option error called"
+#
+#   tryCatch(stop("stop now"), finally = print("finally"))
+#   # Error in tryCatchList(expr, classes, parentenv, handlers) : stop now
+#   # [1] "option error called"
+#   # [1] "finally"
+#
+#   # tryCatchLog does call the finally handler only if it was passed as argument:
+#   # if (!missing(finally))
+#   #   on.exit(finally)
+#
+# end -------------------------------------------------------------------------------------------------------------
+#
+# # works, but does not test the output of error handler
+# expect_error(
+#   stop("stop now"),
+#   "stop now",
+#   fixed = TRUE
+# )
+#
+# # does not work:
+# # Error: error$message does not match "option error called".
+# # Actual value: "stop now"
+# expect_error(
+#   stop("stop now"),
+#   "option error called",
+#   fixed = TRUE
+# )
+#
+# # does not work:
+# # Error: expect_error(stop("stop now"), "stop now", fixed = TRUE) produced no output
+# # [1] "option error called"
+# expect_output(
+#   expect_error(
+#     stop("stop now"),
+#     "stop now",
+#     fixed = TRUE
+#   ),
+#   "option error called",
+#   fixed = TRUE
+# )
+#

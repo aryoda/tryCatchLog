@@ -24,16 +24,19 @@ test_that("error handler with one parameter works", {
 
 
 
-test_that("error handler without any parameter works", {
+test_that("error handler without any parameter throws an error", {
 
-  expect_output(
-    tryCatchLog(
-      stop("an error occured"),
-      error = function() {
-        print("no luck today")
-      }
-    ),
-    "no luck today", fixed = TRUE)
+  # tryCatch throws an error so tryCatchLog must also throw an error in the error handler function has zero arguments
+  expect_error(
+    expect_output(
+      tryCatchLog(
+        stop("an error occured"),
+        error = function() {
+          print("no luck today")
+        }
+      ),
+      "no luck today", fixed = TRUE),
+    "unused argument (cond)", fixed = TRUE)
 
 })
 
@@ -75,14 +78,15 @@ test_that("error handler with unwrapped 1-param R function does work", {
 
 
 
-test_that("error handler with unwrapped 0-param R function does work", {
+# tryCatch throws an error so tryCatchLog must also throw an error in the error handler function has zero arguments
+test_that("error handler with unwrapped 0-param R function does throw an error", {
 
-  expect_equal(
+  expect_error(
     tryCatchLog(
       stop("an error occured"),
       error = geterrmessage    # has no parameter (at least in R version 3.4.2 :-)
     ),
-  "an error occured", fixed = TRUE)
+  "unused argument (cond)", fixed = TRUE)    # Error in value[[3L]](cond) : unused argument (cond)
 
 })
 
@@ -96,12 +100,13 @@ test_that("NULL error handler is recognized as invalid parameter", {
   # tryCatchLog(stop("an error occured"), error = function(e) {invisible(TRUE)})
   # tryCatchLog(stop("an error occured"), error = stop)
 
+  # changed semantics since 0.9.6: tryCatchLog does not recognize NULL but leaves this to tryCatch
   expect_error(
     tryCatchLog(
       stop("an error occured"),
       error = NULL
     ),
-    "FATAL: 'tryCatchLog' and 'tryLog' do not support NULL as value of the 'error' argument!",
+    "attempt to apply non-function",
     fixed = TRUE
   )
 
