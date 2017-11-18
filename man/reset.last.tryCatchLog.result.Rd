@@ -15,3 +15,7 @@ You can get the last logging output by calling \code{\link{last.tryCatchLog.resu
 \note{
 THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
 }
+\seealso{
+\code{\link{last.tryCatchLog.result}},
+         \code{\link{append.to.last.tryCatchLog.result}},
+}

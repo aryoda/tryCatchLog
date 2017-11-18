@@ -21,3 +21,7 @@ THIS FUNCTION IS USED ONLY PACKAGE INTERNALLY!
 \note{
 THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
 }
+\seealso{
+\code{\link{last.tryCatchLog.result}},
+         \code{\link{reset.last.tryCatchLog.result}},
+}

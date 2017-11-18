@@ -55,7 +55,7 @@ last.tryCatchLog.result <- function() {
 #'
 #' @return  invisible: TRUE
 #'
-#' @seealso \code{\link{last.tryCatchLog.result},
+#' @seealso \code{\link{last.tryCatchLog.result}},
 #'          \code{\link{append.to.last.tryCatchLog.result}},
 #'
 #' @note         THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
@@ -79,7 +79,7 @@ reset.last.tryCatchLog.result <- function() {
 #'
 #' @return the extended logging result of the last call to \code{tryCatchLog} or \code{tryLog} as \code{list}
 #'
-#' @seealso \code{\link{last.tryCatchLog.result},
+#' @seealso \code{\link{last.tryCatchLog.result}},
 #'          \code{\link{reset.last.tryCatchLog.result}},
 #'
 #' @note         THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
