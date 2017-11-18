@@ -107,11 +107,13 @@
 #'          \code{Rscript -e "options(keep.source = TRUE); source('my_main_function.R')"}
 #'
 #' @seealso \code{\link{tryLog}}, \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}}, \code{\link{getOption}}
+#'          \cr
+#'          \link{https://stackoverflow.com/questions/39964040/r-catch-errors-and-continue-execution-after-logging-the-stacktrace-no-tracebac}
 #' @examples
 #' tryCatchLog(log(-1))   # logs a warning
 #' @export
 tryCatchLog <- function(expr,
-                        error = getOption("error", default = stop),
+                        error = function(e) {if (!is.null(getOption("error", stop))) eval(getOption("error", stop)) }, # getOption("error", default = stop),
                         finally = NULL,
                         dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE),
                         silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
@@ -119,6 +121,47 @@ tryCatchLog <- function(expr,
 {
 
   reset.last.tryCatchLog.log()
+
+  if (is.null(error))
+    stop("FATAL: 'tryCatchLog' and 'tryLog' do not support NULL as value of the 'error' argument!")
+
+  err.handler <- error
+
+  # wrap parameter-less function to fix issue #17
+  # https://github.com/aryoda/tryCatchLog/issues/17
+  if (is.function(error) & length(formals(error)) < 1) {
+    err.handler <- function(e) {
+      error()                # calls the error handler function passed in the parameter "error"
+    }
+  }
+
+# Semantics of tryCatch -------------------------------------------------------------------------------------------
+# as tested with R3.4.2
+# TODO Add this as unit test to recognize changed semantics in base R
+#
+#   options(error = quote(print("option error called")))
+#   # options(error = NULL)
+#   stop("stop now")
+#   # Error: stop now
+#   # [1] "option error called"
+#
+#   tryCatch(stop("stop now"))
+#   # Error in tryCatchList(expr, classes, parentenv, handlers) : stop now
+#   # [1] "option error called"
+#
+#   tryCatch(stop("stop now"), finally = print("finally"))
+#   # Error in tryCatchList(expr, classes, parentenv, handlers) : stop now
+#   # [1] "option error called"
+#   # [1] "finally"
+#
+#   # tryCatchLog does call the finally handler only if it was passed as argument:
+#   # if (!missing(finally))
+#   #   on.exit(finally)
+#
+# end -------------------------------------------------------------------------------------------------------------
+
+
+
 
   tryCatch(
     withCallingHandlers(expr,
@@ -178,6 +221,7 @@ tryCatchLog <- function(expr,
                           }
                         }
     ),       # end of withCallingHandlers
-    error = error,                # pass error handler argument of tryCatchLog to tryCatch
+    # pass error handler argument of tryCatchLog to tryCatch
+    error = err.handler, # error,
     finally = finally)
 }

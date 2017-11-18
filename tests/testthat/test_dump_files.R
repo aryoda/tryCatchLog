@@ -162,3 +162,5 @@ test_that("dump file is created (error and dump default enabled)", {
   expect_equal(number.of.dump.files(), 1)
   clean.up.dump.files()
 })
+
+clean.up.dump.files()

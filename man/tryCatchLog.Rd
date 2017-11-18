@@ -4,8 +4,8 @@
 \alias{tryCatchLog}
 \title{Try an expression with condition logging and error handling}
 \usage{
-tryCatchLog(expr, error = getOption("error", default = stop),
-  finally = NULL,
+tryCatchLog(expr, error = function(e) {     if (!is.null(getOption("error",
+  stop)))          eval(getOption("error", stop)) }, finally = NULL,
   dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE),
   silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
   silent.messages = getOption("tryCatchLog.silent.messages", FALSE))
@@ -113,4 +113,6 @@ tryCatchLog(log(-1))   # logs a warning
 }
 \seealso{
 \code{\link{tryLog}}, \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}}, \code{\link{getOption}}
+         \cr
+         \link{https://stackoverflow.com/questions/39964040/r-catch-errors-and-continue-execution-after-logging-the-stacktrace-no-tracebac}
 }

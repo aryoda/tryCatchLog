@@ -13,13 +13,10 @@ options("tryCatchLog.silent.messages"     = FALSE)
 
 
 
-flog.threshold("FATAL")                         # suppress logging of errors and warnings to avoid overly output
+# flog.threshold("FATAL")                         # suppress logging of errors and warnings to avoid overly output
 # flog.threshold("INFO")
 
-# TODO Debug this f***** RStudio error caused by the injected error handler...
-tryCatchLog(log("a"))
-# Error in value[[3L]](cond) : attempt to apply non-function
-# Error during wrapup:
+
 
 test_that("no conditions are logged initially", {
 
@@ -73,10 +70,10 @@ test_that("last logged condition contains all conditions", {
   expect_warning(tryCatchLog(log(-1)))
   expect_equal(length(last.tryCatchLog.log()), 1)
 
-  expect_error(expect_warning(tryCatchLog({log(-1); log("a")})))
+  expect_error(expect_warning(tryCatchLog({log(-1); log("a")}, error = stop)))
   expect_equal(length(last.tryCatchLog.log()), 2)
 
-  expect_error(expect_warning(tryCatchLog({message("hello"); log(-1); log("a")})))
+  expect_error(expect_warning(tryCatchLog({message("hello"); log(-1); log("a")}, error = stop)))
   expect_equal(length(last.tryCatchLog.log()), 3)
 
   expect_equal(substr(last.tryCatchLog.log()[[1]], 1, 5), "hello")

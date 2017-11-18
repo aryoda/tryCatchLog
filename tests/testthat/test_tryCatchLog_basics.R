@@ -43,7 +43,7 @@ test_that("tryCatchLog did throw a warning", {
 })
 
 test_that("tryCatchLog did throw an error", {
-  expect_error(tryCatchLog(log("abc")))
+  expect_error(tryCatchLog(log("abc"), error = stop))
 })
 
 
@@ -109,15 +109,16 @@ test_that("tryCatchLog with message continues", {
 
 # https://stackoverflow.com/questions/36332845/how-to-test-for-a-message-and-an-error-message-simultaneously-in-r-testthat
 # How to catch error and check output?
-test_that("tryCatchLog stops with an error and called the error function", {
+test_that("tryCatchLog stops with an error and called the outer error function", {
+  # options(error = stop)
   tryCatch(
     tryCatchLog({
-      did.raise.err <- FALSE
-      canceled <- TRUE
-      log("a")
-      canceled <- FALSE  # should never run (error shall cancel)
-    })
-    ,
+        did.raise.err <- FALSE
+        canceled <- TRUE
+        log("a")
+        canceled <- FALSE  # should never run (error shall cancel)
+      },
+      error = stop),
     error = function(e) {
       did.raise.err <<- TRUE
     }
