@@ -53,13 +53,12 @@ last.tryCatchLog.result <- function() {
 #'
 #' You can get the last logging output by calling \code{\link{last.tryCatchLog.result}}.
 #'
-#' THIS FUNCTION IS USED ONLY PACKAGE INTERNALLY!
-#'
 #' @return  invisible: TRUE
 #'
 #' @seealso \code{\link{last.tryCatchLog.result},
 #'          \code{\link{append.to.last.tryCatchLog.result}},
 #'
+#' @note         THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
 reset.last.tryCatchLog.result <- function() {
 
   .tryCatchLog.env$last.log = list()
@@ -82,6 +81,8 @@ reset.last.tryCatchLog.result <- function() {
 #'
 #' @seealso \code{\link{last.tryCatchLog.result},
 #'          \code{\link{reset.last.tryCatchLog.result}},
+#'
+#' @note         THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
 append.to.last.tryCatchLog.result <- function(new.log.entry) {
 
   # TODO Support condition type marker ("was this entry an error?"), e. g. by using the name of the string as condition type?

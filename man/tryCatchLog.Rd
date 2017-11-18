@@ -12,23 +12,22 @@ tryCatchLog(expr, ..., finally = NULL,
 \arguments{
 \item{expr}{expression to be evaluated}
 
-\item{...}{condition handler functions (same as for \code{\link{tryCatch}}.
+\item{...}{condition handler functions (as in \code{\link{tryCatch}}).
 Usual condition names are
 \code{error}, \code{warning}, \code{message} and \code{interrupt}.
 All condition handlers are passed to \code{\link{tryCatch}} as is
-(no filtering, wrapping or change of semantics).
-See details below...}
+(no filtering, wrapping or changing of semantics).}
 
 \item{finally}{expression to be evaluated at the end}
 
-\item{dump.errors.to.file}{TRUE: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}}
+\item{dump.errors.to.file}{\code{TRUE}: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}}
 
-\item{silent.warnings}{TRUE: Warnings are logged, but not propagated to the caller.\cr
-FALSE: Warnings are logged and treated according to the global
+\item{silent.warnings}{\code{TRUE}: Warnings are logged, but not propagated to the caller.\cr
+\code{FALSE}: Warnings are logged and treated according to the global
 setting in \code{\link{getOption}("warn")}. See also \code{\link{warning}}.}
 
-\item{silent.messages}{TRUE: Messages are logged, but not propagated to the caller.\cr
-FALSE: Messages are logged and propagated to the caller.}
+\item{silent.messages}{\code{TRUE}: Messages are logged, but not propagated to the caller.\cr
+\code{FALSE}: Messages are logged and propagated to the caller.}
 }
 \value{
 the value of the expression passed in as parameter "expr"

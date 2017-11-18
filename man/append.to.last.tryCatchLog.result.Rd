@@ -18,3 +18,6 @@ You can get the last logging output by calling \code{\link{last.tryCatchLog.resu
 \details{
 THIS FUNCTION IS USED ONLY PACKAGE INTERNALLY!
 }
+\note{
+THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
+}

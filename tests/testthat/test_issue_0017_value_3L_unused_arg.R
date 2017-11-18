@@ -5,6 +5,17 @@ library(tryCatchLog)
 # https://github.com/aryoda/tryCatchLog/issues/17
 context("issue 0017")
 
+
+
+
+# set up test context
+options("tryCatchLog.dump.errors.to.file" = FALSE)    # global default setting for all tryCatchLog call params "dump.errors.to.file"
+options("tryCatchLog.silent.warnings" = FALSE)
+options("tryCatchLog.silent.messages" = FALSE)
+
+
+
+
 futile.logger::flog.threshold("FATAL")                         # suppress logging of errors and warnings to avoid overly output
 # flog.threshold("INFO")
 

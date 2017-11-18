@@ -27,19 +27,18 @@
 #' Conditions are logged with the function call stack (including file names and line numbers).
 #'
 #' @param expr                 expression to be evaluated
-#' @param ...                  condition handler functions (same as for \code{\link{tryCatch}}.
+#' @param ...                  condition handler functions (as in \code{\link{tryCatch}}).
 #'                             Usual condition names are
 #'                             \code{error}, \code{warning}, \code{message} and \code{interrupt}.
 #'                             All condition handlers are passed to \code{\link{tryCatch}} as is
-#'                             (no filtering, wrapping or change of semantics).
-#'                             See details below...
+#'                             (no filtering, wrapping or changing of semantics).
 #' @param finally              expression to be evaluated at the end
-#' @param dump.errors.to.file  TRUE: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}
-#' @param silent.warnings      TRUE: Warnings are logged, but not propagated to the caller.\cr
-#'                             FALSE: Warnings are logged and treated according to the global
+#' @param dump.errors.to.file  \code{TRUE}: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}
+#' @param silent.warnings      \code{TRUE}: Warnings are logged, but not propagated to the caller.\cr
+#'                             \code{FALSE}: Warnings are logged and treated according to the global
 #'                             setting in \code{\link{getOption}("warn")}. See also \code{\link{warning}}.
-#' @param silent.messages      TRUE: Messages are logged, but not propagated to the caller.\cr
-#'                             FALSE: Messages are logged and propagated to the caller.
+#' @param silent.messages      \code{TRUE}: Messages are logged, but not propagated to the caller.\cr
+#'                             \code{FALSE}: Messages are logged and propagated to the caller.
 #'
 #' @return                     the value of the expression passed in as parameter "expr"
 #'
@@ -130,21 +129,6 @@ tryCatchLog <- function(expr,
 {
 
   reset.last.tryCatchLog.result()
-
-  # if (is.null(error))
-  #   stop("FATAL: 'tryCatchLog' and 'tryLog' do not support NULL as value of the 'error' argument!")
-  #
-  # err.handler <- error
-  #
-  # # wrap parameter-less function to fix issue #17
-  # # https://github.com/aryoda/tryCatchLog/issues/17
-  # if (is.function(error) & length(formals(error)) < 1) {
-  #   err.handler <- function(e) {
-  #     error()                # calls the error handler function passed in the parameter "error"
-  #   }
-  # }
-
-
 
 
 

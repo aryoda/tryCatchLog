@@ -12,14 +12,14 @@ tryLog(expr,
 \arguments{
 \item{expr}{expression to be evaluated}
 
-\item{dump.errors.to.file}{TRUE: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}}
+\item{dump.errors.to.file}{\code{TRUE}: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}}
 
-\item{silent.warnings}{TRUE: Warnings are logged, but not propagated to the caller.\cr
-FALSE: Warnings are logged and treated according to the global
+\item{silent.warnings}{\code{TRUE}: Warnings are logged, but not propagated to the caller.\cr
+\code{FALSE}: Warnings are logged and treated according to the global
 setting in \code{\link{getOption}("warn")}. See also \code{\link{warning}}.}
 
-\item{silent.messages}{TRUE: Messages are logged, but not propagated to the caller.\cr
-FALSE: Messages are logged and propagated to the caller.}
+\item{silent.messages}{\code{TRUE}: Messages are logged, but not propagated to the caller.\cr
+\code{FALSE}: Messages are logged and propagated to the caller.}
 }
 \value{
 The value of the expression (if \code{expr} is evaluated without an error.\cr

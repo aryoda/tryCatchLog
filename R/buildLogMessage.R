@@ -30,7 +30,7 @@
 #' @return       A ready to use log message with a pretty printed compact and detailled stack trace
 #'               (as \code{character})
 #'
-#' @note         THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFOR NOT EXPORTED.
+#' @note         THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
 buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
   paste(log.message,
         "Compact call stack:",
