@@ -11,11 +11,17 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 
 ## upcoming (planned to be released in the next version)
 
-* TODO: SEMANTICAL CHANGES: Changed error handler semantics in tryCatchLog to be as close to tryCatch as possible
-* TODO: CHANGE OF SIGNATURE: Default value for error handler in tryCatchLog removed
-* TODO: Debugging error handler problem if used in RStudio (tryCatchLog(log("a"))
+* Change the last.tryCatch.result list from string components to a data.frame with more details
+
 
 --------------------------------------------------------------------------------
+
+## Version 0.9.6 (Nov. 18, 2017)
+
+* SEMANTICAL CHANGES: Changed error handler semantics in tryCatchLog to be as close to tryCatch as possible
+* CHANGE OF SIGNATURE: Default value for error handler in tryCatchLog removed
+* Debugging error handler problem if used in RStudio (tryCatchLog(log("a"))
+* Renamed `last.tryCatchLog.log` to `last.tryCatchLog.result` (clearer und avoid R CMD CHECK problem)
 
 
 ## Version 0.9.5 (Nov. 18, 2017)
