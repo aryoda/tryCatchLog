@@ -27,7 +27,12 @@
 #' Conditions are logged with the function call stack (including file names and line numbers).
 #'
 #' @param expr                 expression to be evaluated
-#' @param error                error handler function
+#' @param ...                  condition handler functions (same as for \code{\link{tryCatch}}.
+#'                             Usual condition names are
+#'                             \code{error}, \code{warning}, \code{message} and \code{interrupt}.
+#'                             All condition handlers are passed to \code{\link{tryCatch}} as is
+#'                             (no filtering, wrapping or change of semantics).
+#'                             See details below...
 #' @param finally              expression to be evaluated at the end
 #' @param dump.errors.to.file  TRUE: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}
 #' @param silent.warnings      TRUE: Warnings are logged, but not propagated to the caller.\cr
@@ -73,7 +78,7 @@
 #'          will tell R to keep the source references. You can also use \code{options(keep.source.pkgs = TRUE)}
 #'          before you install a package.
 #'
-#'          Setting the parameter \code{dump.errors.to.file} to TRUE allows a post-mortem analysis of the program state
+#'          Setting the parameter \code{tryCatchLog.dump.errors.to.file} to TRUE allows a post-mortem analysis of the program state
 #'          that led to the error. The dump contains the workspace and in the variable "last.dump"
 #'          the call stack (\code{\link{sys.frames}}). This feature is very helpful for non-interactive R scripts ("batches").
 #'
@@ -106,9 +111,11 @@
 #'          You can \bold{execute your code as batch with \code{\link{Rscript}} using this shell script command}:\cr
 #'          \code{Rscript -e "options(keep.source = TRUE); source('my_main_function.R')"}
 #'
-#' @seealso \code{\link{tryLog}}, \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}}, \code{\link{getOption}}
-#'          \cr
-#'          \link{https://stackoverflow.com/questions/39964040/r-catch-errors-and-continue-execution-after-logging-the-stacktrace-no-tracebac}
+#' @seealso \code{\link{tryLog}}, \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}},
+#'          \code{\link{getOption}}, \code{\link{last.tryCatchLog.result}}
+#'
+#' @references
+#'          \url{https://stackoverflow.com/questions/39964040/r-catch-errors-and-continue-execution-after-logging-the-stacktrace-no-tracebac}
 #' @examples
 #' tryCatchLog(log(-1))   # logs a warning
 #' @export
@@ -122,7 +129,7 @@ tryCatchLog <- function(expr,
                        )
 {
 
-  reset.last.tryCatchLog.log()
+  reset.last.tryCatchLog.result()
 
   # if (is.null(error))
   #   stop("FATAL: 'tryCatchLog' and 'tryLog' do not support NULL as value of the 'error' argument!")
@@ -164,7 +171,7 @@ tryCatchLog <- function(expr,
                           }
 # x <<- sys.calls() # just for internal debugging purposes
                           log.msg <- buildLogMessage(log.message, call.stack, 1)
-                          append.to.last.tryCatchLog.log(log.msg)
+                          append.to.last.tryCatchLog.result(log.msg)
                           futile.logger::flog.error(log.msg)   # ignore  function calls to this this handler
 
                         },
@@ -173,7 +180,7 @@ tryCatchLog <- function(expr,
 
                           call.stack <- sys.calls()                                 # "sys.calls" within "withCallingHandlers" is like a traceback!
                           log.msg <- buildLogMessage(w$message, call.stack, 1)
-                          append.to.last.tryCatchLog.log(log.msg)
+                          append.to.last.tryCatchLog.result(log.msg)
                           futile.logger::flog.warn(log.msg)      # ignore last function calls to this handler
 
                           # Suppresses the warning (logs it only)?
@@ -189,7 +196,7 @@ tryCatchLog <- function(expr,
 
                           call.stack <- sys.calls()                                 # "sys.calls" within "withCallingHandlers" is like a traceback!
                           log.msg <- buildLogMessage(m$message, call.stack, 1)
-                          append.to.last.tryCatchLog.log(log.msg)
+                          append.to.last.tryCatchLog.result(log.msg)
                           futile.logger::flog.info(log.msg)      # ignore last function calls to this handler
 
                           if (silent.messages) {

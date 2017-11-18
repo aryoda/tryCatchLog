@@ -17,9 +17,11 @@
 
 
 
+
+
 #' Gets the logging result of the last call to \code{tryCatchLog} or \code{tryLog}
 #'
-#' The last logging result after calling \code{tryCatchLog} or `\code{tryLog} can be retrieved by
+#' The last logging result after calling \code{tryCatchLog} or \code{tryLog} can be retrieved by
 #' calling this function.
 #'
 #' The typical use case is to get and store the log output not only in a log file but
@@ -28,17 +30,19 @@
 #'
 #' Another use case is to review the last log output on the console during debugging.
 #'
-#' @return the logging result of the last call to \code{tryCatchLog} or \code{tryLog} as \code{list}
-#'         comprised of one element per logged condition
+#' @return the logging result of the last call to \code{\link{tryCatchLog}} or \code{\link{tryLog}}
+#'         as \code{\link{list}} comprised of one element per logged condition
 #'
-#' @export
+#' @seealso \code{\link{tryCatchLog}},
+#'          \code{\link{tryLog}}
 #'
 #' @examples
-#'     \code{last.tryCatchLog.log()}
+#' last.tryCatchLog.result()
 #'
-last.tryCatchLog.log <- function() {
+#' @export
+last.tryCatchLog.result <- function() {
 
-  return(.tryCatchLog.env$last.tryCatchLog.log)
+  return(.tryCatchLog.env$last.log)
 
 }
 
@@ -47,19 +51,18 @@ last.tryCatchLog.log <- function() {
 
 #' Resets the stored logging output of the last call to \code{tryCatchLog} or \code{tryLog} to an empty list
 #'
-#' You can get the last logging output by calling \code{\link{last.tryCatchLog.log}}.
+#' You can get the last logging output by calling \code{\link{last.tryCatchLog.result}}.
 #'
 #' THIS FUNCTION IS USED ONLY PACKAGE INTERNALLY!
 #'
 #' @return  invisible: TRUE
 #'
-#' @seealso \code{\link{last.tryCatchLog.log}}
+#' @seealso \code{\link{last.tryCatchLog.result},
+#'          \code{\link{append.to.last.tryCatchLog.result}},
 #'
-#' @examples
-#'     \code{reset.last.tryCatchLog.log(NULL)}
-reset.last.tryCatchLog.log <- function() {
+reset.last.tryCatchLog.result <- function() {
 
-  .tryCatchLog.env$last.tryCatchLog.log = list()
+  .tryCatchLog.env$last.log = list()
 
   invisible(TRUE)
 
@@ -69,7 +72,7 @@ reset.last.tryCatchLog.log <- function() {
 
 #' Appends a new log entry to the stored logging output of the last call to \code{tryCatchLog} or \code{tryLog}
 #'
-#' You can get the last logging output by calling \code{\link{last.tryCatchLog.log}}.
+#' You can get the last logging output by calling \code{\link{last.tryCatchLog.result}}.
 #'
 #' THIS FUNCTION IS USED ONLY PACKAGE INTERNALLY!
 #'
@@ -77,17 +80,25 @@ reset.last.tryCatchLog.log <- function() {
 #'
 #' @return the extended logging result of the last call to \code{tryCatchLog} or \code{tryLog} as \code{list}
 #'
-append.to.last.tryCatchLog.log <- function(new.log.entry) {
+#' @seealso \code{\link{last.tryCatchLog.result},
+#'          \code{\link{reset.last.tryCatchLog.result}},
+append.to.last.tryCatchLog.result <- function(new.log.entry) {
+
+  # TODO Support condition type marker ("was this entry an error?"), e. g. by using the name of the string as condition type?
 
   if (typeof(new.log.entry) != "character")
-    stop(paste("The actual value of the parameter 'new.log.entry' is not of the type 'character' but", typeof(new.log.entry)))
+    stop(
+      paste(
+        "The actual value of the parameter 'new.log.entry' is not of the type 'character' but",
+        typeof(new.log.entry)
+      )
+    )
 
 
 
-  .tryCatchLog.env$last.tryCatchLog.log =
-    c(.tryCatchLog.env$last.tryCatchLog.log, new.log.entry)
+  .tryCatchLog.env$last.log <- c(.tryCatchLog.env$last.log, new.log.entry)
 
-  return(.tryCatchLog.env$last.tryCatchLog.log)
+  return(.tryCatchLog.env$last.log)
 
 }
 

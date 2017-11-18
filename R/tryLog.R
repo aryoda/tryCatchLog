@@ -35,7 +35,8 @@
 #'         In case of an error: An invisible object of the class \code{"try-error"} containing the error message
 #'         and error condition as the \code{"condition"} attribute.
 #'
-#' @seealso \code{\link{tryCatchLog}}
+#' @seealso \code{\link{tryCatchLog}},
+#'          \code{\link{last.tryCatchLog.result}}
 #' @examples
 #' tryLog(log(-1))   # logs a warning
 #' tryLog(log("a"))  # logs an error

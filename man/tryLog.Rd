@@ -43,5 +43,6 @@ tryLog(log(-1))   # logs a warning
 tryLog(log("a"))  # logs an error
 }
 \seealso{
-\code{\link{tryCatchLog}}
+\code{\link{tryCatchLog}},
+         \code{\link{last.tryCatchLog.result}}
 }

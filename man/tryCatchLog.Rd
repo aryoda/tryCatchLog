@@ -12,6 +12,13 @@ tryCatchLog(expr, ..., finally = NULL,
 \arguments{
 \item{expr}{expression to be evaluated}
 
+\item{...}{condition handler functions (same as for \code{\link{tryCatch}}.
+Usual condition names are
+\code{error}, \code{warning}, \code{message} and \code{interrupt}.
+All condition handlers are passed to \code{\link{tryCatch}} as is
+(no filtering, wrapping or change of semantics).
+See details below...}
+
 \item{finally}{expression to be evaluated at the end}
 
 \item{dump.errors.to.file}{TRUE: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}}
@@ -22,8 +29,6 @@ setting in \code{\link{getOption}("warn")}. See also \code{\link{warning}}.}
 
 \item{silent.messages}{TRUE: Messages are logged, but not propagated to the caller.\cr
 FALSE: Messages are logged and propagated to the caller.}
-
-\item{error}{error handler function}
 }
 \value{
 the value of the expression passed in as parameter "expr"
@@ -72,7 +77,7 @@ This function shall overcome some drawbacks of the standard \code{\link{tryCatch
          will tell R to keep the source references. You can also use \code{options(keep.source.pkgs = TRUE)}
          before you install a package.
 
-         Setting the parameter \code{dump.errors.to.file} to TRUE allows a post-mortem analysis of the program state
+         Setting the parameter \code{tryCatchLog.dump.errors.to.file} to TRUE allows a post-mortem analysis of the program state
          that led to the error. The dump contains the workspace and in the variable "last.dump"
          the call stack (\code{\link{sys.frames}}). This feature is very helpful for non-interactive R scripts ("batches").
 
@@ -110,8 +115,10 @@ This function shall overcome some drawbacks of the standard \code{\link{tryCatch
 \examples{
 tryCatchLog(log(-1))   # logs a warning
 }
+\references{
+\url{https://stackoverflow.com/questions/39964040/r-catch-errors-and-continue-execution-after-logging-the-stacktrace-no-tracebac}
+}
 \seealso{
-\code{\link{tryLog}}, \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}}, \code{\link{getOption}}
-         \cr
-         \link{https://stackoverflow.com/questions/39964040/r-catch-errors-and-continue-execution-after-logging-the-stacktrace-no-tracebac}
+\code{\link{tryLog}}, \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}},
+         \code{\link{getOption}}, \code{\link{last.tryCatchLog.result}}
 }

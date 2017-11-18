@@ -29,6 +29,7 @@
 # Note: This is an optional step if you qualify all your external function calls with the package name and "::"
 #       together with declaring the required packaged in the "Imports" section of the DESCRIPTION file.
 #       Source: https://cran.r-project.org/doc/manuals/R-exts.html#Specifying-imports-and-exports
+
 #' @importFrom futile.logger flog.error flog.warn flog.info
 #' @importFrom utils         dump.frames
 # NULL
@@ -65,17 +66,19 @@
 .onLoad <- function(libname, pkgname) {
 
   # init package-global variables
-  .tryCatchLog.env$last.tryCatchLog.log = list()
+  .tryCatchLog.env$last.log = list()
 
 
-  # Initialize package options if they do not already exist.
+  # Create and initialize package options if they do not already exist before loading the package.
   # To avoid conflicts with other packages the option names use the name as prefix.
   op <- options()
   op.devtools <- list(
-    tryCatchLog.dump.errors.to.file = FALSE
+    tryCatchLog.dump.errors.to.file = FALSE,
+    tryCatchLog.silent.warnings     = FALSE,
+    tryCatchLog.silent.messages     = FALSE
   )
 
-  toset <- !(names(op.devtools) %in% names(op))
+  toset <- !(names(op.devtools) %in% names(op))  # TRUE for each option that does not yet exist
 
   if (any(toset)) options(op.devtools[toset])
 
