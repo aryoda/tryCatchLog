@@ -29,4 +29,5 @@ vignettes/*.pdf
 /NEWS.html
 *.log
 /dump_*
+tests/testthat/dump*.rda
 inst/doc

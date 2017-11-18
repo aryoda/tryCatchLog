@@ -163,4 +163,6 @@ test_that("dump file is created (error and dump default enabled)", {
   clean.up.dump.files()
 })
 
+
+
 clean.up.dump.files()
