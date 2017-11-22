@@ -7,10 +7,10 @@
 append.to.last.tryCatchLog.result(new.log.entry)
 }
 \arguments{
-\item{new.log.entry}{the new log entry (normally as \code{character} string)}
+\item{new.log.entry}{the new log entry (a \code{data.frame} created with \code{link{build.log.entry}})}
 }
 \value{
-the extended logging result of the last call to \code{tryCatchLog} or \code{tryLog} as \code{list}
+the complete logging result of the last call to \code{tryCatchLog} or \code{tryLog} as \code{data.frame}
 }
 \description{
 You can get the last logging output by calling \code{\link{last.tryCatchLog.result}}.

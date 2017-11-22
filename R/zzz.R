@@ -66,7 +66,7 @@
 .onLoad <- function(libname, pkgname) {
 
   # init package-global variables
-  .tryCatchLog.env$last.log = list()
+  .tryCatchLog.env$last.log = data.frame()
 
 
   # Create and initialize package options if they do not already exist before loading the package.

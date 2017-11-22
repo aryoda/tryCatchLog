@@ -46,7 +46,7 @@ flog.threshold("FATAL")                               # suppress logging of erro
 
 # unit tests ------------------------------------------------------------------------------------------------------
 
-context("'dump to file' tests")
+context("dump.to.file")
 
 
 test_that("no dump file is created without an error", {

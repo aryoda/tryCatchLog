@@ -9,7 +9,7 @@ library(futile.logger)
 
 # inits -----------------------------------------------------------------------------------------------------------
 
-context("test_tryCatch_semantics")
+context("tryCatch semantics")
 
 
 

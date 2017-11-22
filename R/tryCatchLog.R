@@ -154,18 +154,30 @@ tryCatchLog <- function(expr,
                             log.message <- paste0(log.message, "\nCall stack environments dumped into file: ", dump.file.name, ".rda")
                           }
 # x <<- sys.calls() # just for internal debugging purposes
-                          log.msg <- buildLogMessage(log.message, call.stack, 1)
-                          append.to.last.tryCatchLog.result(log.msg)
+                          # TODO the following lines of code are repeated three times. Extract into function
+                          #      But: futile.logger does still not support to pass the severity level as parameter.
+                          #           Write a FR? How to explain that?
+                          log.entry <- build.log.entry(names(futile.logger::ERROR),
+                                                       log.message,
+                                                       call.stack,
+                                                       1)
+                          log.msg <- build.log.output(log.entry)
                           futile.logger::flog.error(log.msg)   # ignore  function calls to this this handler
 
+                          append.to.last.tryCatchLog.result(log.entry)
                         },
                         warning = function(w)
                         {
 
                           call.stack <- sys.calls()                                 # "sys.calls" within "withCallingHandlers" is like a traceback!
-                          log.msg <- buildLogMessage(w$message, call.stack, 1)
-                          append.to.last.tryCatchLog.result(log.msg)
+                          log.entry <- build.log.entry(names(futile.logger::WARN),
+                                                       w$message,
+                                                       call.stack,
+                                                       1)
+                          log.msg <- build.log.output(log.entry)
                           futile.logger::flog.warn(log.msg)      # ignore last function calls to this handler
+
+                          append.to.last.tryCatchLog.result(log.entry)
 
                           # Suppresses the warning (logs it only)?
                           if (silent.warnings) {
@@ -179,9 +191,14 @@ tryCatchLog <- function(expr,
                         {
 
                           call.stack <- sys.calls()                                 # "sys.calls" within "withCallingHandlers" is like a traceback!
-                          log.msg <- buildLogMessage(m$message, call.stack, 1)
-                          append.to.last.tryCatchLog.result(log.msg)
+                          log.entry <- build.log.entry(names(futile.logger::INFO),
+                                                       m$message,
+                                                       call.stack,
+                                                       1)
+                          log.msg <- build.log.output(log.entry)
                           futile.logger::flog.info(log.msg)      # ignore last function calls to this handler
+
+                          append.to.last.tryCatchLog.result(log.entry)
 
                           if (silent.messages) {
                             invokeRestart("muffleMessage")            # the message will not bubble up now (logs it only)

@@ -9,7 +9,7 @@ library(futile.logger)
 
 # Basic tests -----------------------------------------------------------------------------------------------------
 
-context("tryCatchLog")
+context("tryCatchLog basics")
 
 
 

@@ -17,25 +17,31 @@
 
 
 
-#' Internal helper function to build a log message
+#' Internal helper function to build a decent log output for logging
 #'
-#' @description  Combines a log message with a compact and a detailled stack trace with the option
-#'               to ignore the last x stack trace items (normally created due to internal error handling
-#'               and therefore irrelevant for the user).
+#' @description  Combines a log message with a compact and a detailled stack trace
 #'
-#' @param log.message      a text message
-#' @param call.stack       a call stack created by \code{\link{sys.calls}}
-#' @param omit.last.items  number of stack trace items to ignore (= last x items)
+#' @param log.entry  A \code{data.frame} with one row (created by \code{\link{build.log.entry}}
+#'                   containing the logging information to be prepared for the logging output
 #'
 #' @return       A ready to use log message with a pretty printed compact and detailled stack trace
 #'               (as \code{character})
 #'
 #' @note         THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
-buildLogMessage <- function(log.message, call.stack, omit.last.items = 0) {
-  paste(log.message,
-        "Compact call stack:",
-        get.pretty.call.stack(call.stack, omit.last.items, compact = TRUE),
-        "Full call stack:",
-        get.pretty.call.stack(call.stack, omit.last.items),   # ignore 2 stacked functions here
-        sep = "\n")
+build.log.output <- function(log.entry) {
+
+  stopifnot("data.frame" %in% class(log.entry), NROW(log.entry) == 1)
+
+  res <- paste0("[", log.entry$severity, "] ", log.entry$msg.text,
+               "\n\n",
+               "Compact call stack:",
+               "\n",
+               log.entry$compact.stack.trace,
+               "\n\n",
+               "Full call stack:",
+               "\n",
+               log.entry$full.stack.trace
+         )
+
+  return(res)
 }

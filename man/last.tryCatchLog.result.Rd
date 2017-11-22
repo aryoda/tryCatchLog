@@ -8,7 +8,16 @@ last.tryCatchLog.result()
 }
 \value{
 the logging result of the last call to \code{\link{tryCatchLog}} or \code{\link{tryLog}}
-        as \code{\link{list}} comprised of one element per logged condition
+        as \code{\link{data.frame}} comprised of one row per logged condition with these columns:
+        \enumerate{
+        \item{severity    - the serverity level of the log entry (ERROR, WARNING, MESSAGE) as \code{character}}
+        \item{log.message - the message text of the log entry as \code{character}}
+        \item{compact.stack.trace - the short stack trace containing only entries with source code
+                                    references down to line of code that has thrown the condition as \code{character}}
+        \item{full.stack.trace    - the full stack trace with all calls down to the line of code that
+                                    has thrown the condition (including calls to R internal functions
+                                    and other functions even when the source code in not available) as \code{character}}
+        }
 }
 \description{
 The last logging result after calling \code{tryCatchLog} or \code{tryLog} can be retrieved by

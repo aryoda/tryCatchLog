@@ -17,8 +17,6 @@
 
 
 
-
-
 #' Gets the logging result of the last call to \code{tryCatchLog} or \code{tryLog}
 #'
 #' The last logging result after calling \code{tryCatchLog} or \code{tryLog} can be retrieved by
@@ -31,7 +29,16 @@
 #' Another use case is to review the last log output on the console during debugging.
 #'
 #' @return the logging result of the last call to \code{\link{tryCatchLog}} or \code{\link{tryLog}}
-#'         as \code{\link{list}} comprised of one element per logged condition
+#'         as \code{\link{data.frame}} comprised of one row per logged condition with these columns:
+#'         \enumerate{
+#'         \item{severity    - the serverity level of the log entry (ERROR, WARNING, MESSAGE) as \code{character}}
+#'         \item{log.message - the message text of the log entry as \code{character}}
+#'         \item{compact.stack.trace - the short stack trace containing only entries with source code
+#'                                     references down to line of code that has thrown the condition as \code{character}}
+#'         \item{full.stack.trace    - the full stack trace with all calls down to the line of code that
+#'                                     has thrown the condition (including calls to R internal functions
+#'                                     and other functions even when the source code in not available) as \code{character}}
+#'         }
 #'
 #' @seealso \code{\link{tryCatchLog}},
 #'          \code{\link{tryLog}}
@@ -61,7 +68,7 @@ last.tryCatchLog.result <- function() {
 #' @note         THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
 reset.last.tryCatchLog.result <- function() {
 
-  .tryCatchLog.env$last.log = list()
+  .tryCatchLog.env$last.log = data.frame()
 
   invisible(TRUE)
 
@@ -75,9 +82,9 @@ reset.last.tryCatchLog.result <- function() {
 #'
 #' THIS FUNCTION IS USED ONLY PACKAGE INTERNALLY!
 #'
-#' @param new.log.entry the new log entry (normally as \code{character} string)
+#' @param new.log.entry the new log entry (a \code{data.frame} created with \code{link{build.log.entry}})
 #'
-#' @return the extended logging result of the last call to \code{tryCatchLog} or \code{tryLog} as \code{list}
+#' @return the complete logging result of the last call to \code{tryCatchLog} or \code{tryLog} as \code{data.frame}
 #'
 #' @seealso \code{\link{last.tryCatchLog.result}},
 #'          \code{\link{reset.last.tryCatchLog.result}},
@@ -85,19 +92,17 @@ reset.last.tryCatchLog.result <- function() {
 #' @note         THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
 append.to.last.tryCatchLog.result <- function(new.log.entry) {
 
-  # TODO Support condition type marker ("was this entry an error?"), e. g. by using the name of the string as condition type?
-
-  if (typeof(new.log.entry) != "character")
+  if (!("data.frame" %in% class(new.log.entry)))
     stop(
       paste(
-        "The actual value of the parameter 'new.log.entry' is not of the type 'character' but",
-        typeof(new.log.entry)
+        "The actual value of the parameter 'new.log.entry' must be an object of the class 'data.frame' but is",
+        class(new.log.entry)
       )
     )
 
 
 
-  .tryCatchLog.env$last.log <- c(.tryCatchLog.env$last.log, new.log.entry)
+  .tryCatchLog.env$last.log <- rbind(.tryCatchLog.env$last.log, new.log.entry)
 
   return(.tryCatchLog.env$last.log)
 
