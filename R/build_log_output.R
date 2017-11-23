@@ -17,31 +17,53 @@
 
 
 
-#' Internal helper function to build a decent log output for logging
+#' Creates a single string suited as logging output
 #'
-#' @description  Combines a log message with a compact and a detailled stack trace
+#' @param log.results  A \code{data.frame} and member of the class \code{tryCatchLog.log.entry}
+#'                     with log entry rows as returned by \code{\link{last.tryCatchLog.result}}
+#'                     containing the logging information to be prepared for the logging output.
+#' @param include.full.call.stack  Flag of type \code{\link{logical}}:
+#'                     Shall the full call stack be included in the log output? Since the full
+#'                     call stack may be very long it can be omitted by passing \code{FALSE}.
 #'
-#' @param log.entry  A \code{data.frame} with one row (created by \code{\link{build.log.entry}}
-#'                   containing the logging information to be prepared for the logging output
-#'
-#' @return       A ready to use log message with a pretty printed compact and detailled stack trace
+#' @return       A ready to use logging output with stack trace
 #'               (as \code{character})
 #'
-#' @note         THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
-build.log.output <- function(log.entry) {
+#' @export
+#'
+#' @seealso      \code{\link{last.tryCatchLog.result}}
+#'               \code{\link{build.log.entry}}
+#'
+#' @note         Supports also a single row created by the package internal function \code{\link{build.log.entry}}
+#'               as \code{log.results} argument.
+build.log.output <- function(log.results, include.full.call.stack = TRUE) {
 
-  stopifnot("data.frame" %in% class(log.entry), NROW(log.entry) == 1)
+  stopifnot("data.frame" %in% class(log.results))
 
-  res <- paste0("[", log.entry$severity, "] ", log.entry$msg.text,
-               "\n\n",
-               "Compact call stack:",
-               "\n",
-               log.entry$compact.stack.trace,
-               "\n\n",
-               "Full call stack:",
-               "\n",
-               log.entry$full.stack.trace
-         )
+
+
+  # append every row of the log result to the output
+  res <- ""
+  i = 1
+  while (i <= NROW(log.results)) {
+
+    res <- paste0(res,
+                 "[", log.results$severity[i], "] ", log.results$msg.text[i],
+                 "\n\n",
+                 "Compact call stack:",
+                 "\n",
+                 log.results$compact.stack.trace[i],
+                 "\n\n",
+                 if (include.full.call.stack) {paste0("Full call stack:",
+                                               "\n",
+                                               log.results$full.stack.trace[i],
+                                               "\n\n")
+                                              } else ""
+           )
+
+    i <- i + 1
+  }
 
   return(res)
+
 }

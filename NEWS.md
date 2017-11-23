@@ -13,6 +13,14 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 * wait and see...
 --------------------------------------------------------------------------------
 
+## Version 0.9.8 (Nov. 23, 2017)
+
+* Exported function `build.log.output` to create a single string suited as logging output from `last.tryCatchLog.result`
+* `build.log.output` extended to support not only one but many log entry rows at once
+* R CMD check results: 0 errors | 1 warnings | 0 notes: Undocumented code objects:
+  ‘build.log.output’ -> is a false positive (reason still unclear)
+
+
 
 ## Version 0.9.7 (Nov. 22, 2017)
 

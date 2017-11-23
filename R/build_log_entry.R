@@ -27,7 +27,7 @@
 #' @param omit.last.items the number of stack trace items to ignore (= last x calls) in
 #'                        the passed \code{call.stack} since they are caused by using \code{tryCatchLog}
 #'
-#' @return A \code{\link{data.frame}} with one and the following columns:
+#' @return An object of class \code{tryCatchLog.log.entry} and \code{\link{data.frame}} with one and the following columns:
 #'         \enumerate{
 #'         \item{severity    - the serverity level of the log entry (ERROR, WARNING, MESSAGE)}
 #'         \item{log.message - the message text of the log entry}
@@ -38,6 +38,9 @@
 #'                                     and other functions even when the source code in not available).}
 #'         }
 #'
+#' @seealso      \code{\link{last.tryCatchLog.result}}
+#'               \code{\link{build.log.output}}
+#'
 #' @note         THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
 build.log.entry <- function(severity, log.message, call.stack, omit.last.items = 0) {
 
@@ -47,6 +50,8 @@ build.log.entry <- function(severity, log.message, call.stack, omit.last.items =
                           full.stack.trace    = get.pretty.call.stack(call.stack, omit.last.items),
                           stringsAsFactors    = FALSE
                          )
+
+  class(log.entry) <- c(class(log.entry), "tryCatchLog.log.entry")
 
   return(log.entry)
 }

@@ -2,21 +2,31 @@
 % Please edit documentation in R/build_log_output.R
 \name{build.log.output}
 \alias{build.log.output}
-\title{Internal helper function to build a decent log output for logging}
+\title{Creates a single string suited as logging output}
 \usage{
-build.log.output(log.entry)
+build.log.output(log.results, include.full.call.stack = TRUE)
 }
 \arguments{
-\item{log.entry}{A \code{data.frame} with one row (created by \code{\link{build.log.entry}}
-containing the logging information to be prepared for the logging output}
+\item{log.results}{A \code{data.frame} and member of the class \code{tryCatchLog.log.entry}
+with log entry rows as returned by \code{\link{last.tryCatchLog.result}}
+containing the logging information to be prepared for the logging output.}
+
+\item{include.full.call.stack}{Flag of type \code{\link{logical}}:
+Shall the full call stack be included in the log output? Since the full
+call stack may be very long it can be omitted by passing \code{FALSE}.}
 }
 \value{
-A ready to use log message with a pretty printed compact and detailled stack trace
+A ready to use logging output with stack trace
               (as \code{character})
 }
 \description{
-Combines a log message with a compact and a detailled stack trace
+Creates a single string suited as logging output
 }
 \note{
-THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
+Supports also a single row created by the package internal function \code{\link{build.log.entry}}
+              as \code{log.results} argument.
+}
+\seealso{
+\code{\link{last.tryCatchLog.result}}
+              \code{\link{build.log.entry}}
 }

@@ -24,6 +24,9 @@ test_that("basics", {
 
   log.entry <- tryCatchLog:::build.log.entry("ERROR", "Message in a bottle", stack.trace, 0)
 
+  expect_s3_class(log.entry, "data.frame")
+  expect_s3_class(log.entry, "tryCatchLog.log.entry")
+
   expect_equal(log.entry$severity, "ERROR")
   expect_equal(log.entry$msg.text, "Message in a bottle")
 

@@ -17,7 +17,7 @@ the passed \code{call.stack} since they are caused by using \code{tryCatchLog}}
 \item{msg.text}{the message text of the thrown condition}
 }
 \value{
-A \code{\link{data.frame}} with one and the following columns:
+An object of class \code{tryCatchLog.log.entry} and \code{\link{data.frame}} with one and the following columns:
         \enumerate{
         \item{severity    - the serverity level of the log entry (ERROR, WARNING, MESSAGE)}
         \item{log.message - the message text of the log entry}
@@ -33,4 +33,8 @@ The serverity level should correspond to the condition class.
 }
 \note{
 THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
+}
+\seealso{
+\code{\link{last.tryCatchLog.result}}
+              \code{\link{build.log.output}}
 }
