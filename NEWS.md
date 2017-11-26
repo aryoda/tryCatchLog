@@ -10,6 +10,7 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 --------------------------------------------------------------------------------
 ## upcoming (planned to be released in the next version)
 
+* Fixing issue #18 (duplicated conditions)
 * wait and see...
 --------------------------------------------------------------------------------
 
