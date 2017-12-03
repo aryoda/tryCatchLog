@@ -32,6 +32,12 @@
 #'                           included in the output
 #' @param include.timestamp  \code{logical} switch if the timestamp of the catched condition shall be
 #'                           included in the output
+#' @param use.platform.newline \code{logical}: If \code{TRUE} the line breaks ("newline") will be
+#'                             inserted according to the current operationg system (Windows: CR+LF,
+#'                             else: CR). If \code{FALSE} R's usual \code{\\n} esacpe character will be inserted
+#'                             and it is left to the client to convert this later into the operation-system-specific
+#'                             characters. This argument is rarely required (except e. g. if you want to
+#'                             write the return value into a database table column).
 #'
 #' @return       A ready to use logging output with stack trace
 #'               (as \code{character})
@@ -43,7 +49,11 @@
 #'
 #' @note         Supports also a single row created by the package internal function \code{\link{build.log.entry}}
 #'               as \code{log.results} argument.
-build.log.output <- function(log.results, include.full.call.stack = TRUE, include.severity = TRUE, include.timestamp = FALSE) {
+build.log.output <- function(log.results,
+                             include.full.call.stack = TRUE,
+                             include.severity = TRUE,
+                             include.timestamp = FALSE,
+                             use.platform.newline = FALSE) {
 
   # TODO Add arguments for incl.timestamp + incl.severity later (redundant output if a logging framework is used!)
 
@@ -78,6 +88,13 @@ build.log.output <- function(log.results, include.full.call.stack = TRUE, includ
 
     i <- i + 1
   }
+
+
+
+  if (use.platform.newline)
+    res <- gsub("\n", platform.NewLine(), res, fixed = TRUE)
+
+
 
   return(res)
 

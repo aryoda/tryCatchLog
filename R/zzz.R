@@ -58,6 +58,8 @@
   # packageStartupMessage("To get an overview over the package enter: help(package = 'tryCatchLog')")
   # packageStartupMessage(paste("Library path (libname):", libname))
 
+  .tryCatchLog.env$newline <- determine.platform.NewLine()
+
 }
 
 
