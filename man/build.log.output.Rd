@@ -4,7 +4,8 @@
 \alias{build.log.output}
 \title{Creates a single string suited as logging output}
 \usage{
-build.log.output(log.results, include.full.call.stack = TRUE)
+build.log.output(log.results, include.full.call.stack = TRUE,
+  include.severity = TRUE, include.timestamp = FALSE)
 }
 \arguments{
 \item{log.results}{A \code{data.frame} and member of the class \code{tryCatchLog.log.entry}
@@ -14,13 +15,20 @@ containing the logging information to be prepared for the logging output.}
 \item{include.full.call.stack}{Flag of type \code{\link{logical}}:
 Shall the full call stack be included in the log output? Since the full
 call stack may be very long it can be omitted by passing \code{FALSE}.}
+
+\item{include.severity}{\code{logical} switch if the severity level (e. g. ERROR) shall be
+included in the output}
+
+\item{include.timestamp}{\code{logical} switch if the timestamp of the catched condition shall be
+included in the output}
 }
 \value{
 A ready to use logging output with stack trace
               (as \code{character})
 }
 \description{
-Creates a single string suited as logging output
+To view the formatted output print the logging output in a console use \code{\link{cat}}
+(instead of printing the output with \code{\link{print}} which shows the newline escape codes).
 }
 \note{
 Supports also a single row created by the package internal function \code{\link{build.log.entry}}

@@ -128,84 +128,89 @@ tryCatchLog <- function(expr,
                        )
 {
 
+
+  # closure ---------------------------------------------------------------------------------------------------------
+  cond.handler = function(c)
+  {
+
+    call.stack     <- sys.calls()          # "sys.calls" within "withCallingHandlers" is like a traceback!
+    log.message    <- c$message            # TODO: Should we use conditionMessage instead?
+    timestamp      <- Sys.time()
+    dump.file.name <- ""
+
+    severity <-       if (inherits(c, "error"))   "ERROR"
+                 else if (inherits(c, "warning")) "WARN"
+                 else if (inherits(c, "message")) "INFO"
+                 else stop(sprintf("Unsupported condition class %s!", class(c)))
+
+
+
+    # Save dump to allow post mortem debugging?
+    if (dump.errors.to.file == TRUE & severity == "ERROR")
+    {
+      # See"?dump.frames" on how to load and debug the dump in a later interactive R session!
+      # See https://stackoverflow.com/questions/40421552/r-how-make-dump-frames-include-all-variables-for-later-post-mortem-debugging/40431711#40431711
+      # why you should avoid dump.frames(to.file = TRUE)...
+      # https://bugs.r-project.org/bugzilla/show_bug.cgi?id=17116
+      # An enhanced version of "dump.frames" was released in spring 2017 but does still not fulfill the requirements of tryCatchLog:
+      # dump.frames(dumpto = dump.file.name, to.file = TRUE, include.GlobalEnv = TRUE)  # test it yourself!
+      dump.file.name <- format(timestamp, format = "dump_%Y%m%d_%H%M%S.rda")   # use %OS3 (= seconds incl. milliseconds) for finer precision
+      utils::dump.frames()
+      save.image(file = dump.file.name)
+
+    }
+
+
+
+    log.entry <- build.log.entry(timestamp, severity, log.message, call.stack, dump.file.name, omit.call.stack.items = 1)
+
+    if (!is.duplicated.log.entry(log.entry)) {
+
+      log.msg <- build.log.output(log.entry)
+
+      switch(severity,
+             ERROR = flog.error(log.msg),
+             WARN  = flog.warn(log.msg),
+             INFO  = flog.info(log.msg)
+      )
+
+
+
+      append.to.last.tryCatchLog.result(log.entry)
+
+
+
+      # Suppresses the warning (logs it only)?
+      if (silent.warnings & severity == "WARN") {
+        invokeRestart("muffleWarning")           # the warning will NOT bubble up now!
+      } else {
+        # The warning bubbles up and the execution resumes only if no warning handler is established
+        # higher in the call stack via try or tryCatch
+      }
+
+      if (silent.messages & severity == "INFO") {
+        invokeRestart("muffleMessage")            # the message will not bubble up now (logs it only)
+      } else {
+        # Just to make it clear here: The message bubbles up now
+      }
+
+    }
+
+  }
+
+
+
+  # function logic --------------------------------------------------------------------------------------------------
+
   reset.last.tryCatchLog.result()
 
 
 
   tryCatch(
     withCallingHandlers(expr,
-                        error = function(e)
-                        {
-                          call.stack <- sys.calls()              # "sys.calls" within "withCallingHandlers" is like a traceback!
-                          log.message <- e$message               # TODO: Should we use conditionMessage instead?
-
-                          # Save dump to allow post mortem debugging?
-                          # See"?dump.frames" on how to load and debug the dump in a later interactive R session!
-                          # See https://stackoverflow.com/questions/40421552/r-how-make-dump-frames-include-all-variables-for-later-post-mortem-debugging/40431711#40431711
-                          # why you should avoid dump.frames(to.file = TRUE)...
-                          if (dump.errors.to.file == TRUE)
-                          {
-                            dump.file.name <- format(Sys.time(), format = "dump_%Y%m%d_%H%M%S")   # use %OS3 (= seconds incl. milliseconds) for finer precision
-                            utils::dump.frames()
-                            save.image(file = paste0(dump.file.name, ".rda"))
-                            # https://bugs.r-project.org/bugzilla/show_bug.cgi?id=17116
-                            # wait for the enhanced version to be released in spring 2017
-                            # dump.frames(dumpto = dump.file.name, to.file = TRUE, include.GlobalEnv = TRUE)  # test it now by using "dump.frames.dev()"
-                            log.message <- paste0(log.message, "\nCall stack environments dumped into file: ", dump.file.name, ".rda")
-                          }
-# x <<- sys.calls() # just for internal debugging purposes
-                          # TODO the following lines of code are repeated three times. Extract into function
-                          #      But: futile.logger does still not support to pass the severity level as parameter.
-                          #           Write a FR? How to explain that?
-                          log.entry <- build.log.entry(names(futile.logger::ERROR),
-                                                       log.message,
-                                                       call.stack,
-                                                       1)
-                          log.msg <- build.log.output(log.entry)
-                          futile.logger::flog.error(log.msg)   # ignore  function calls to this this handler
-
-                          append.to.last.tryCatchLog.result(log.entry)
-                        },
-                        warning = function(w)
-                        {
-
-                          call.stack <- sys.calls()                                 # "sys.calls" within "withCallingHandlers" is like a traceback!
-                          log.entry <- build.log.entry(names(futile.logger::WARN),
-                                                       w$message,
-                                                       call.stack,
-                                                       1)
-                          log.msg <- build.log.output(log.entry)
-                          futile.logger::flog.warn(log.msg)      # ignore last function calls to this handler
-
-                          append.to.last.tryCatchLog.result(log.entry)
-
-                          # Suppresses the warning (logs it only)?
-                          if (silent.warnings) {
-                            invokeRestart("muffleWarning")           # the warning will NOT bubble up now!
-                          } else {
-                            # The warning bubbles up and the execution resumes only if no warning handler is established
-                            # higher in the call stack via try or tryCatch
-                          }
-                        }
-                        , message = function(m)                                     # Remember: You can ignore messages by setting the log level above "info"
-                        {
-
-                          call.stack <- sys.calls()                                 # "sys.calls" within "withCallingHandlers" is like a traceback!
-                          log.entry <- build.log.entry(names(futile.logger::INFO),
-                                                       m$message,
-                                                       call.stack,
-                                                       1)
-                          log.msg <- build.log.output(log.entry)
-                          futile.logger::flog.info(log.msg)      # ignore last function calls to this handler
-
-                          append.to.last.tryCatchLog.result(log.entry)
-
-                          if (silent.messages) {
-                            invokeRestart("muffleMessage")            # the message will not bubble up now (logs it only)
-                          } else {
-                            # Just to make it clear here: The message bubbles up now
-                          }
-                        }
+                        error   = cond.handler,
+                        warning = cond.handler,
+                        message = cond.handler
     ),       # end of withCallingHandlers
     # pass error handler argument of tryCatchLog to tryCatch
     # error = err.handler, # error,

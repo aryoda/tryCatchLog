@@ -22,11 +22,12 @@ test_that("log output is correct", {
 
   # The example stack trace was saved with:
   # save(stack.trace, file = "stack_trace.RData")
-  load("stack_trace.RData")
+  load("stack_trace.RData")  # creates variable "stack.trace"
 
-  log.entry <- tryCatchLog:::build.log.entry("ERROR", "msg", stack.trace, 0)
+  log.entry <- tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", stack.trace, "", 0)
 
   out1 <- tryCatchLog::build.log.output(log.entry, include.full.call.stack = FALSE)
+  # cat(out1)   # how it looks like
   expected1 <- "[ERROR] msg\n\nCompact call stack:\n  1 tryLog(log(\"abc\"))\n  2 tryLog.R#49: tryCatchLog(expr = expr, dump.errors.to.file = dump.errors.to.file, error = function(e) {\n  3 tryCatchLog.R#135: tryCatch(withCallingHandlers(expr, error = function(e) {\n\n"
 
   expect_equal(out1, expected1, info = "include.full.call.stack = FALSE")
@@ -46,7 +47,13 @@ test_that("log output is correct", {
 
 
 
-  expect_equal(tryCatchLog::build.log.output(data.frame()), "")
+  log.entry$dump.file.name = "my.dump.file123.rda"
+  out4 <- tryCatchLog::build.log.output(log.entry)
+  expect_match(out4, "Created dump file: my.dump.file123.rda", fixed = TRUE, info = "dump file name is in output")
+
+
+
+  expect_equal(tryCatchLog::build.log.output(data.frame()), "", info = "empty log -> empty output")
 
 
 
@@ -70,5 +77,30 @@ test_that("multiple log entry rows work", {
 
   expect_match(out1, ".*\\[WARN\\] NaNs produced.*\\[ERROR\\] non-numeric argument to mathematical function.*")
 
+
+})
+
+
+
+test_that("include args do work", {
+
+  timestamp <- as.POSIXct("12/31/2010 9:00", format = "%m/%d/%Y %H:%M")
+  log.entry <- tryCatchLog:::build.log.entry(timestamp, "ERROR", "MESSAGE", NULL, "dump_123.rda", 0)
+
+  out <- build.log.output(log.entry, include.severity = TRUE, include.timestamp = TRUE)
+  expect_equal(out, "2010-12-31 09:00:00 [ERROR] MESSAGE\n\nCreated dump file: dump_123.rda\n\nCompact call stack:\n\n\nFull call stack:\n\n\n")
+
+  out <- build.log.output(log.entry, include.severity = FALSE, include.timestamp = TRUE)
+  expect_equal(out, "2010-12-31 09:00:00 MESSAGE\n\nCreated dump file: dump_123.rda\n\nCompact call stack:\n\n\nFull call stack:\n\n\n")
+
+
+  out <- build.log.output(log.entry)
+  expect_equal(out, "[ERROR] MESSAGE\n\nCreated dump file: dump_123.rda\n\nCompact call stack:\n\n\nFull call stack:\n\n\n")
+
+  out <- build.log.output(log.entry, include.severity = FALSE)
+  expect_false(grepl("ERROR", out, fixed = TRUE))
+
+  out <- build.log.output(log.entry, include.timestamp = TRUE)
+  expect_true(grepl("2010-12-31 09:00:00", out, fixed = TRUE))
 
 })

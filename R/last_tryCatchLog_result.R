@@ -31,14 +31,18 @@
 #' @return the logging result of the last call to \code{\link{tryCatchLog}} or \code{\link{tryLog}}
 #'         as \code{\link{data.frame}} comprised of one row per logged condition with these columns:
 #'         \enumerate{
-#'         \item{severity    - the serverity level of the log entry (ERROR, WARNING, MESSAGE) as \code{character}}
-#'         \item{log.message - the message text of the log entry as \code{character}}
+#'         \item{timestamp   - creation date and time of the logging entry}
+#'         \item{severity    - the serverity level of the log entry (ERROR, WARN, INFO etc.)}
+#'         \item{msg.text    - the message text of the log entry}
 #'         \item{compact.stack.trace - the short stack trace containing only entries with source code
-#'                                     references down to line of code that has thrown the condition as \code{character}}
+#'                                     references down to line of code that has thrown the condition}
 #'         \item{full.stack.trace    - the full stack trace with all calls down to the line of code that
 #'                                     has thrown the condition (including calls to R internal functions
-#'                                     and other functions even when the source code in not available) as \code{character}}
+#'                                     and other functions even when the source code in not available).}
+#'         \item{dump.file.name      - name of the created dump file (if any)}
 #'         }
+#'
+#'         If no condition is logged at all an empty \code{data.table} is returned.
 #'
 #' @seealso \code{\link{tryCatchLog}},
 #'          \code{\link{tryLog}}

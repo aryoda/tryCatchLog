@@ -21,33 +21,44 @@
 #'
 #' The serverity level should correspond to the condition class.
 #'
-#' @param severity        severity level of the log entry ((ERROR, WARNING, MESSAGE etc.)
-#' @param msg.text        the message text of the thrown condition
+#' @param timestamp       logging timestamp as \code{\link{POSIXct}} (normally by calling \code{\link{Sys.time}})
+#' @param severity        severity level of the log entry ((ERROR, WARN, INFO etc.)
+#' @param msg.text        Logging message (e. g. error message)
 #' @param call.stack      a call stack created by \code{\link{sys.calls}}
-#' @param omit.last.items the number of stack trace items to ignore (= last x calls) in
-#'                        the passed \code{call.stack} since they are caused by using \code{tryCatchLog}
+#' @param dump.file.name  name of the created dump file (leave empty if the \code{\link{tryCatchLog}}
+#'                        argument \code{dump.errors.to.file} is \code{FALSE}
+#' @param omit.call.stack.items  the number of stack trace items to ignore (= last x calls) in
+#'                               the passed \code{call.stack} since they are caused by using \code{tryCatchLog}
 #'
 #' @return An object of class \code{tryCatchLog.log.entry} and \code{\link{data.frame}} with one and the following columns:
 #'         \enumerate{
-#'         \item{severity    - the serverity level of the log entry (ERROR, WARNING, MESSAGE)}
-#'         \item{log.message - the message text of the log entry}
+#'         \item{timestamp   - creation date and time of the logging entry}
+#'         \item{severity    - the serverity level of the log entry (ERROR, WARN, INFO etc.)}
+#'         \item{msg.text    - the message text of the log entry}
 #'         \item{compact.stack.trace - the short stack trace containing only entries with source code
 #'                                     references down to line of code that has thrown the condition}
 #'         \item{full.stack.trace    - the full stack trace with all calls down to the line of code that
 #'                                     has thrown the condition (including calls to R internal functions
 #'                                     and other functions even when the source code in not available).}
+#'         \item{dump.file.name      - name of the created dump file (if any)}
 #'         }
 #'
 #' @seealso      \code{\link{last.tryCatchLog.result}}
 #'               \code{\link{build.log.output}}
 #'
 #' @note         THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
-build.log.entry <- function(severity, log.message, call.stack, omit.last.items = 0) {
+build.log.entry <- function(timestamp, severity, msg.text, call.stack, dump.file.name, omit.call.stack.items = 0) {
 
-  log.entry <- data.frame(severity            = severity,
-                          msg.text            = log.message,
-                          compact.stack.trace = get.pretty.call.stack(call.stack, omit.last.items, compact = TRUE),
-                          full.stack.trace    = get.pretty.call.stack(call.stack, omit.last.items),
+  stopifnot(inherits(timestamp, "POSIXct"))
+
+
+
+  log.entry <- data.frame(timestamp           = timestamp,
+                          severity            = severity,
+                          msg.text            = msg.text,
+                          compact.stack.trace = get.pretty.call.stack(call.stack, omit.call.stack.items, compact = TRUE),
+                          full.stack.trace    = get.pretty.call.stack(call.stack, omit.call.stack.items),
+                          dump.file.name      = dump.file.name,
                           stringsAsFactors    = FALSE
                          )
 

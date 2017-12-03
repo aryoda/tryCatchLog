@@ -19,12 +19,19 @@
 
 #' Creates a single string suited as logging output
 #'
+#' To view the formatted output print the logging output in a console use \code{\link{cat}}
+#' (instead of printing the output with \code{\link{print}} which shows the newline escape codes).
+#'
 #' @param log.results  A \code{data.frame} and member of the class \code{tryCatchLog.log.entry}
 #'                     with log entry rows as returned by \code{\link{last.tryCatchLog.result}}
 #'                     containing the logging information to be prepared for the logging output.
 #' @param include.full.call.stack  Flag of type \code{\link{logical}}:
 #'                     Shall the full call stack be included in the log output? Since the full
 #'                     call stack may be very long it can be omitted by passing \code{FALSE}.
+#' @param include.severity   \code{logical} switch if the severity level (e. g. ERROR) shall be
+#'                           included in the output
+#' @param include.timestamp  \code{logical} switch if the timestamp of the catched condition shall be
+#'                           included in the output
 #'
 #' @return       A ready to use logging output with stack trace
 #'               (as \code{character})
@@ -36,7 +43,9 @@
 #'
 #' @note         Supports also a single row created by the package internal function \code{\link{build.log.entry}}
 #'               as \code{log.results} argument.
-build.log.output <- function(log.results, include.full.call.stack = TRUE) {
+build.log.output <- function(log.results, include.full.call.stack = TRUE, include.severity = TRUE, include.timestamp = FALSE) {
+
+  # TODO Add arguments for incl.timestamp + incl.severity later (redundant output if a logging framework is used!)
 
   stopifnot("data.frame" %in% class(log.results))
 
@@ -48,17 +57,23 @@ build.log.output <- function(log.results, include.full.call.stack = TRUE) {
   while (i <= NROW(log.results)) {
 
     res <- paste0(res,
-                 "[", log.results$severity[i], "] ", log.results$msg.text[i],
-                 "\n\n",
-                 "Compact call stack:",
-                 "\n",
-                 log.results$compact.stack.trace[i],
-                 "\n\n",
-                 if (include.full.call.stack) {paste0("Full call stack:",
-                                               "\n",
-                                               log.results$full.stack.trace[i],
-                                               "\n\n")
-                                              } else ""
+                  if (include.timestamp)
+                    format(log.results$timestamp[i], "%Y-%m-%d %H:%M:%S "),
+                  if (include.severity)
+                    paste0("[", log.results$severity[i], "] "),
+                  log.results$msg.text[i],
+                  "\n\n",
+                  if (nchar(log.results$dump.file.name[i]) > 0)
+                    paste0("Created dump file: ", log.results$dump.file.name[i], "\n\n"),
+                  "Compact call stack:",
+                  "\n",
+                  log.results$compact.stack.trace[i],
+                  "\n\n",
+                  if (include.full.call.stack) {paste0("Full call stack:",
+                                                "\n",
+                                                log.results$full.stack.trace[i],
+                                                "\n\n")
+                                               }
            )
 
     i <- i + 1

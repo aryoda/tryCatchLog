@@ -22,7 +22,7 @@ test_that("basics", {
 
   stack.trace <- sys.calls()
 
-  log.entry <- tryCatchLog:::build.log.entry("ERROR", "Message in a bottle", stack.trace, 0)
+  log.entry <- tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "Message in a bottle", stack.trace, "", 0)
 
   expect_s3_class(log.entry, "data.frame")
   expect_s3_class(log.entry, "tryCatchLog.log.entry")
@@ -40,8 +40,11 @@ test_that("stack trace is correct", {
   # save(stack.trace, file = "stack_trace.RData")
   load("stack_trace.RData")
 
-  log.entry <- tryCatchLog:::build.log.entry("ERROR", "msg", stack.trace, 0)
+  timestamp <- Sys.time()
 
+  log.entry <- tryCatchLog:::build.log.entry(timestamp, "ERROR", "msg", stack.trace, "", 0)
+
+  expect_equal(log.entry$timestamp, timestamp)
   expect_equal(log.entry$severity, "ERROR")
   expect_equal(log.entry$msg.text, "msg")
 
@@ -166,7 +169,7 @@ test_that("stack trace is correct", {
   )
 
 
-  log.entry <- tryCatchLog:::build.log.entry("ERROR", "msg", stack.trace, 6)
+  log.entry <- tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", stack.trace, "", 6)
 
   expect_equal(log.entry$compact.stack.trace,
                paste0("  1 tryLog(log(\"abc\"))\n",
@@ -175,7 +178,7 @@ test_that("stack trace is correct", {
                )
   )
 
-  log.entry <- tryCatchLog:::build.log.entry("ERROR", "msg", stack.trace, 7)
+  log.entry <- tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", stack.trace, "", 7)
 
   expect_equal(log.entry$compact.stack.trace,
                paste0("  1 tryLog(log(\"abc\"))\n",

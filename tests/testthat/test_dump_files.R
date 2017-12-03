@@ -74,7 +74,11 @@ test_that("no dump file is created with an error but disabled dump.errors.to.fil
               dump.errors.to.file = FALSE
             )
             expect_equal(number.of.dump.files(), 0)
+
             clean.up.dump.files()
+
+            log <- last.tryCatchLog.result()
+            expect_equal(log$dump.file.name, "", info = "no dump file contained in log")
           })
 
 
@@ -87,7 +91,17 @@ test_that("dump file is created with an error and dump.errors.to.file parameter 
               },
               dump.errors.to.file = TRUE
             )
+
             expect_equal(number.of.dump.files(), 1)
+
+            log <- last.tryCatchLog.result()
+
+            # Check for correct logging of dump file name
+            expect_true(!is.na(log$dump.file.name))
+            expect_gt(nchar(log$dump.file.name), 0)
+            expect_true(file.exists(log$dump.file.name), info = "correct dump file contained in log")
+            # print(log$dump.file.name)
+
             clean.up.dump.files()
           })
 

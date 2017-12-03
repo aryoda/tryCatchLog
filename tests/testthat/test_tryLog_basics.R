@@ -1,9 +1,12 @@
+library(tryCatchLog)
+library(testthat)
+library(futile.logger)
+
 # Basic tests of tryLog
 
 # Tests are run within the folder "tryCatchLog/tests/testthat".
 # Clean it up at the beginning of a test!
 
-library(futile.logger)
 
 
 
@@ -58,3 +61,43 @@ test_that("errors are silent but returned as object of 'try-error' class", {
   # expect_true("condition" %in% names(attributes(tryLog(log("a")))))
 })
 
+
+
+test_that("conditions do not bubble up to higher-level handlers", {
+
+  # error may not bubble up
+  expect_silent(tryCatchLog(tryLog(stop("simulated error")), error = function(e) stop("should never be called")))
+  log <- last.tryCatchLog.result()
+  expect_equal(NROW(log), 1)
+
+
+
+  # Warning must bubble up
+  expect_error(tryCatchLog(
+                 tryLog(warning("simulated warning")),
+                 warning = function(e) stop("warning handler called as expected")),
+               "warning handler called as expected", fixed = TRUE)
+  log <- last.tryCatchLog.result()
+  expect_equal(NROW(log), 1)
+
+
+
+  # Silent warning may not bubble up
+  expect_silent(tryCatchLog(
+    tryLog(warning("simulated warning"), silent.warnings = TRUE),
+    warning = function(w) stop("warning handler may not be called"))
+  )
+  log <- last.tryCatchLog.result()
+  expect_equal(NROW(log), 1)
+
+
+  # Silent message may not bubble up
+  expect_silent(tryCatchLog(
+    tryLog(message("simulated message"), silent.messages = TRUE),
+    message = function(m) stop("message handler may not be called"))
+  )
+  log <- last.tryCatchLog.result()
+  expect_equal(NROW(log), 1)
+
+
+})

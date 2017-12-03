@@ -143,6 +143,45 @@ test_that("tryCatch and tryCatchLog have same error handler semantics", {
 
 
 
+test_that("stack tryCatch calls work unchanged", {
+
+  # the first warning handler "swallows" the warning and stops it to bubble up further
+  expect_output(
+    tryCatch(tryCatch(log(-1)),
+             warning = function(w) print(paste("outer warning: ", w))
+    ),
+    # [1] "outer warning:  simpleWarning in log(-1): NaNs produced\n"
+    "outer warning:",
+    fixed = TRUE
+  )
+
+  # Compare: The first warning handler "swallows" the warning and stops it to bubble up further
+  expect_output(
+    tryCatch(tryCatch(log(-1),
+                      warning = function(w) print(paste("inner warning: ", w))),
+             warning = function(w) print(paste("outer warning: ", w))
+    ),
+    # [1] "inner warning:  simpleWarning in log(-1): NaNs produced\n"
+    "inner warning:",
+    fixed = TRUE
+  )
+
+  # But: Without any warning handler the warning appears only once:
+  expect_warning({
+    tryCatch(tryCatch(log(-1)))
+  },
+    # Warning message:
+    # In log(-1) : NaNs produced
+    "NaNs produced",
+    fixed = TRUE
+  )
+
+  # TODO How to check that exactly one warning has been thrown?
+  # w <- warnings()
+  # expect_equal(length(w), 1, info = "not exactly one warning thrown")
+
+})
+
 
 
 # tear down unit test ---------------------------------------------------------------------------------------------

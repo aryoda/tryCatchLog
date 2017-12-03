@@ -42,7 +42,12 @@ test_that("enabled silent warnings throw a warning", {
 
 
 
+
+# CHANGE OF OPTIONS !!! -------------------------------------------------------------------------------------------
 options("tryCatchLog.silent.warnings" = TRUE)
+# CHANGE OF OPTIONS !!! -------------------------------------------------------------------------------------------
+
+
 
 test_that("Globally enabled silent warnings throws no warning", {
   expect_silent(tryCatchLog(log(-1)))
@@ -72,3 +77,13 @@ test_that("errors are silent but returned as object of 'try-error' class", {
 test_that("tryCatchLog did throw an error", {
   expect_error(tryCatchLog(log("abc"), error = stop))
 })
+
+
+
+# clean-up test setup ---------------------------------------------------------------------------------------------
+options("tryCatchLog.dump.errors.to.file" = FALSE)    # global default setting for all tryCatchLog call params "dump.errors.to.file"
+options("tryCatchLog.silent.warnings" = FALSE)
+options("tryCatchLog.silent.messages" = FALSE)
+
+
+
