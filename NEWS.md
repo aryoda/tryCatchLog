@@ -17,6 +17,7 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 ## Version 0.9.9 (Dec. 03, 2017)
 
 * Fixed bug #18 (duplicated errors, warnings and messages in stacked `tryCatchLog` calls
+* Closes #20 (support for OS-specific newline characters in `build.log.output`)
 * Improved documentation of `last.tryCatch.result`
 * build.log.output: Added arguments for incl.timestamp + incl.severity
                     as option to suppress redundant output if a logging framework is used
