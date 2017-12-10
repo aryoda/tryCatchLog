@@ -18,7 +18,7 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 
 * SEMANTICAL CHANGE: Renamed tryCatchLog argument "dump.errors.to.file"
                      to "write.error.dump.file" to be more precise.
-                     THIS BREAKS THE OLD INTERFACE (FUNCTION SIGNATUR!)
+                     THIS BREAKS THE OLD INTERFACE (FUNCTION SIGNATURE!)
 
 
 
