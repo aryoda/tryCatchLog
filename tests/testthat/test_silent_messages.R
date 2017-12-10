@@ -10,7 +10,7 @@ library(futile.logger)
 context("Silent messages")
 
 # set up test context
-options("tryCatchLog.dump.errors.to.file" = FALSE)
+options("tryCatchLog.write.error.dump.file" = FALSE)
 options("tryCatchLog.silent.warnings"     = FALSE)
 options("tryCatchLog.silent.messages"     = FALSE)
 

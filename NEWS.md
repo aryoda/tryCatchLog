@@ -11,8 +11,16 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 ## upcoming (planned to be released in the next version)
 
 * stacked tryCatchLog calls ignore dump and silent params after first handling
-* rename tryCatchLog argument "dump.errors.to.file" to "dump.to.file" or similar (more precise name required!)
 --------------------------------------------------------------------------------
+
+
+## Version 0.9.10 (Dec. 10, 2017)
+
+* SEMANTICAL CHANGE: Renamed tryCatchLog argument "dump.errors.to.file"
+                     to "write.error.dump.file" to be more precise.
+                     THIS BREAKS THE OLD INTERFACE (FUNCTION SIGNATUR!)
+
+
 
 ## Version 0.9.9 (Dec. 03, 2017)
 

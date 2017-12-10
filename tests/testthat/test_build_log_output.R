@@ -7,7 +7,7 @@ library(testthat)
 context("build.log.output")
 
 # set up test context
-options("tryCatchLog.dump.errors.to.file" = FALSE)
+options("tryCatchLog.write.error.dump.file" = FALSE)
 options("tryCatchLog.silent.warnings"     = FALSE)
 options("tryCatchLog.silent.messages"     = FALSE)
 
@@ -20,7 +20,8 @@ flog.threshold("FATAL")                         # suppress logging of errors and
 
 test_that("log output is correct", {
 
-  # The example stack trace was saved with:
+  # The example stack trace was produced and saved with:
+  # tryLog(log("abc")) # with breakpoint in the function "tryCatchLog" to save the internal variable "call.stack"
   # save(stack.trace, file = "stack_trace.RData")
   load("stack_trace.RData")  # creates variable "stack.trace"
 

@@ -10,7 +10,7 @@ library(futile.logger)
 context("Silent warnings")
 
 # set up test context
-options("tryCatchLog.dump.errors.to.file" = FALSE)    # global default setting for all tryCatchLog call params "dump.errors.to.file"
+options("tryCatchLog.write.error.dump.file" = FALSE)    # global default setting for all tryCatchLog call params "write.error.dump.file"
 options("tryCatchLog.silent.warnings" = FALSE)
 options("tryCatchLog.silent.messages" = FALSE)
 
@@ -81,7 +81,7 @@ test_that("tryCatchLog did throw an error", {
 
 
 # clean-up test setup ---------------------------------------------------------------------------------------------
-options("tryCatchLog.dump.errors.to.file" = FALSE)    # global default setting for all tryCatchLog call params "dump.errors.to.file"
+options("tryCatchLog.write.error.dump.file" = FALSE)    # global default setting for all tryCatchLog call params "write.error.dump.file"
 options("tryCatchLog.silent.warnings" = FALSE)
 options("tryCatchLog.silent.messages" = FALSE)
 

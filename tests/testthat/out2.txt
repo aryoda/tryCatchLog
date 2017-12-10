@@ -2,12 +2,12 @@
 
 Compact call stack:
   1 tryLog(log("abc"))
-  2 tryLog.R#49: tryCatchLog(expr = expr, dump.errors.to.file = dump.errors.to.file, error = function(e) {
+  2 tryLog.R#49: tryCatchLog(expr = expr, write.error.dump.file = write.error.dump.file, error = function(e) {
   3 tryCatchLog.R#135: tryCatch(withCallingHandlers(expr, error = function(e) {
 
 Full call stack:
   1 tryLog(log("abc"))
-  2 tryLog.R#49: tryCatchLog(expr = expr, dump.errors.to.file = dump.errors.to.file, error = function(e) {
+  2 tryLog.R#49: tryCatchLog(expr = expr, write.error.dump.file = write.error.dump.file, error = function(e) {
         msg <- conditionMessage(e)
         invisible(structure(msg, class = "try-error", condition = e))
     }, silent.warnings = silent.warnings, silent.messages = silent.messages)
@@ -17,7 +17,7 @@ Full call stack:
             .doTrace(browser())
             log.message <- e$message
         }
-        if (dump.errors.to.file == TRUE) {
+        if (write.error.dump.file == TRUE) {
             dump.file.name <- format(Sys.time(), format = "dump_%Y%m%d_%H%M%S")
             utils::dump.frames()
             save.image(file = paste0(dump.file.name, ".rda"))
@@ -59,7 +59,7 @@ Full call stack:
             .doTrace(browser())
             log.message <- e$message
         }
-        if (dump.errors.to.file == TRUE) {
+        if (write.error.dump.file == TRUE) {
             dump.file.name <- format(Sys.time(), format = "dump_%Y%m%d_%H%M%S")
             utils::dump.frames()
             save.image(file = paste0(dump.file.name, ".rda"))
@@ -92,14 +92,14 @@ Full call stack:
         else {
         }
     })
-  8 .handleSimpleError(function (e) 
+  8 .handleSimpleError(function (e)
     {
         call.stack <- sys.calls()
         {
             .doTrace(browser())
             log.message <- e$message
         }
-        if (dump.errors.to.file == TRUE) {
+        if (write.error.dump.file == TRUE) {
             dump.file.name <- format(Sys.time(), format = "dump_%Y%m%d_%H%M%S")
             utils::dump.frames()
             save.image(file = paste0(dump.file.name, ".rda"))

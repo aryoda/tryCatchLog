@@ -14,7 +14,7 @@ context("tryCatchLog basics")
 
 
 # set up test context
-options("tryCatchLog.dump.errors.to.file" = FALSE)    # global default setting for all tryCatchLog call params "dump.errors.to.file"
+options("tryCatchLog.write.error.dump.file" = FALSE)    # global default setting for all tryCatchLog call params "write.error.dump.file"
 options("tryCatchLog.silent.warnings" = FALSE)
 options("tryCatchLog.silent.messages" = FALSE)
 

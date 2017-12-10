@@ -2,7 +2,7 @@
 
 An R package to improve error handling compared to the standard tryCatch function
 
-Current version: 0.9.9 (Dec. 3, 2017). See the [NEWS](NEWS.md) for most recent changes.
+Current version: 0.9.10 (Dec. 10, 2017). See the [NEWS](NEWS.md) for most recent changes.
 
 
 
@@ -117,7 +117,7 @@ Full call stack:
     {
         call.stack <- sys.calls()
         log.message <- e$message
-        if (dump.errors.to.file == TRUE) {
+        if (write.error.dump.file == TRUE) {
             dump.file.name <- format(Sys.time(), format = "dump_%Y%m%d_%H%M%S")
             dump.frames()
             save.image(file = paste0(dump.file.name, ".rda"))
@@ -148,11 +148,11 @@ results in
 ERROR [2016-11-26 23:32:04] non-numeric argument to mathematical function
 Compact call stack:
   1 tryLog(log("not a number!"))
-  2 tryCatchLog.R#319: tryCatchLog(expr = expr, dump.errors.to.file = dump.errors.to.file, error = function(e) {
+  2 tryCatchLog.R#319: tryCatchLog(expr = expr, write.error.dump.file = write.error.dump.file, error = function(e) {
   3 tryCatchLog.R#247: tryCatch(withCallingHandlers(expr, error = function(e) {
 Full call stack:
   1 tryLog(log("not a number!"))
-  2 tryCatchLog.R#319: tryCatchLog(expr = expr, dump.errors.to.file = dump.errors.to.file, error = function(e) {
+  2 tryCatchLog.R#319: tryCatchLog(expr = expr, write.error.dump.file = write.error.dump.file, error = function(e) {
 <... omitted ...>
 > print("Errors cannot stop me")
 [1] "Errors cannot stop me"
@@ -305,8 +305,8 @@ Note: `tryCatchLog` does also allow you to write a memory dump for every catched
    at the main level as long as you did not use any `try` or `tryCatch` calls that would catch and handle
    errors (so that `tryCatchLog` does not see your errors).
 
-2. Set the parameter `dump.errors.to.file` to TRUE (or change the default value of this parameter globally
-   via `options("tryCatchLog.dump.errors.to.file" = TRUE)`)
+2. Set the parameter `write.error.dump.file` to TRUE (or change the default value of this parameter globally
+   via `options("tryCatchLog.write.error.dump.file" = TRUE)`)
    to enable a "memory" dump into a file if your R script throws an error that is catched by `tryCatchLog`.
    
 3. Run your code that produces an error
@@ -353,13 +353,13 @@ Note: `tryCatchLog` does also allow you to write a memory dump for every catched
     10: withCallingHandlers(expr, error = function(e) {
         call.stack <- sys.calls()
         log.message <- e$message
-        if (dump.errors.to.file == TRUE) {
+        if (write.error.dump.file == TRUE) {
          
     11: .handleSimpleError(function (e) 
     {
         call.stack <- sys.calls()
         log.message <- e$message
-        if (dump.errors.to.file == TRUE) {
+        if (write.error.dump.file == TRUE) {
             dump.file.
     12: h(simpleError(msg, call))
     

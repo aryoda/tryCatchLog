@@ -5,8 +5,8 @@
 \title{Try an expression with condition logging and error handling}
 \usage{
 tryCatchLog(expr, ..., finally = NULL,
-  dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE),
-  silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
+  write.error.dump.file = getOption("tryCatchLog.write.error.dump.file",
+  FALSE), silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
   silent.messages = getOption("tryCatchLog.silent.messages", FALSE))
 }
 \arguments{
@@ -20,7 +20,7 @@ All condition handlers are passed to \code{\link{tryCatch}} as is
 
 \item{finally}{expression to be evaluated at the end}
 
-\item{dump.errors.to.file}{\code{TRUE}: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}}
+\item{write.error.dump.file}{\code{TRUE}: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}}
 
 \item{silent.warnings}{\code{TRUE}: Warnings are logged, but not propagated to the caller.\cr
 \code{FALSE}: Warnings are logged and treated according to the global
@@ -76,7 +76,7 @@ This function shall overcome some drawbacks of the standard \code{\link{tryCatch
          will tell R to keep the source references. You can also use \code{options(keep.source.pkgs = TRUE)}
          before you install a package.
 
-         Setting the parameter \code{tryCatchLog.dump.errors.to.file} to TRUE allows a post-mortem analysis of the program state
+         Setting the parameter \code{tryCatchLog.write.error.dump.file} to TRUE allows a post-mortem analysis of the program state
          that led to the error. The dump contains the workspace and in the variable "last.dump"
          the call stack (\code{\link{sys.frames}}). This feature is very helpful for non-interactive R scripts ("batches").
 
@@ -97,8 +97,8 @@ This function shall overcome some drawbacks of the standard \code{\link{tryCatch
 \section{Best practices}{
 
 
-         To \bold{avoid that too many dump files filling your disk space} you should omit the \code{dump.errors.to.file}
-         parameter and instead set its default value using the option \code{tryCatchLog.dump.errors.to.file} in your
+         To \bold{avoid that too many dump files filling your disk space} you should omit the \code{write.error.dump.file}
+         parameter and instead set its default value using the option \code{tryCatchLog.write.error.dump.file} in your
          \link{.Rprofile} file instead (or in a startup R script that sources your actual script).
          In case of an error (that you can reproduce) you set the option to \code{TRUE} and re-run your script.
          Then you are able to examine the program state that led to the error by debugging the saved dump file.

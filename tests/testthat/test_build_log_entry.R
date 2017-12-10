@@ -7,9 +7,9 @@ library(testthat)
 context("build.log.entry")
 
 # set up test context
-options("tryCatchLog.dump.errors.to.file" = FALSE)
-options("tryCatchLog.silent.warnings"     = FALSE)
-options("tryCatchLog.silent.messages"     = FALSE)
+options("tryCatchLog.write.error.dump.file" = FALSE)
+options("tryCatchLog.silent.warnings"       = FALSE)
+options("tryCatchLog.silent.messages"       = FALSE)
 
 
 
@@ -36,7 +36,8 @@ test_that("basics", {
 
 test_that("stack trace is correct", {
 
-  # The example stack trace was saved with:
+  # The example stack trace was produced and saved with:
+  # tryLog(log("abc")) # with breakpoint in the function "tryCatchLog" to save the internal variable "call.stack"
   # save(stack.trace, file = "stack_trace.RData")
   load("stack_trace.RData")
 

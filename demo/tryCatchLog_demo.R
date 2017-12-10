@@ -21,7 +21,7 @@ library(futile.logger)   # https://cran.r-project.org/web/packages/futile.logger
 library(tryCatchLog)
 # source("R/tryCatchLog.R")    # uncomment if you source "tryCatchLog" instead of using it within a package and adjust the path
 
-options("tryCatchLog.dump.errors.to.file" = FALSE)      # global default setting for all tryCatchLog call params "dump.errors.to.file"
+options("tryCatchLog.write.error.dump.file" = FALSE)      # global default setting for all tryCatchLog call params "write.error.dump.file"
 
 # Comment the code line below to log to console instead (default target of futile.logger).
 # You could also redirect console output into a file in your shell script that runs Rscript
@@ -60,7 +60,7 @@ tryCatchLog( {
              {
                print("Finally...")
              }
-             # , dump.errors.to.file = TRUE    # uncomment this line to test the error dump feature for post mortem analysis using load + debugger
+             # , write.error.dump.file = TRUE    # uncomment this line to test the error dump feature for post mortem analysis using load + debugger
 )
 
 

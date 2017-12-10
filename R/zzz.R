@@ -75,7 +75,7 @@
   # To avoid conflicts with other packages the option names use the name as prefix.
   op <- options()
   op.devtools <- list(
-    tryCatchLog.dump.errors.to.file = FALSE,
+    tryCatchLog.write.error.dump.file = FALSE,
     tryCatchLog.silent.warnings     = FALSE,
     tryCatchLog.silent.messages     = FALSE
   )

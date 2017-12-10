@@ -10,7 +10,7 @@ library(futile.logger)
 
 # Test preparation ------------------------------------------------------------------------------------------------
 
-options("tryCatchLog.dump.errors.to.file" = FALSE)
+options("tryCatchLog.write.error.dump.file" = FALSE)
 options("tryCatchLog.silent.warnings" = FALSE)
 options("tryCatchLog.silent.messages" = FALSE)
 
@@ -50,7 +50,7 @@ context("dump.to.file")
 
 
 test_that("no dump file is created without an error", {
-  tryCatchLog(TRUE, dump.errors.to.file = TRUE)
+  tryCatchLog(TRUE, write.error.dump.file = TRUE)
   expect_equal(number.of.dump.files(), 0)
   clean.up.dump.files()
 })
@@ -58,20 +58,20 @@ test_that("no dump file is created without an error", {
 
 
 test_that("no dump file is created for an warning", {
-  expect_warning(tryCatchLog(log(-1), dump.errors.to.file = TRUE))
+  expect_warning(tryCatchLog(log(-1), write.error.dump.file = TRUE))
   expect_equal(number.of.dump.files(), 0)
   clean.up.dump.files()
 })
 
 
 
-test_that("no dump file is created with an error but disabled dump.errors.to.file parameter",
+test_that("no dump file is created with an error but disabled write.error.dump.file parameter",
           {
             tryCatchLog(
               log("a"),
               error = function(e) {
               },
-              dump.errors.to.file = FALSE
+              write.error.dump.file = FALSE
             )
             expect_equal(number.of.dump.files(), 0)
 
@@ -83,13 +83,13 @@ test_that("no dump file is created with an error but disabled dump.errors.to.fil
 
 
 
-test_that("dump file is created with an error and dump.errors.to.file parameter enabled",
+test_that("dump file is created with an error and write.error.dump.file parameter enabled",
           {
             tryCatchLog(
               log("a"),
               error = function(e) {
               },
-              dump.errors.to.file = TRUE
+              write.error.dump.file = TRUE
             )
 
             expect_equal(number.of.dump.files(), 1)
@@ -107,7 +107,7 @@ test_that("dump file is created with an error and dump.errors.to.file parameter 
 
 
 
-options("tryCatchLog.dump.errors.to.file" = FALSE)    # global default setting for all tryCatchLog call params "dump.errors.to.file"
+options("tryCatchLog.write.error.dump.file" = FALSE)    # global default setting for all tryCatchLog call params "write.error.dump.file"
 
 
 
@@ -143,7 +143,7 @@ test_that("no dump file is created (error)", {
 
 
 
-options("tryCatchLog.dump.errors.to.file" = TRUE)    # global default setting for all tryCatchLog call params "dump.errors.to.file"
+options("tryCatchLog.write.error.dump.file" = TRUE)    # global default setting for all tryCatchLog call params "write.error.dump.file"
 
 
 

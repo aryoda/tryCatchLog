@@ -26,19 +26,19 @@
 #'
 #' Conditions are logged with the function call stack (including file names and line numbers).
 #'
-#' @param expr                 expression to be evaluated
-#' @param ...                  condition handler functions (as in \code{\link{tryCatch}}).
-#'                             Usual condition names are
-#'                             \code{error}, \code{warning}, \code{message} and \code{interrupt}.
-#'                             All condition handlers are passed to \code{\link{tryCatch}} as is
-#'                             (no filtering, wrapping or changing of semantics).
-#' @param finally              expression to be evaluated at the end
-#' @param dump.errors.to.file  \code{TRUE}: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}
-#' @param silent.warnings      \code{TRUE}: Warnings are logged, but not propagated to the caller.\cr
-#'                             \code{FALSE}: Warnings are logged and treated according to the global
-#'                             setting in \code{\link{getOption}("warn")}. See also \code{\link{warning}}.
-#' @param silent.messages      \code{TRUE}: Messages are logged, but not propagated to the caller.\cr
-#'                             \code{FALSE}: Messages are logged and propagated to the caller.
+#' @param expr                  expression to be evaluated
+#' @param ...                   condition handler functions (as in \code{\link{tryCatch}}).
+#'                              Usual condition names are
+#'                              \code{error}, \code{warning}, \code{message} and \code{interrupt}.
+#'                              All condition handlers are passed to \code{\link{tryCatch}} as is
+#'                              (no filtering, wrapping or changing of semantics).
+#' @param finally               expression to be evaluated at the end
+#' @param write.error.dump.file \code{TRUE}: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}
+#' @param silent.warnings       \code{TRUE}: Warnings are logged, but not propagated to the caller.\cr
+#'                              \code{FALSE}: Warnings are logged and treated according to the global
+#'                              setting in \code{\link{getOption}("warn")}. See also \code{\link{warning}}.
+#' @param silent.messages       \code{TRUE}: Messages are logged, but not propagated to the caller.\cr
+#'                              \code{FALSE}: Messages are logged and propagated to the caller.
 #'
 #' @return                     the value of the expression passed in as parameter "expr"
 #'
@@ -77,7 +77,7 @@
 #'          will tell R to keep the source references. You can also use \code{options(keep.source.pkgs = TRUE)}
 #'          before you install a package.
 #'
-#'          Setting the parameter \code{tryCatchLog.dump.errors.to.file} to TRUE allows a post-mortem analysis of the program state
+#'          Setting the parameter \code{tryCatchLog.write.error.dump.file} to TRUE allows a post-mortem analysis of the program state
 #'          that led to the error. The dump contains the workspace and in the variable "last.dump"
 #'          the call stack (\code{\link{sys.frames}}). This feature is very helpful for non-interactive R scripts ("batches").
 #'
@@ -97,8 +97,8 @@
 #'
 #' @section Best practices:
 #'
-#'          To \bold{avoid that too many dump files filling your disk space} you should omit the \code{dump.errors.to.file}
-#'          parameter and instead set its default value using the option \code{tryCatchLog.dump.errors.to.file} in your
+#'          To \bold{avoid that too many dump files filling your disk space} you should omit the \code{write.error.dump.file}
+#'          parameter and instead set its default value using the option \code{tryCatchLog.write.error.dump.file} in your
 #'          \link{.Rprofile} file instead (or in a startup R script that sources your actual script).
 #'          In case of an error (that you can reproduce) you set the option to \code{TRUE} and re-run your script.
 #'          Then you are able to examine the program state that led to the error by debugging the saved dump file.
@@ -122,7 +122,7 @@ tryCatchLog <- function(expr,
                         # error = function(e) {if (!is.null(getOption("error", stop))) eval(getOption("error", stop)) }, # getOption("error", default = stop),
                         ...,
                         finally = NULL,
-                        dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE),
+                        write.error.dump.file = getOption("tryCatchLog.write.error.dump.file", FALSE),
                         silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
                         silent.messages = getOption("tryCatchLog.silent.messages", FALSE)
                        )
@@ -138,6 +138,8 @@ tryCatchLog <- function(expr,
     timestamp      <- Sys.time()
     dump.file.name <- ""
 
+    # stack.trace <<- call.stack     # helper code for updating the "test_build_log_entry" unit test
+
     severity <-       if (inherits(c, "error"))   "ERROR"
                  else if (inherits(c, "warning")) "WARN"
                  else if (inherits(c, "message")) "INFO"
@@ -146,7 +148,7 @@ tryCatchLog <- function(expr,
 
 
     # Save dump to allow post mortem debugging?
-    if (dump.errors.to.file == TRUE & severity == "ERROR")
+    if (write.error.dump.file == TRUE & severity == "ERROR")
     {
       # See"?dump.frames" on how to load and debug the dump in a later interactive R session!
       # See https://stackoverflow.com/questions/40421552/r-how-make-dump-frames-include-all-variables-for-later-post-mortem-debugging/40431711#40431711

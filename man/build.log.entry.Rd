@@ -17,7 +17,7 @@ build.log.entry(timestamp, severity, msg.text, call.stack, dump.file.name,
 \item{call.stack}{a call stack created by \code{\link{sys.calls}}}
 
 \item{dump.file.name}{name of the created dump file (leave empty if the \code{\link{tryCatchLog}}
-argument \code{dump.errors.to.file} is \code{FALSE}}
+argument \code{write.error.dump.file} is \code{FALSE}}
 
 \item{omit.call.stack.items}{the number of stack trace items to ignore (= last x calls) in
 the passed \code{call.stack} since they are caused by using \code{tryCatchLog}}

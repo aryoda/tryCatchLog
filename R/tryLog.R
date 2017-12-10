@@ -42,12 +42,12 @@
 #' tryLog(log("a"))  # logs an error
 #' @export
 tryLog <- function(expr,
-                   dump.errors.to.file = getOption("tryCatchLog.dump.errors.to.file", FALSE),
+                   write.error.dump.file = getOption("tryCatchLog.write.error.dump.file", FALSE),
                    silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
                    silent.messages = getOption("tryCatchLog.silent.messages", FALSE))
 {
   tryCatchLog(expr = expr,
-              dump.errors.to.file = dump.errors.to.file,
+              write.error.dump.file = write.error.dump.file,
               error = function(e) {
                 msg <- conditionMessage(e)
                 invisible(structure(msg, class = "try-error", condition = e))
