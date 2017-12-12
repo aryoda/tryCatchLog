@@ -183,7 +183,9 @@ tryCatchLog <- function(expr,
 
 
       # Suppresses the warning (logs it only)?
+      # browser()
       if (silent.warnings & severity == "WARN") {
+        # flog.info("invoked restart")
         invokeRestart("muffleWarning")           # the warning will NOT bubble up now!
       } else {
         # The warning bubbles up and the execution resumes only if no warning handler is established
