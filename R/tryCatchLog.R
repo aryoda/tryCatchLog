@@ -180,24 +180,29 @@ tryCatchLog <- function(expr,
 
       append.to.last.tryCatchLog.result(log.entry)
 
+    }  # end of "is duplicated log entry"
 
 
-      # Suppresses the warning (logs it only)?
-      # browser()
-      if (silent.warnings & severity == "WARN") {
-        # flog.info("invoked restart")
-        invokeRestart("muffleWarning")           # the warning will NOT bubble up now!
-      } else {
-        # The warning bubbles up and the execution resumes only if no warning handler is established
-        # higher in the call stack via try or tryCatch
-      }
 
-      if (silent.messages & severity == "INFO") {
-        invokeRestart("muffleMessage")            # the message will not bubble up now (logs it only)
-      } else {
-        # Just to make it clear here: The message bubbles up now
-      }
+    # in any case (duplicated condition or not)...
 
+
+
+    # Suppresses the warning (logs it only)?
+    if (silent.warnings & severity == "WARN") {
+      # flog.info("invoked restart")
+      invokeRestart("muffleWarning")           # the warning will NOT bubble up now!
+    } else {
+      # The warning bubbles up and the execution resumes only if no warning handler is established
+      # higher in the call stack via try or tryCatch
+    }
+
+
+
+    if (silent.messages & severity == "INFO") {
+      invokeRestart("muffleMessage")            # the message will not bubble up now (logs it only)
+    } else {
+      # Just to make it clear here: The message bubbles up now
     }
 
   }

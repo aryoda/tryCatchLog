@@ -10,8 +10,15 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 --------------------------------------------------------------------------------
 ## upcoming (planned to be released in the next version)
 
-* stacked tryCatchLog calls ignore dump and silent params after first handling
+* Stacked tryCatchLog calls ignore dump and silent params after first handling
+
 --------------------------------------------------------------------------------
+
+
+## Version 0.9.11 (Dec. 12, 2017)
+
+* Fixed bug (issue #21): Silent.warnings (and messages) in `tryLog` and `tryCatchLog` not working for bubbled-up warnings
+
 
 
 ## Version 0.9.10 (Dec. 10, 2017)

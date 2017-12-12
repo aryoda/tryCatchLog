@@ -2,7 +2,7 @@
 
 An R package to improve error handling compared to the standard tryCatch function
 
-Current version: 0.9.10 (Dec. 10, 2017). See the [NEWS](NEWS.md) for most recent changes.
+Current version: 0.9.11 (Dec. 12, 2017). See the [NEWS](NEWS.md) for most recent changes.
 
 
 
