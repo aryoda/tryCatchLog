@@ -10,7 +10,6 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 --------------------------------------------------------------------------------
 ## upcoming (planned to be released in the next version)
 
-* Stacked tryCatchLog calls ignore dump and silent params after first handling
 
 --------------------------------------------------------------------------------
 
