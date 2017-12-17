@@ -18,6 +18,7 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 
 * Fixed `R CMD check` warning (Undocumented code objects: ‘build.log.output’)
 * Added github repository to travis CI (automatic building and testing)
+* Added github repository codecov.io code coverage report (with badge image in the readme file)
 
 
 

@@ -9,6 +9,10 @@ r:
 #  - oldrel
 #  - devel
 
+r_packages:
+  - covr
+
+
 # This option forces all WARNINGS from R CMD check to become build failures (default true).
 # This is especially helpful when preparing your package for submission to CRAN.
 warnings_are_errors: true
@@ -17,3 +21,7 @@ warnings_are_errors: true
 branches:
   only:
   - master
+
+# https://github.com/codecov/example-r
+after_success:
+  - Rscript -e 'library(covr); codecov()'
