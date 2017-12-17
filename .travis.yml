@@ -1,2 +1,20 @@
+# http://docs.travis-ci.com/user/languages/r/
 language: r
 cache: packages
+# dist: trusty
+
+r:
+  - release
+#  - 3.2
+#  - oldrel
+#  - devel
+
+# This option forces all WARNINGS from R CMD check to become build failures (default true).
+# This is especially helpful when preparing your package for submission to CRAN.
+# Disabled for now due to a false positive...
+warnings_are_errors: false
+
+# whitelist of branches that shall be built
+branches:
+  only:
+  - master
