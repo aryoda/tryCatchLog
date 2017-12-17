@@ -11,8 +11,7 @@ r:
 
 # This option forces all WARNINGS from R CMD check to become build failures (default true).
 # This is especially helpful when preparing your package for submission to CRAN.
-# Disabled for now due to a false positive...
-warnings_are_errors: false
+warnings_are_errors: true
 
 # whitelist of branches that shall be built
 branches:

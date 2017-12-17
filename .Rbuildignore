@@ -2,7 +2,11 @@
 ^\.Rproj\.user$
 ^NEWS\..*
 ^generate_roxygen_doc_without_a_package.R
-^.*\.log
+^.*\.log$
 R/dump\.frames\.dev\.R
+^\.travis\.yml$
+^codecov\.yml$
+^appveyor\.yml$
+^README\.md$
 
 

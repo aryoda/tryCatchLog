@@ -14,6 +14,13 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 --------------------------------------------------------------------------------
 
 
+## Version 0.9.12 (Dec. 17, 2017)
+
+* Fixed `R CMD check` warning (Undocumented code objects: ‘build.log.output’)
+* Added github repository to travis CI (automatic building and testing)
+
+
+
 ## Version 0.9.11 (Dec. 12, 2017)
 
 * Fixed bug (issue #21): Silent.warnings (and messages) in `tryLog` and `tryCatchLog` not working for bubbled-up warnings
