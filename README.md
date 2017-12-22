@@ -45,10 +45,10 @@ This code was created as an answer to the stackoverflow question
 
 ### Dependencies
 
-The source code of `tryCatchLog` uses the package [`futile.logger`](https://cran.r-project.org/web/packages/futile.logger/index.html)
+`tryCatchLog` uses the package [`futile.logger`](https://cran.r-project.org/web/packages/futile.logger/index.html)
 to write logging messages in a nice and structured format to a file or console.
 
-You can find the source code of `futile.logger` is hosted here: https://github.com/zatonovo/futile.logger
+You can find the source code of `futile.logger` here: https://github.com/zatonovo/futile.logger
 
 Note: To use your own logging function you just have to change the logging function calls in the file `R/tryCatchLog.R`
       and [`source` the file](#option-2-source-the-code-instead-of-installing-a-package) or
