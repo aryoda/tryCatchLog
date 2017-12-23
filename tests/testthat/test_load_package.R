@@ -7,6 +7,18 @@ context("package loading")
 
 
 
+# Disable these unit tests due to a bug in
+#  covr::package_coverage(type = "tests")"
+# # Error: identical(names(y), names) is not TRUE
+# The error is thrown in the function "merge_coverage" (https://github.com/r-lib/covr/blob/master/R/covr.R)
+# and most probably caused by detaching and reloading the package in this test which causes
+# the order of elements in the files to be changed.
+skip_if("covr" %in% loadedNamespaces(), "This unit test is skipped during code coverage profiling with 'covr' due to a bug")
+# TODO Open an issue at https://github.com/r-lib/covr and propose ordering the file contents before checking identify:
+#      names[order(names)] == names(y)[order(names(y))]
+
+
+
 test_that("non-existing options are initialized when package is loaded", {
 
   # if the package is not loaded "detach" throws an error: invalid 'name' argument
