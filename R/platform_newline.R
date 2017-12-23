@@ -51,19 +51,39 @@ platform.NewLine <- function() {
 #'
 determine.platform.NewLine <- function() {
 
-  is.windows <- grepl(tolower(.Platform$OS.type), "windows", fixed = TRUE)
-
-  if (is.windows) {
+  if (is.windows()) {
     newline <- "\r\n"
   } else {
     newline <- "\n"
   }
 
+  return(newline)
+}
+
+
+
+
+#' Determines if R is running on a Windows operating system
+#'
+#' Throws a warning if an indication for Windows OS were found but the Windows OS cannot be recognized for sure
+#' (via a second different check).
+#'
+#' @return \code{TRUE} of running on a Windows OS else \code{FALSE}
+#'
+#' @export
+#'
+#' @examples
+#' is.windows()
+is.windows <- function() {
+
+  is.windows.1st.opinion <- grepl(tolower(.Platform$OS.type), "windows", fixed = TRUE)
+
   sys.name <- Sys.info()["sysname"]
   is.windows.2nd.opinion <- grepl(tolower(sys.name), "windows", fixed = TRUE)
 
-  if (is.windows != is.windows.2nd.opinion)
+  if (is.windows.1st.opinion != is.windows.2nd.opinion)
     warning("R seems to run on Windows OS but this could not be recognized for sure")
 
-  return(newline)
+  return(is.windows.1st.opinion)
+
 }
