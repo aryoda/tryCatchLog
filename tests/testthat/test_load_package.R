@@ -67,7 +67,7 @@ test_that("existing options are left untouched when package is loaded", {
 
 
 
-  # Unset the options
+  # Preset the options
   options("tryCatchLog.write.error.dump.file" = TRUE)
   options("tryCatchLog.silent.warnings"       = TRUE)
   options("tryCatchLog.silent.messages"       = TRUE)

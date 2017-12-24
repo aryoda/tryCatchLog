@@ -67,6 +67,12 @@
 # Package "constructor" hook
 .onLoad <- function(libname, pkgname) {
 
+
+  # print(paste("libname =", libname, "pkgname =", pkgname))  # for debugging only
+  # libname = /home/xxx/R/x86_64-pc-linux-gnu-library/3.4 pkgname = tryCatchLog"
+
+
+
   # init package-global variables
   .tryCatchLog.env$last.log = data.frame()
 
