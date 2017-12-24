@@ -30,9 +30,10 @@ This repository provides the source code of an advanced `tryCatch` function for 
 The main advantages of the `tryCatchLog` function over `tryCatch` are
 
 * easy **logging** of errors, warnings and messages into a file or console
-* warnings do **not** stop the program execution (`tryCatch` stops the execution if you pass a warning handler function)
-* identifies the source of errors and warnings by logging a **stack trace with a reference to the source file name and line number**
-  (since `traceback` does not contain the full stack trace)
+* logging warnings (and other on-error conditions)
+  does **not** stop the execution of the evaluated expression (like `tryCatch` does if you pass a warning handler function)
+* identifies the source of errors and warnings by logging a **complete stack trace with references to the source file names and line numbers**
+  (`traceback` does not contain the full stack trace!)
 * allows **[post-mortem analysis](#how-do-i-perform-a-post-mortem-analysis-of-my-crashed-r-script) after errors by creating a dump file** with all variables of the global environment (workspace) and each function called (via `dump.frames`) - very helpful for batch jobs that you cannot debug on the server directly to reproduce the error!
 
 This code was created as an answer to the stackoverflow question
@@ -164,7 +165,7 @@ Full call stack:
 
 Observe that the error did **not** stop the execution of the script so that the next line has been executed too.
 
-You could have achived the same (but with more code) using
+You could have achived similar behaviour (but with more code and without logging) using
 
 ```R
 print("Start")
@@ -213,15 +214,16 @@ You can browse and add your own issues at https://github.com/aryoda/tryCatchLog/
 `tryCatch` unwinds the call stack to the call of `tryCatch` in case of an error, warning other catched conditions.
 This means
 
-* you cannot use `traceback` to identify source code line that cause the problem
-* you cannot resume the execution of the expression passed to `tryCatch`
-* if you catch warnings (e. g. to write them to a log file) the execution of the expression is stopped (canceled)
+* you cannot use `traceback` to identify the source code line that cause the problem
+  (see the help `?traceback`: *Errors which are caught via try or tryCatch do not generate a traceback...*)
+* if you catch non-errors like warnings (e. g. to write them to a log file) the execution
+  of the evaluated expression is stopped (canceled)
   but normally you do **not** want to stop after warnings
   
 To overcome the drawbacks of `tryCatch` you must use a combination of an outer `tryCatch` call that executes
-the expression within and `withCallingHandlers` function call then. This is a lot of boilerplate code
-that is used again and again. You could encapsulte this boilerplate code in your own `myTryCatch` function
-and this is exactly what `tryCatchLog` does.
+the expression within and inner `withCallingHandlers` function call. This creates a lot of boilerplate code
+that is used again and again. You could **encapsulte and reuse this boilerplate code** in your own `myTryCatch` function
+and this is exactly what `tryCatchLog` does!
 
 
 

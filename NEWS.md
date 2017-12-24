@@ -10,8 +10,15 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 --------------------------------------------------------------------------------
 ## upcoming (planned to be released in the next version)
 
+* Vignette with introduction into error handling with R and the `tryCatchLog` package
 
 --------------------------------------------------------------------------------
+
+## Version 0.9.13 (Dec. 24, 2017)
+
+* stable version now with 100 % unit test code coverage (good release candidate for CRAN submission).
+* travis CI builds now against R3.2, current release, old release and devel (dev version)
+
 
 
 ## Version 0.9.12 (Dec. 17, 2017)
