@@ -28,6 +28,12 @@ test_that("log output is correct", {
   log.entry <- tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", stack.trace, "", 0)
 
   out1 <- tryCatchLog::build.log.output(log.entry, include.full.call.stack = FALSE)
+  # Due to a OSX bug R emits a warning in versions below 3.4.3 here:
+  #   In as.POSIXlt.POSIXct(x, tz) : unknown timezone 'default/Europe/Berlin'
+  # The reason is that the default timezone cannot be recognized by R anymore due to an OSX update.
+  # Symptom:   Sys.timezone()  # returns NA instead of a timezone string
+  # See https://stackoverflow.com/questions/47709061/sys-date-showing-the-wrong-date
+
   # cat(out1)   # how it looks like
   expected1 <- "[ERROR] msg\n\nCompact call stack:\n  1 tryLog(log(\"abc\"))\n  2 tryLog.R#49: tryCatchLog(expr = expr, dump.errors.to.file = dump.errors.to.file, error = function(e) {\n  3 tryCatchLog.R#135: tryCatch(withCallingHandlers(expr, error = function(e) {\n\n"
 

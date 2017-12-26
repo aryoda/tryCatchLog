@@ -13,7 +13,8 @@ context("package loading")
 # The error is thrown in the function "merge_coverage" (https://github.com/r-lib/covr/blob/master/R/covr.R)
 # and most probably caused by detaching and reloading the package in this test which causes
 # the order of elements in the files to be changed.
-skip_if("covr" %in% loadedNamespaces(), "This unit test is skipped during code coverage profiling with 'covr' due to a bug")
+# Note: I am using skip_if_not instead of skip_if to support old testthat versions (e. g. 1.0.2)
+skip_if_not(("covr" %in% loadedNamespaces()) == FALSE, "This unit test is skipped during code coverage profiling with 'covr' due to a bug")
 # TODO Open an issue at https://github.com/r-lib/covr and propose ordering the file contents before checking identify:
 #      names[order(names)] == names(y)[order(names(y))]
 
