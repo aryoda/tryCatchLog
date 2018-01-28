@@ -31,5 +31,6 @@ vignettes/*.pdf
 /dump_*
 tests/testthat/dump*.rda
 inst/doc
-/man/*.Rd
+# Disabled again since Rd files are required for travis CI (or I have to find a way to roxygenize on travis)
+# /man/*.Rd
 
