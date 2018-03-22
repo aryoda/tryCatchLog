@@ -211,7 +211,7 @@ You can browse and add your own issues at https://github.com/aryoda/tryCatchLog/
 
 ### What's the problem with `tryCatch`?
 
-`tryCatch` unwinds the call stack to the call of `tryCatch` in case of an error, warning or other catched conditions.
+`tryCatch` unwinds the call stack back to the level of the `tryCatch` call in case of an error, warning or other catched conditions.
 
 This means
 
