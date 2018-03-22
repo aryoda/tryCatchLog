@@ -31,7 +31,7 @@ The main advantages of the `tryCatchLog` function over `tryCatch` are
 
 * easy **logging** of errors, warnings and messages into a file or console
 * logging warnings (and other on-error conditions)
-  does **not** stop the execution of the evaluated expression (like `tryCatch` does if you pass a warning handler function)
+  does **not** stop the execution of the evaluated expression (unlike `tryCatch` does if you pass a warning handler function)
 * identifies the source of errors and warnings by logging a **complete stack trace with references to the source file names and line numbers**
   (`traceback` does not contain the full stack trace!)
 * allows **[post-mortem analysis](#how-do-i-perform-a-post-mortem-analysis-of-my-crashed-r-script) after errors by creating a dump file** with all variables of the global environment (workspace) and each function called (via `dump.frames`) - very helpful for batch jobs that you cannot debug on the server directly to reproduce the error!
@@ -211,7 +211,8 @@ You can browse and add your own issues at https://github.com/aryoda/tryCatchLog/
 
 ### What's the problem with `tryCatch`?
 
-`tryCatch` unwinds the call stack to the call of `tryCatch` in case of an error, warning other catched conditions.
+`tryCatch` unwinds the call stack to the call of `tryCatch` in case of an error, warning or other catched conditions.
+
 This means
 
 * you cannot use `traceback` to identify the source code line that cause the problem
@@ -227,7 +228,7 @@ and this is exactly what `tryCatchLog` does!
 
 
 
-### How can I log into a file instead of the console?
+### How can I write the log output into a file instead of the console?
 
 ```R
 library(futile.logger)
