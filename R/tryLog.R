@@ -22,7 +22,7 @@
 #' \code{tryLog} is a wrapper function around \code{\link{tryCatchLog}}
 #' that traps any errors that occur during the evaluation of an expression without stopping the execution
 #' of the script (similar to \code{\link{try}}). Errors, warnings and messages are logged.
-#' In contrast to \code{\link{tryCatchLog}} it returns but does not stop in case of an error and therefor does
+#' In contrast to \code{\link{tryCatchLog}} it returns but does not stop in case of an error and therefore does
 #' not have the \code{error} and \code{finally} parameters to pass in custom handler functions.
 #'
 #' @inheritParams tryCatchLog
