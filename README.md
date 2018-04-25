@@ -2,7 +2,7 @@
 
 An R package to improve error handling compared to the standard tryCatch function
 
-Current version: 0.9.13 (Dec. 24, 2017). See the [NEWS](NEWS.md) for most recent changes.
+Current version: 1.0.0 (April 26, 2018). See the [NEWS](NEWS.md) for most recent changes.
 
 [![Build Status](https://travis-ci.org/aryoda/tryCatchLog.svg?branch=master)](https://travis-ci.org/aryoda/tryCatchLog)
 [![codecov](https://codecov.io/gh/aryoda/tryCatchLog/branch/master/graph/badge.svg)](https://codecov.io/gh/aryoda/tryCatchLog)
@@ -12,6 +12,7 @@ Current version: 0.9.13 (Dec. 24, 2017). See the [NEWS](NEWS.md) for most recent
 ## Table of contents
 
 * [Overview](#overview)
+* [Tutorial slides](#tutorial-slides-for-condition-handling-with-standard-r-and-trycatchlog)
 * [Installation](#installation)
 * [Examples](#examples)
 * [Demo](#demo)
@@ -39,6 +40,14 @@ The main advantages of the `tryCatchLog` function over `tryCatch` are
 This code was created as an answer to the stackoverflow question
 
 [R: Catch errors and continue execution while logging the stacktrace (no traceback available with tryCatch)](https://stackoverflow.com/questions/39964040/r-catch-errors-and-continue-execution-while-logging-the-stacktrace-no-tracebac)
+
+
+
+## Tutorial slides for condition handling with standard R and `tryCatchLog`
+
+The package contains a slide deck as vignette with a good introduction:
+
+https://github.com/aryoda/tryCatchLog/tree/master/vignettes/tryCatchLog-intro.html
 
 
 

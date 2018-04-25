@@ -10,9 +10,17 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 --------------------------------------------------------------------------------
 ## upcoming (planned to be released in the next version)
 
-* Vignette with introduction into error handling with R and the `tryCatchLog` package
+* going "CRAN"
 
 --------------------------------------------------------------------------------
+
+
+## Version 1.0.0 (April 26, 2018)
+
+* Added vignette with introduction into error handling with R and the `tryCatchLog` package
+* First public release (meant as candidate for CRAN)
+
+
 
 ## Version 0.9.13 (Dec. 24, 2017)
 

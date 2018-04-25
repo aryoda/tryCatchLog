@@ -13,8 +13,11 @@
 # RStudio files
 .Rproj.user/
 # produced vignettes
-vignettes/*.html
+# Manually build and "release" vignettes via: devtools::build_vignettes()
+# 26.04.2018 To make the HTML vignette available for links at github I have disabled the following line
+# vignettes/*.html
 vignettes/*.pdf
+vignettes/*.R
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
 .httr-oauth
 # knitr and R markdown default cache directories
@@ -33,4 +36,3 @@ tests/testthat/dump*.rda
 inst/doc
 # Disabled again since Rd files are required for travis CI (or I have to find a way to roxygenize on travis)
 # /man/*.Rd
-
