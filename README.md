@@ -14,7 +14,7 @@ Current version: 1.0.0 (April 26, 2018). See the [NEWS](NEWS.md) for most recent
 * [Overview](#overview)
 * [Tutorial slides](#tutorial-slides-for-condition-handling-with-standard-r-and-trycatchlog)
 * [Installation](#installation)
-* [Examples](#examples)
+* [Usage](#usage)
 * [Demo](#demo)
 * [FAQ](#faq)
 * [Build the package from source using RStudio](#build-the-trycatchlog-package-from-source-code-using-rstudio)
@@ -45,9 +45,19 @@ This code was created as an answer to the stackoverflow question
 
 ## Tutorial slides for condition handling with standard R and `tryCatchLog`
 
-The package contains a slide deck as vignette with a good introduction:
+You can read tutorial slide deck here:
 
-https://github.com/aryoda/tryCatchLog/tree/master/vignettes/tryCatchLog-intro.html
+https://aryoda.github.io/tutorials/tryCatchLog/tryCatchLog-intro.html
+
+It is a single self-contained HTML file (made with revealjs, see https://revealjs.com)
+so you can download it easily.
+
+If you have installed the vignette of the package on your local computer
+you can also read the tutorial offline via
+
+```R
+browseVignettes("tryCatchLog")
+```
 
 
 
@@ -69,7 +79,7 @@ Note: To use your own logging function you just have to change the logging funct
 
 ### Option 1: Install the `tryCatchLog` package from github using `devtools`
 
-**This is the recommended installation procedure!**
+**This is the recommended installation procedure for the up-to-date version!**
 
 To install the package using the source code at github you can use the package `devtools`:
 
@@ -79,17 +89,24 @@ library(devtools)
 install_github("aryoda/tryCatchLog")
 ```
 
-
-### Option 2: `source` the code instead of installing a package
-
-Simply add the following line to your code:
+If you want to install the vignette (tutorial) on your local computer
+you can build it during the installation
+(make sure you have installed the suggested packages of the DESCRIPTION file before):
 
 ```R
-library(futile.logger)
-source("R/tryCatchLog.R")   # adjust the relative path accordingly!
+devtools::install_github("aryoda/tryCatchLog", build_vignettes = TRUE)
+# browseVignettes("tryCatchLog")  # to show the vignette(s)
 ```
 
-## Examples
+
+
+### Option 2: Install from CRAN
+
+Sorry, you still have to wait a little bit for that :-(
+
+
+
+## Usage
 
 ### `tryCatchLog` function
 
