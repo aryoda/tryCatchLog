@@ -14,8 +14,7 @@
 .Rproj.user/
 # produced vignettes
 # Manually build and "release" vignettes via: devtools::build_vignettes()
-# 26.04.2018 To make the HTML vignette available for links at github I have disabled the following line
-# vignettes/*.html
+vignettes/*.html
 vignettes/*.pdf
 vignettes/*.R
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
