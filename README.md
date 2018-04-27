@@ -45,12 +45,12 @@ This code was created as an answer to the stackoverflow question
 
 ## Tutorial slides for condition handling with standard R and `tryCatchLog`
 
-You can read tutorial slide deck here:
+You can find a tutorial slide deck here:
 
 https://aryoda.github.io/tutorials/tryCatchLog/tryCatchLog-intro.html
 
 It is a single self-contained HTML file (made with revealjs, see https://revealjs.com)
-so you can download it easily.
+so you can save it locally to read it offline.
 
 If you have installed the vignette of the package on your local computer
 you can also read the tutorial offline via
