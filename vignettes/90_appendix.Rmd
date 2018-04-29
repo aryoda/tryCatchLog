@@ -1,0 +1,10 @@
+# Appendix
+
+## References 
+
+Download of these slides: https://github.com/aryoda/R_trainings
+
+Project home of the `tryCatchLog` package: https://github.com/aryoda/tryCatchLog
+
+http://www.biostat.jhsph.edu/~rpeng/docs/R-debug-tools.pdf
+
