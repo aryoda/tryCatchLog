@@ -389,7 +389,7 @@ and resumes the execution.
 |-----------------------|----------------------- |-----------------------------|
 | **Program execution** | **breaks** and continues with the first expression after the `tryCatch` function call | **resumes** the execution at the code line that throwed the condition |
 | **Call stack** (`traceback` and `sys.calls`) | **unwinds the call stack** up to the `tryCatch` function call |  **keeps the full call stack** down to the code line that throwed the condition |
-| **Condition handling** | **Conditions are consumed** by the handler function that catches the condition | **Conditions are not consumed** by handler functions and bubble up |
+| **Rethrowing of conditions** | **Conditions are consumed** by the called handler function (do not bubble up) | **Conditions bubble up** (are not consumed by the called handler function) |
 
 **Note: `tryCatch` is different from Java's `try-catch` statement: It unwinds the call stack (in Java you get the
 full call stack with the `printStackTrace` method)!**

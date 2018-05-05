@@ -19,6 +19,9 @@ vignette: >
 
 ## References
 
+Documentation of the `futile.logger` logging framework:  
+https://github.com/zatonovo/futile.logger
+
 Download of these slides: https://github.com/aryoda/R_trainings
 
 Project home of the `tryCatchLog` package: https://github.com/aryoda/tryCatchLog
