@@ -1,0 +1,410 @@
+---
+title: "Body"
+author: "Jürgen Altfeld"
+date: "`r Sys.Date()`"
+output:
+    rmarkdown::html_vignette
+# Vignette marker to signal a dependent sub document that shall not be rendered as separate vignette
+# This shall replace the current workaround to use Rmd child files for vignettes
+# once the gap is closed in R and knitor.
+# See:
+# https://github.com/yihui/knitr/issues/1540
+# https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17416
+vignette: >
+  %\VignetteEngine{none}
+---
+
+
+
+# Better error handling with the `tryCatchLog` package
+
+## Installation
+
+To install the package `tryCatchLog` from the source code use:
+
+```{r, eval = FALSE}
+# install.packages("devtools")
+library(devtools)
+install_github("aryoda/tryCatchLog")
+```
+
+For more details see the Project site at: https://github.com/aryoda/tryCatchLog
+
+
+
+## Overview
+
+The `tryCatchLog` package improves the standard R's `try` and `tryCatch` functions by
+offering extended functions:
+
+| Condition handling strategy | Standard R    | tryCatchLog package |
+|-----------------------------|---------------|---------------------|
+| Return an error object in case of errors | `try()` | `tryLog()` |
+| Call condition handler functions | `tryCatch()` | `tryCatchLog()` |
+
+
+
+**Improvements:**
+
+1. Configurable **logging** ("for free")
+2. Logging of full or compact **call stack** with line numbers
+3. **Resume** after warnings and messages
+4. Support for **post-mortem analysis** after errors via dump files
+
+
+
+## `tryLog` example with an error
+
+```{r, results = 'hide', message = FALSE, echo = FALSE}
+library(tryCatchLog)   # load the package to avoid startup messages in the results later
+```
+
+Errors are logged but the execution continues after the `tryLog` call:
+
+```{r, eval = FALSE, warning=F}
+library(tryCatchLog)
+f <- function(value) {
+  print("begin")
+  log(value)            # negative number -> warning; string -> error
+  print("end")
+}
+tryLog(f("not a number"))
+print("Errors don't stop me!")
+```
+
+```{r, eval = FALSE}
+## [1] "begin"
+## ERROR [2016-12-06 21:44:21] non-numeric argument to mathematical function
+## Compact call stack:
+##   1 test.R#7: tryLog(f("not a number"))
+##   2 tryCatchLog.R#345: tryCatchLog(expr = expr, write.error.dump.file = write.error.dump.file, error = function(e) {
+##   3 tryCatchLog.R#259: tryCatch(withCallingHandlers(expr, error = function(e) {
+##   4 test.R#4: .handleSimpleError(function (e)
+## ...
+## [1] "Errors don't stop me!"
+```
+
+
+
+## `tryLog` example with a warning
+
+
+
+`tryLog` catches conditions and logs them onto console or into a file (depending of the settings of
+the logging framework `futile.logger` that is used internally):
+
+```{r, eval = FALSE, warning=F}
+library(tryCatchLog)
+f <- function(value) {
+  print("begin")
+  log(value)            # negative number -> warning; string -> error
+  print("end")
+}
+tryLog(f(-1))
+```
+
+```{r eval = FALSE}
+## [1] "begin"
+## WARN [2016-12-06 21:33:41] NaNs produced
+## Compact call stack:
+##   1 test.R#7: tryLog(f(-1))
+##   2 tryCatchLog.R#345: tryCatchLog(expr = expr, write.error.dump.file = write.error.dump.file, error = function(e) {
+##   3 tryCatchLog.R#259: tryCatch(withCallingHandlers(expr, error = function(e) {
+##   4 test.R#4: .signalSimpleWarning("NaNs produced", quote(log(value)))
+...
+## [1] "end"
+```
+
+
+
+## `tryCatchLog` example to log and recover from an error
+
+Use `tryCatchLog` to establish an error handler:
+
+```{r, eval = FALSE}
+library(tryCatchLog)
+
+send.email <- function(receiver, body) { }  # dummy function (does nothing)
+
+tryCatchLog(log("not a number"),
+            error = function(e) { send.email("admin@home", e)
+            })
+```
+
+The console shows the log output then and the execution continues:
+
+```{r, eval = FALSE}
+ERROR [2017-01-22 22:04:56] non-numeric argument to mathematical function
+Compact call stack:
+  1 tryCatchLog_error_example.R#5: tryCatchLog(log("not a number"), error = function(e) {
+  2 tryCatchLog.R#273: tryCatch(withCallingHandlers(expr, error = function(e) {
+...
+```
+
+**Note:** `send.email` is a dummy function for demonstration purposes!
+
+
+
+## How to change the logging behaviour
+
+To log to a file instead of the console or to change the logging level you call the usual `futile.logger` functions:
+
+```{r eval = FALSE}
+  library(futile.logger)
+
+  flog.appender(appender.file("app.log"))
+
+  flog.threshold(ERROR)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL
+
+  try(log(-1))             # the warning will not be logged!
+```
+
+For more details about `futile.logger` see:
+
+https://cran.r-project.org/package=futile.logger
+
+
+
+# Post-mortem analysis
+
+
+
+## Known limitations of interactive debugging in R
+
+Interactive debugging using an IDE or the console is very difficult in case of
+
+- errors that are not (easily) reproducible
+- long running code that produces an error at the end
+- batch jobs running on a server
+
+
+
+## Solution: Post-mortem analysis
+
+**Post-mortem analysis** means to create a dump file in case of an error that contains
+
+- all objects of the global environment (workspace) and
+- all objects within the scope of each called function (via `dump.frames`)
+
+so that you can
+
+- use any computer
+- to load the dump file into a new R session
+- after the script has stopped the execution (**"post-mortem"**) and
+- examine the call stack and object values ("analysis")
+
+to find out the reason for the error.
+
+
+
+## Enable post-mortem analysis
+
+`tryCatchLog` supports post-mortem analysis by creating dump files in case of errors:
+
+```{r eval = FALSE}
+library(tryCatchLog)
+f <- function(value) {
+  log(value)
+}
+a <- "100"
+tryLog(f(a), write.error.dump.file = TRUE)
+```
+
+```{r eval = FALSE}
+ERROR [2016-12-12 22:29:52] non-numeric argument to mathematical function
+Call stack environments dumped into file: dump_20161212_222952.rda
+Compact call stack:
+  1 source("~/R_trainings/tryCatchLog/src/test.R")
+  2 test.R#6: tryLog(f(a), write.error.dump.file = TRUE)
+  3 tryCatchLog.R#348: tryCatchLog(expr = expr, write.error.dump.file = write.error.dump.file, error = function(e) {
+  4 tryCatchLog.R#262: tryCatch(withCallingHandlers(expr, error = function(e) {
+  5 test.R#3: .handleSimpleError(function (e)
+  ...
+```
+
+
+
+## Start a post-mortem analysis
+
+Open a new R session and start the post-mortem analysis of the error:
+
+```{r eval = FALSE}
+load("dump_20161212_222952.rda")    # load the dump into the global environment
+debugger(last.dump)                 # start the post-mortem analysis
+```
+
+```{r eval = FALSE}
+Message:  non-numeric argument to mathematical functionAvailable environments had calls:
+1: source("test.R")
+...
+5: test.R#6: tryLog(f(a), write.error.dump.file = TRUE)
+6: tryCatchLog.R#348: tryCatchLog(expr = expr, write.error.dump.file = dump.erro
+7: tryCatchLog.R#262: tryCatch(withCallingHandlers(expr, error = function(e) {
+...
+12: f(a)
+13: test.R#3: .handleSimpleError(function (e)
+14: h(simpleError(msg, call))
+
+Enter an environment number, or 0 to exit
+Selection: <Cursor is waiting for your input here>
+```
+
+The function call #13 shows: The error was thrown in the file `test.R` at line #3: `log(value)`
+
+
+
+## Post-mortem debugging: Examine an environment
+
+Switch into the environment of the function call #12 which called the function that throwed the error
+and examine the objects visible within this function:
+
+```{r eval = FALSE}
+Enter an environment number, or 0 to exit
+Selection: 12
+Browsing in the environment with call:
+   f(a)
+Called from: debugger.look(ind)
+Browse[1]> ls()
+[1] "value"
+Browse[1]> value
+[1] "100"
+Browse[1]> typeof(value)
+[1] "character"
+Browse[1]>
+```
+
+By looking at the (function argument) variable `value`
+it is easy to identify the reason for the error: **The passed value "100" had the wrong data type!**
+
+*You can exit the debugger now with "Q" (or "f" followed by "0") and fix the bug.*
+
+
+
+## Post-mortem debugging: Limitations
+
+R dump files (created with `save.image`) do **not** contain the loaded packages
+when the dump file was created.
+
+Therefore a dump loaded into memory later does **not** load these packages automatically.
+
+**This means the program state as of the error is not exactly reproducible:**
+
+- Objects that were stored within a package namespace are not available
+- The search path to find objects may be different during post-mortem analysis
+- You cannot step through your source code after loading the image
+  if your source code calls functions of non-default packages. You have to load these packages manually
+  before starting the debugger
+
+For more details see: https://github.com/aryoda/tryCatchLog/issues/12
+
+
+
+# `tryCatchLog` Function Reference
+
+
+
+## tryCatchLog()
+
+Function signature:
+```{r eval = FALSE}
+tryCatchLog(expr, ..., finally = NULL,
+  write.error.dump.file = getOption("tryCatchLog.write.error.dump.file", FALSE),
+  silent.warnings       = getOption("tryCatchLog.silent.warnings", FALSE),
+  silent.messages       = getOption("tryCatchLog.silent.messages", FALSE))
+```
+
+This function evaluates the expression in `expr` and passes all condition handlers in `...` to `tryCatch` as-is
+while error, warning and message conditions are logged together with the function call stack
+(including file names and line numbers).
+
+The expression in `finally` is always evaluated at the end.
+
+Warnings and messages can be "silenced" (only logged but not propagated to the caller) using the `silent.*` parameters.
+
+The default values of some parameters can be set globally via `options` to avoid passing the same
+parameter values in each call and to support easy reconfiguration for all calls without changing the code.
+
+
+
+## tryLog()
+
+Function signature:
+```{r eval = FALSE}
+tryLog(expr,
+  write.error.dump.file = getOption("tryCatchLog.write.error.dump.file", FALSE),
+  silent.warnings       = getOption("tryCatchLog.silent.warnings", FALSE),
+  silent.messages       = getOption("tryCatchLog.silent.messages", FALSE))
+```
+
+This function is a short version of `tryCatchLog()`
+that traps any errors that occur during the evaluation of the expression `expr`
+without stopping the execution of the script (similar to `try` in R).
+Errors, warnings and messages are logged.
+
+In contrast to `tryCatchLog()` it returns an object of the class "try-error"
+in case of an error and continues after the `tryLog` expression.
+Therefore `tryLog` does not support the `error` and `finally` parameters
+for passing custom handler functions.
+
+The default values of some parameters can be set globally via `options` to avoid passing the same
+parameter values in each call and to support easy reconfiguration for all calls without changing the code.
+
+
+
+## Change global options of `tryCatchLog`
+
+The default values of many options can be changed globally by configuring them once
+to reduce lengthy function calls later and support easy reconfiguration for all calls
+without changing the code:
+
+```{r results = "hide"}
+# Initialize your own default values globally for tryLog and tryCatchLog
+options(tryCatchLog.write.error.dump.file = FALSE)
+options(tryCatchLog.silent.messages       = TRUE)
+options(tryCatchLog.silent.warnings       = TRUE)
+
+test <- function() {
+  message("hello")
+  warning("a warning")
+}
+
+# Use your own default values by ommiting those parameters...
+tryLog(f())
+
+# .. instead of the longer version which passes each parameter again and again
+tryLog(f(), silent.warnings=TRUE, silent.messages=TRUE, write.error.dump.file=FALSE)
+```
+
+
+
+
+# `tryCatchLog` Best Practices
+
+
+
+## Easiest way to add logging of all conditions
+
+Just wrap the call to the main function or main script with `tryCatchLog()`:
+
+```{r eval = FALSE}
+library(futile.logger)
+library(tryCatchLog)
+
+options(keep.source = TRUE)      # source code file name and line number tracking
+options("tryCatchLog.write.error.dump.file" = FALSE) # dump for post-mortem analysis
+
+flog.appender(appender.file("my_app.log"))  # to log into a file instead of console
+flog.threshold(INFO)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL
+
+tryCatchLog(source("your_main_script.R"))
+```
+
+
+
+## FAQ
+
+You can find a FAQ with best practices at:
+
+https://github.com/aryoda/tryCatchLog#faq
+
+

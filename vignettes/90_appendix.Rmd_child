@@ -1,0 +1,30 @@
+---
+title: "Appendix"
+author: "Jürgen Altfeld"
+date: "`r Sys.Date()`"
+output:
+    rmarkdown::html_vignette
+# Vignette marker to signal a dependent sub document that shall not be rendered as separate vignette
+# This shall replace the current workaround to use Rmd child files for vignettes
+# once the R issue is solved and released.
+# See:
+# https://github.com/yihui/knitr/issues/1540
+# https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17416
+vignette: >
+  %\VignetteEngine{none}
+---
+
+
+# Appendix
+
+## References
+
+Documentation of the `futile.logger` logging framework:  
+https://github.com/zatonovo/futile.logger
+
+Download of these slides: https://github.com/aryoda/R_trainings
+
+Project home of the `tryCatchLog` package: https://github.com/aryoda/tryCatchLog
+
+http://www.biostat.jhsph.edu/~rpeng/docs/R-debug-tools.pdf
+

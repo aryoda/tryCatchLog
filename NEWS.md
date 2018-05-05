@@ -14,6 +14,13 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 
 --------------------------------------------------------------------------------
 
+## Version 1.0.1 (May 5, 2018)
+
+* Vignette is using now `rmarkdown::html_vignette` as output to minimize the HTML file size
+* Refactored vignette doc into smaller reusable parts (for slides + "booklet").
+* Removed package `revealjs` from "recommended" section in DESCRIPTION file
+
+
 
 ## Version 1.0.0 (April 26, 2018)
 

@@ -1,0 +1,9 @@
+# WORKAROUND:
+# When R CMD build builds the vignettes,
+# it copies these and the vignette sources from directory vignettes to inst/doc.
+# To install any other files from the vignettes directory,
+# this file specifies these as Perl-like regular expressions on one or more lines (see ?regexp).
+# See: https://cran.r-project.org/doc/manuals/r-devel/R-exts.html#Writing-package-vignettes
+#
+# .*\.Rmd
+Rmd_child$

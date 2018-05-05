@@ -8,5 +8,8 @@ R/dump\.frames\.dev\.R
 ^codecov\.yml$
 ^appveyor\.yml$
 ^README\.md$
+^LICENSE_HEADER_TEMPLATE.txt$
+
+
 
 
