@@ -1,3 +1,19 @@
+---
+title: "License"
+author: "Jürgen Altfeld"
+date: "`r Sys.Date()`"
+output:
+    rmarkdown::html_vignette
+# Vignette marker to signal a dependent sub document that shall not be rendered as separate vignette
+# This shall replace the current workaround to use Rmd child files for vignettes
+# once the gap is closed in R and knitor.
+# See:
+# https://github.com/yihui/knitr/issues/1540
+# https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17416
+vignette: >
+  %\VignetteEngine{none}
+---
+
 ## License (GPL-3)
 
 ![gplv3 logo](gplv3-127x51.png)
