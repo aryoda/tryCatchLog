@@ -1,8 +1,9 @@
 Package: tryCatchLog
 Title: Advanced tryCatch Function
 Version: 1.0.1
-Authors@R: person("Jürgen", "Altfeld", email = "R@altfeld-im.de", role = c("aut", "cre", "cph"))
-Description: Advanced tryCatch function for better error handling with logging and a stack trace with source code references.
+Authors@R: person("Jürgen", "Altfeld", email = "jaltfeld@altfeld-im.de", role = c("aut", "cre", "cph"))
+Description: Advanced tryCatch and try function for better error handling
+             (logging, stack trace with source code references and support for post-mortem analysis).
 Imports:
     utils,
     futile.logger
