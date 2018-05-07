@@ -390,8 +390,8 @@ Just wrap the call to the main function or main script with `tryCatchLog()`:
 library(futile.logger)
 library(tryCatchLog)
 
-options(keep.source = TRUE)      # source code file name and line number tracking
-options("tryCatchLog.write.error.dump.file" = FALSE) # dump for post-mortem analysis
+options(keep.source = TRUE)        # source code file name and line number tracking
+options("tryCatchLog.write.error.dump.file" = TRUE) # dump for post-mortem analysis
 
 flog.appender(appender.file("my_app.log"))  # to log into a file instead of console
 flog.threshold(INFO)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL

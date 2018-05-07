@@ -150,7 +150,7 @@ tryCatch( { result <- log(-1); print(result) }
 ```
 
 
-## `tryCatch` can handle all conditions 1/2
+## `tryCatch` can handle all conditions 2/2
 
 You can use `error`, `warning`, `message` or `interrupt` as parameter name to assign a handler for these "standard" conditions, e. g. to catch messages:
 
