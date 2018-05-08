@@ -27,8 +27,29 @@ https://aryoda.github.io/tutorials/tryCatchLog/tryCatchLog-intro.html
 
 
 
+
 ```{r child = "01_license.Rmd_child"}
 ```
+
+
+
+## Overview
+
+This repository provides the source code of an advanced `tryCatch` function for the programming language [R](https://www.r-project.org/) called `tryCatchLog`.
+
+The main advantages of the `tryCatchLog` function over `tryCatch` are:
+
+* **Easy logging** of errors, warnings and messages into a file or console
+* **Complete stack trace with references to the source file names and line numbers**
+  to identify the source of errors and warnings
+  (R's `traceback` does not contain the full stack trace if you catch errors and warnings!)
+* **[Post-mortem analysis](#post-mortem-analysis) or R errors by creating a dump file**
+  with all variables of the global environment (workspace) and the function call stack (`dump.frames`)
+  to enable the analysis of "crashed" batch jobs that you cannot debug on the server directly to reproduce the error!
+* **Logging** of warnings (and other non-error conditions)
+  **without stopping the execution** of the evaluated expression
+  (unlike `tryCatch` does if you pass a warning handler function)
+
 
 
 

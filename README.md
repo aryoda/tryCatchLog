@@ -2,7 +2,7 @@
 
 An R package to improve error handling compared to the standard tryCatch function
 
-Current version: 1.0.1 (May 5, 2018). See the [NEWS](NEWS.md) for most recent changes.
+**Current version: 1.0.2 (May 8, 2018).** See the [NEWS](NEWS.md) for most recent changes.
 
 [![Build Status](https://travis-ci.org/aryoda/tryCatchLog.svg?branch=master)](https://travis-ci.org/aryoda/tryCatchLog)
 [![codecov](https://codecov.io/gh/aryoda/tryCatchLog/branch/master/graph/badge.svg)](https://codecov.io/gh/aryoda/tryCatchLog)
@@ -30,12 +30,14 @@ This repository provides the source code of an advanced `tryCatch` function for 
 
 The main advantages of the `tryCatchLog` function over `tryCatch` are
 
-* easy **logging** of errors, warnings and messages into a file or console
-* logging warnings (and other on-error conditions)
-  does **not** stop the execution of the evaluated expression (unlike `tryCatch` does if you pass a warning handler function)
-* identifies the source of errors and warnings by logging a **complete stack trace with references to the source file names and line numbers**
-  (`traceback` does not contain the full stack trace!)
+* **Easy logging** of errors, warnings and messages into a file or console
+* **Complete stack trace with references to the source file names and line numbers**
+  to identify the source of errors and warnings
+  (R's `traceback` does not contain the full stack trace if you catch errors and warnings!)
 * allows **[post-mortem analysis](#how-do-i-perform-a-post-mortem-analysis-of-my-crashed-r-script) after errors by creating a dump file** with all variables of the global environment (workspace) and each function called (via `dump.frames`) - very helpful for batch jobs that you cannot debug on the server directly to reproduce the error!
+* Logging of warnings (and other non-error conditions)
+  **without** stopping the execution of the evaluated expression
+  (unlike `tryCatch` does if you pass a warning handler function)
 
 This code was created as an answer to the stackoverflow question
 

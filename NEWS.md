@@ -10,9 +10,14 @@ This file describes the major changes of bug fixes in the package "tryCatchLog"
 --------------------------------------------------------------------------------
 ## upcoming (planned to be released in the next version)
 
-* going "CRAN"
-
 --------------------------------------------------------------------------------
+
+# Version 1.0.2 (May 8, 2018)
+
+* Official version submitted at CRAN today
+* Added summary page at the beginning of the vignette to explain the advantages "at a glance"
+
+
 
 ## Version 1.0.1 (May 5, 2018)
 
