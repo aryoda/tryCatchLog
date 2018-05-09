@@ -2,13 +2,7 @@ Package: tryCatchLog
 Title: Advanced 'tryCatch()' and 'try()' Functions
 Version: 1.0.2
 Authors@R: person("Jürgen", "Altfeld", email = "jaltfeld@altfeld-im.de", role = c("aut", "cre", "cph"))
-<<<<<<< HEAD
 Description: Advanced 'tryCatch()' and 'try()' functions for better error handling
-||||||| merged common ancestors
-Description: Advanced tryCatch and try function for better error handling
-=======
-Description: Advanced tryCatch() and try() functions for better error handling
->>>>>>> 0d02f72be85a7b116b607570528751b2ba0a0b49
              (logging, stack trace with source code references and support for post-mortem analysis).
 Imports:
     utils,
