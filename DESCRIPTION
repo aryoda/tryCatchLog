@@ -1,8 +1,8 @@
 Package: tryCatchLog
-Title: Advanced tryCatch Function
+Title: Advanced 'tryCatch()' and 'try()' Functions
 Version: 1.0.2
 Authors@R: person("Jürgen", "Altfeld", email = "jaltfeld@altfeld-im.de", role = c("aut", "cre", "cph"))
-Description: Advanced tryCatch and try function for better error handling
+Description: Advanced 'tryCatch()' and 'try()' functions for better error handling
              (logging, stack trace with source code references and support for post-mortem analysis).
 Imports:
     utils,

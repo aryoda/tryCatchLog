@@ -55,9 +55,9 @@
 #'
 #'          The following conditions are logged using the \pkg{futile.logger} package:
 #'          \enumerate{
-#'          \item error   -> \code{\link[futile.logger]{flog.error}}
-#'          \item warning -> \code{\link[futile.logger]{flog.warn}}
-#'          \item message -> \code{\link[futile.logger]{flog.info}}
+#'          \item error   -> \code{\link{flog.error}}
+#'          \item warning -> \code{\link{flog.warn}}
+#'          \item message -> \code{\link{flog.info}}
 #'          }
 #'
 #'          \strong{`tryCatchLog` does only catch the above conditions, other (user-defined)
