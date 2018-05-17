@@ -1,16 +1,11 @@
 <!--
+This file describes the major changes of bug fixes in the package "tryCatchLog"
+
 For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
-# tryCatchLog package: Change history
 
-This file describes the major changes of bug fixes in the package "tryCatchLog"
-
---------------------------------------------------------------------------------
-## upcoming (planned to be released in the next version)
-
---------------------------------------------------------------------------------
 
 # Version 1.0.2 (May 8, 2018)
 
