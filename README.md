@@ -6,8 +6,7 @@ An R package to improve error handling compared to the standard tryCatch functio
 
 [![Build Status](https://travis-ci.org/aryoda/tryCatchLog.svg?branch=master)](https://travis-ci.org/aryoda/tryCatchLog)
 [![codecov](https://codecov.io/gh/aryoda/tryCatchLog/branch/master/graph/badge.svg)](https://codecov.io/gh/aryoda/tryCatchLog)
-
-
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/tryCatchLog)](https://cran.r-project.org/package=tryCatchLog)
 
 ## Table of contents
 
