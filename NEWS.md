@@ -7,9 +7,9 @@ https://www.gnu.org/prep/standards/standards.html#Documentation
 
 
 
-# Version 1.0.2 (May 8, 2018)
+## Version 1.0.2 (May 8, 2018)
 
-* Official version submitted at CRAN today
+* Official CRAN version (published May 18, 2018)
 * Added summary page at the beginning of the vignette to explain the advantages "at a glance"
 
 
