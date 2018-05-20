@@ -63,6 +63,22 @@ determine.platform.NewLine <- function() {
 
 
 
+# Just a wrapper function to support mocking of the base function in testthat unit tests via "with_mock"
+# (see ?with_mock)
+get.sys.name <- function() {
+  return(Sys.info()["sysname"])
+}
+
+
+
+# Just a wrapper function to support mocking of the base function in testthat unit tests via "with_mock"
+# (see ?with_mock)
+get.platform.OS.type <- function() {
+  return(.Platform$OS.type) 
+}
+
+
+
 #' Determines if R is running on a Windows operating system
 #'
 #' Throws a warning if an indication for Windows OS were found but the Windows OS cannot be recognized for sure
@@ -76,9 +92,9 @@ determine.platform.NewLine <- function() {
 #' is.windows()
 is.windows <- function() {
 
-  is.windows.1st.opinion <- grepl(tolower(.Platform$OS.type), "windows", fixed = TRUE)
+  is.windows.1st.opinion <- grepl(tolower(get.platform.OS.type()), "windows", fixed = TRUE)
 
-  sys.name <- Sys.info()["sysname"]
+  sys.name <- get.sys.name()
   is.windows.2nd.opinion <- grepl(tolower(sys.name), "windows", fixed = TRUE)
 
   if (is.windows.1st.opinion != is.windows.2nd.opinion)
