@@ -4,3 +4,10 @@ LICENSE linguist-vendored
 *.html linguist-vendored
 *.txt linguist-vendored
 *.rda linguist-vendored
+
+
+* text=auto
+data/* binary
+src/* text=lf
+R/* text=lf
+
