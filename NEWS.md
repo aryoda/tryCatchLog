@@ -5,6 +5,13 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
+## Version 1.0.3 (May 21, 2018)
+
+* Fixes issue #29 (bug): `limitedLabelsCompact` does ignore `maxwidth` argument (logged call stack is too long)
+* Refactored R code to improve unit tests (via mocking)
+* Fixed typo in function documentation
+* Added AppVeyor CI to github repository for automatic builds on Windows (besides the existing ones on Linux)
+
 
 
 ## Version 1.0.2 (May 8, 2018)

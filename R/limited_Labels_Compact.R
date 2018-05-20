@@ -38,7 +38,7 @@
 #'                 \link{.Rprofile} file or use a startup R script that sets this option and sources your
 #'                 actual R script then.
 #'
-#'                 This function is base on the undocumented \code{\link{limitedLabels}} function of the base package.
+#'                 This function is based on the undocumented \code{\link{limitedLabels}} function of the base package.
 #'                 The source code can be viewed by entering \code{limitedLabels} in the R console.
 #'                 The attributes required to add source file names and line numbers to the calls (srcref and srcfile)
 #'                 and how they are created internally are explained in this article:
@@ -75,7 +75,7 @@ limitedLabelsCompact <- function(value, compact = FALSE, maxwidth = getOption("w
   if (is.null(maxwidth) || maxwidth < 40L)
     maxwidth <- 40L
   maxwidth <- min(maxwidth, 1000L)
-  strtrim(value, maxwidth)
+  value <- strtrim(value, maxwidth)
 
   if (compact == TRUE)
   {

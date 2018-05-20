@@ -11,6 +11,8 @@ options("tryCatchLog.write.error.dump.file" = FALSE)
 options("tryCatchLog.silent.warnings"     = FALSE)
 options("tryCatchLog.silent.messages"     = FALSE)
 
+options("width" = 129)  # default value in R is 129
+
 
 
 flog.threshold("FATAL")                         # suppress logging of errors and warnings to avoid overly output
@@ -23,6 +25,7 @@ test_that("log output is correct", {
   # The example stack trace was produced and saved with:
   # tryLog(log("abc")) # with breakpoint in the function "tryCatchLog" to save the internal variable "call.stack"
   # save(stack.trace, file = "stack_trace.RData")
+  # load("tests/testthat/stack_trace.RData")
   load("stack_trace.RData")  # creates variable "stack.trace"
 
   log.entry <- tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", stack.trace, "", 0)
@@ -42,6 +45,7 @@ test_that("log output is correct", {
 
 
   out2 <- tryCatchLog::build.log.output(log.entry, include.full.call.stack = TRUE)
+  # expected2 <- paste(readLines("tests/testthat/build_log_output_test_data_2.txt"), collapse = "\n")
   expected2 <- paste(readLines("build_log_output_test_data_2.txt"), collapse = "\n")
   # writeLines(out2, "build_log_output_test_data_2.txt")  # to write the expected result after checking it manually
 
