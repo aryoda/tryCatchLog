@@ -1,6 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^NEWS\..*
+# ^NEWS\..*
 ^generate_roxygen_doc_without_a_package.R
 ^.*\.log$
 R/dump\.frames\.dev\.R
