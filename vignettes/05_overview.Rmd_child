@@ -1,0 +1,36 @@
+---
+title: "License"
+author: "Jürgen Altfeld"
+date: "`r Sys.Date()`"
+output:
+    rmarkdown::html_vignette
+# Vignette marker to signal a dependent sub document that shall not be rendered as separate vignette
+# This shall replace the current workaround to use Rmd child files for vignettes
+# once the gap is closed in R and knitor.
+# See:
+# https://github.com/yihui/knitr/issues/1540
+# https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17416
+vignette: >
+  %\VignetteEngine{none}
+---
+
+  
+    
+## Overview
+  
+The `tryCatchLog` package provides an advanced `tryCatch` function for the programming language [R](https://www.r-project.org/).
+
+The main advantages of the `tryCatchLog` function over `tryCatch` are:
+  
+* **Easy logging** of errors, warnings and messages into a file or console
+* **Complete stack trace with references to the source file names and line numbers**
+  to identify the source of errors and warnings
+  (R's `traceback` does not contain the full stack trace if you catch errors and warnings!)
+* **[Post-mortem analysis](#post-mortem-analysis) or R errors by creating a dump file**
+  with all variables of the global environment (workspace) and the function call stack (`dump.frames`)
+  to enable the analysis of "crashed" batch jobs that you cannot debug on the server directly to reproduce the error!
+* **Logging** of warnings (and other non-error conditions)
+  **without stopping the execution** of the evaluated expression
+  (unlike `tryCatch` does if you pass a warning handler function)
+
+  
