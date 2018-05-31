@@ -52,7 +52,7 @@ This code was created as an answer to the stackoverflow question
 
 You can find a tutorial slide deck here:
 
-https://aryoda.github.io/tutorials/tryCatchLog/tryCatchLog-intro.html
+https://aryoda.github.io/tutorials/tryCatchLog/tryCatchLog-intro-slides.html
 
 It is a single self-contained HTML file (made with revealjs, see https://revealjs.com)
 so you can save it locally to read it offline.
