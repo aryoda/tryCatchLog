@@ -23,7 +23,7 @@ vignette: >
 
 For a slide version of this vignette (e. g. for trainings and presentations) see:
 
-https://aryoda.github.io/tutorials/tryCatchLog/tryCatchLog-intro.html
+https://aryoda.github.io/tutorials/tryCatchLog/tryCatchLog-intro-slides.html
 
 
 
