@@ -229,14 +229,6 @@ demo(package = "tryCatchLog", topic = "tryCatchLog_demo")   # start a demo
 
 ## FAQ
 
-### Can I install the package via CRAN or from another repository
-
-A prebuilt package file is currently not available but planned (e. g. via a separate github release project).
-
-The package shall be published on [CRAN](https://cran.r-project.org/) only if there is enough demand for that.
-
-
-
 ### How do I find bug reports, feature requests and other issues?
 
 You can browse and add your own issues at https://github.com/aryoda/tryCatchLog/issues

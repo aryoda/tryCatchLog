@@ -1,8 +1,11 @@
-library(futile.logger)
 library(tryCatchLog)
 library(testthat)
 
-context("silent stacked warnings")
+
+
+context("test_silent_stacked_warnings.R")
+
+
 
 # set up test context
 options("tryCatchLog.write.error.dump.file" = FALSE)
@@ -11,8 +14,8 @@ options("tryCatchLog.silent.messages"     = FALSE)
 
 
 
-flog.threshold("FATAL")                         # suppress logging of errors and warnings to avoid overly output
-# flog.threshold("INFO")
+# suppress logging of errors and warnings to avoid overly output
+source("disable_logging_output.R")
 
 
 

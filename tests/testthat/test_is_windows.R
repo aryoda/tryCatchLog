@@ -1,10 +1,10 @@
-# library(futile.logger)
-# library(tryCatchLog)
-# library(testthat)
+library(testthat)
 
 
 
-context("is.windows")
+context("test_is_windows.R")
+
+
 
 # set up test context
 options("tryCatchLog.write.error.dump.file" = FALSE)
@@ -13,8 +13,6 @@ options("tryCatchLog.silent.messages"     = FALSE)
 
 
 
-# flog.threshold("FATAL")                         # suppress logging of errors and warnings to avoid overly output
-# flog.threshold("INFO")
 
 
 

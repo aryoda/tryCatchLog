@@ -1,9 +1,11 @@
 library(testthat)
 library(tryCatchLog)
 
+
+
 # Error in value[[3L]](cond) : unused argument (cond)
 # https://github.com/aryoda/tryCatchLog/issues/17
-context("issue 0017")
+context("test_issue_0017_value_3L_unused_arg.R")
 
 
 
@@ -16,8 +18,8 @@ options("tryCatchLog.silent.messages" = FALSE)
 
 
 
-futile.logger::flog.threshold("FATAL")                         # suppress logging of errors and warnings to avoid overly output
-# flog.threshold("INFO")
+# suppress logging of errors and warnings to avoid overly output
+source("disable_logging_output.R")
 
 
 test_that("error handler with one parameter works", {

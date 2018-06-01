@@ -45,6 +45,9 @@
 #' @details This function shall overcome some drawbacks of the standard \code{\link{tryCatch}} function.\cr
 #'          For more details see \url{https://github.com/aryoda/tryCatchLog}.
 #'
+#'          If the package \pkg{futile.logger} is installed it will be used for writing logging output,
+#'          otherwise an internal basic logging output function is used.
+#'
 #'          Before you call \code{tryCatchLog} for the first time you should initialize the \pkg{futile.logger} first:
 #'
 #'          \preformatted{  library(futile.logger)
@@ -55,9 +58,9 @@
 #'
 #'          The following conditions are logged using the \pkg{futile.logger} package:
 #'          \enumerate{
-#'          \item error   -> \code{\link{flog.error}}
-#'          \item warning -> \code{\link{flog.warn}}
-#'          \item message -> \code{\link{flog.info}}
+#'          \item error   -> \code{\link[futile.logger]{flog.error}}
+#'          \item warning -> \code{\link[futile.logger]{flog.warn}}
+#'          \item message -> \code{\link[futile.logger]{flog.info}}
 #'          }
 #'
 #'          \strong{`tryCatchLog` does only catch the above conditions, other (user-defined)
@@ -171,9 +174,9 @@ tryCatchLog <- function(expr,
       log.msg <- build.log.output(log.entry)
 
       switch(severity,
-             ERROR = flog.error(log.msg),
-             WARN  = flog.warn(log.msg),
-             INFO  = flog.info(log.msg)
+             ERROR = .tryCatchLog.env$error.log.func(log.msg),  # futile.logger::flog.error(log.msg),
+             WARN  = .tryCatchLog.env$warn.log.func(log.msg),   # futile.logger::flog.warn(log.msg),
+             INFO  = .tryCatchLog.env$info.log.func(log.msg)    # futile.logger::flog.info(log.msg)
       )
 
 

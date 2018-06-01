@@ -1,9 +1,9 @@
 library(testthat)
 library(tryCatchLog)
-# library(futile.logger)
 
 
-context("namespace hook functions")
+context("test_namespace_hooks.R")
+
 
 
 # These tests do check the namespace hook functions (for details see "?.onLoad")
@@ -27,11 +27,14 @@ test_that("internal package state is initialized", {
 
   # tests -----------------------------------------------------------------------------------------------------------
 
-  # call the hook function
   expected_Newline_value <- "test_result"
+  
   with_mock(
     `tryCatchLog:::determine.platform.NewLine` = function() return(expected_Newline_value),
-    expect_silent(tryCatchLog:::.onAttach(".", "tryCatchLog"))
+    `tryCatchLog:::is.package.available` = function(pkg.name) return(FALSE),
+    expect_message(tryCatchLog:::.onAttach(".", "tryCatchLog"),
+                   "futile.logger not found. Using tryCatchLog-internal functions for logging",
+                   info = "with no installed logging package the package-internal logging functions must be used")
   )
 
 
@@ -52,6 +55,19 @@ test_that("internal package state is initialized", {
 
 })
 
+
+
+test_that("futile.logger is used if it is installed", {
+
+  skip_if_not_installed("futile.logger")
+  
+#  with_mock(
+#    `tryCatchLog:::is.package.available` = function(pkg.name) return(TRUE),
+    # expect_silent(tryCatchLog:::.onAttach(".", "tryCatchLog"))
+    expect_message(tryCatchLog:::.onAttach(".", "tryCatchLog"), "Using futile.logger for logging")
+#  )
+  
+})
 
 
 

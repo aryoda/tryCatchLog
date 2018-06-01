@@ -1,12 +1,11 @@
 Package: tryCatchLog
 Title: Advanced 'tryCatch()' and 'try()' Functions
-Version: 1.0.3
+Version: 1.1.0
 Authors@R: person("Jürgen", "Altfeld", email = "jaltfeld@altfeld-im.de", role = c("aut", "cre", "cph"))
 Description: Advanced tryCatch() and try() functions for better error handling
              (logging, stack trace with source code references and support for post-mortem analysis).
 Imports:
-    utils,
-    futile.logger
+    utils
 Depends:
     R (>= 3.1.0)
 License: GPL-3 | file LICENSE
@@ -15,7 +14,9 @@ BugReports: https://github.com/aryoda/tryCatchLog/issues
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
-Suggests: testthat,
+Suggests:
+    futile.logger,
+    testthat,
     knitr,
     rmarkdown
 VignetteBuilder: knitr

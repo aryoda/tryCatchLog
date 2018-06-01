@@ -5,6 +5,19 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
+## Version 1.1.0 (June 03, 2018)
+
+* Implemented feature request #10 (allow injection of own logging functions):
+  Added function `set.logging.functions()`.
+  For details see: https://github.com/aryoda/tryCatchLog/issues/10
+* Removed hard dependency from package `futile.logger` (in `Imports` section of `DESCRIPTION` file)
+  by implementing a package internal basic logging function `log2console` used as default
+  if the package `futile.logger` is not installed
+* Dependency of package `futile.logger` is now only `Suggests` in the `DESCRIPTION` file,
+  no longer `Imports`
+  
+
+
 ## Version 1.0.3 (May 21, 2018)
 
 * Fixes issue #29 (bug): `limitedLabelsCompact` does ignore `maxwidth` argument (logged call stack is too long)

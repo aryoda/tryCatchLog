@@ -3,12 +3,15 @@
 # Tests are run within the folder "tryCatchLog/tests/testthat".
 # Clean it up at the beginning of a test!
 
-library(futile.logger)
-
+library(testthat)
 
 
 
 # Test preparation ------------------------------------------------------------------------------------------------
+
+context("test_dump_files.R")
+
+
 
 options("tryCatchLog.write.error.dump.file" = FALSE)
 options("tryCatchLog.silent.warnings" = FALSE)
@@ -40,7 +43,8 @@ clean.up.dump.files()
 
 
 
-flog.threshold("FATAL")                               # suppress logging of errors and warnings to avoid overly output
+# suppress logging of errors and warnings to avoid overly output
+source("disable_logging_output.R")
 
 
 

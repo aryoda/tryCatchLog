@@ -1,10 +1,11 @@
-library(futile.logger)
-library(tryCatchLog)
 library(testthat)
+library(tryCatchLog)
 
 
 
-context("build.log.entry")
+context("test_build_log_entry.R")
+
+
 
 # set up test context
 options("tryCatchLog.write.error.dump.file" = FALSE)
@@ -15,8 +16,9 @@ options("width" = 1000)  # default is 129
 
 
 
-flog.threshold("FATAL")                         # suppress logging of errors and warnings to avoid overly output
-# flog.threshold("INFO")
+# suppress logging of errors and warnings to avoid overly output
+source("disable_logging_output.R")
+
 
 
 

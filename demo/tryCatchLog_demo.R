@@ -16,17 +16,20 @@
 # ***************************************************************************
 
 
-library(futile.logger)   # https://cran.r-project.org/web/packages/futile.logger/index.html
+# library(futile.logger)   # https://cran.r-project.org/web/packages/futile.logger/index.html
 
 library(tryCatchLog)
-# source("R/tryCatchLog.R")    # uncomment if you source "tryCatchLog" instead of using it within a package and adjust the path
 
-options("tryCatchLog.write.error.dump.file" = FALSE)      # global default setting for all tryCatchLog call params "write.error.dump.file"
 
-# Comment the code line below to log to console instead (default target of futile.logger).
-# You could also redirect console output into a file in your shell script that runs Rscript
-flog.appender(appender.file("my_app.log"))
-flog.threshold(INFO)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL
+
+# global default setting for all tryCatchLog call params "write.error.dump.file"
+options("tryCatchLog.write.error.dump.file" = FALSE)
+
+# Uncomment the code line below to let futile.logger log to a file
+# instead of the default target (console).
+# But you could also redirect console output into a file in your shell script that runs Rscript
+# flog.appender(appender.file("my_app.log"))
+# flog.threshold(INFO)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 
 # Some variables to demonstrate what can be done with "dump.frames"
 a.string <- "some text"
@@ -41,7 +44,7 @@ bad.function <- function(value)
 {
   print("bad.function started")
   hello = "Hello world!"
-  message(simpleMessage(paste("bad.function message:", hello)))
+  message(simpleMessage(paste("bad.function message:", hello, "\n")))
   log(value)                  # the log function may cause an error or warning depending on the value
   print("bad.function finished")
 }
@@ -85,21 +88,6 @@ print("Demo has finished...")    # Proof that the error does not stop the progra
 
 
 
-# Good test function for demos and slides
-# foo <- function(x) {
-#   if (x == 1) {
-#     warning('Warning')
-#   } else if (x == 0) {
-#     stop('Error')
-#   }
-#   return(1)
-# }
-
-# invokeRestart("muffleWarning"))
-
-# library(futile.logger)
-# flog.threshold(ERROR)
-# tryCatchLog(log(-1))
 
 # Collection of helpful links (not yet ordered) -------------------------------------------------------------------
 
