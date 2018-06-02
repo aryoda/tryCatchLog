@@ -5,7 +5,7 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
-## Version 1.1.0 (June 03, 2018)
+## Version 1.1.0 (June 02, 2018)
 
 * Implemented feature request #10 (allow injection of own logging functions):
   Added function `set.logging.functions()`.

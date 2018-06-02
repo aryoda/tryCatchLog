@@ -2,7 +2,7 @@
 
 An R package to improve error handling compared to the standard tryCatch function
 
-**Current version: 1.0.3 (May 20, 2018).** See the [NEWS](NEWS.md) for most recent changes.
+**Current version: 1.1.0 (June 2, 2018).** See the [NEWS](NEWS.md) for most recent changes.
 
 [![Travis Build Status](https://travis-ci.org/aryoda/tryCatchLog.svg?branch=master)](https://travis-ci.org/aryoda/tryCatchLog)
 [![codecoverage statistics](https://codecov.io/gh/aryoda/tryCatchLog/branch/master/graph/badge.svg)](https://codecov.io/gh/aryoda/tryCatchLog)
