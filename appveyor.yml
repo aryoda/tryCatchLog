@@ -10,10 +10,47 @@ init:
 install:
   ps: Bootstrap
 
-cache:
-  - C:\RLibrary
+# Disabled June 02, 2018
+# cache:
+#  - C:\RLibrary
 
 # Adapt as necessary starting from here
+
+# >>> Added June 02, 2018
+environment:
+  global:
+    WARNINGS_ARE_ERRORS: 1
+
+  matrix:
+  - R_VERSION: devel
+    GCC_PATH: mingw_32
+
+  - R_VERSION: devel
+    R_ARCH: x64
+    GCC_PATH: mingw_64
+
+  - R_VERSION: release
+    R_ARCH: x64
+
+  - R_VERSION: stable
+
+  - R_VERSION: patched
+    R_ARCH: x64
+
+  - R_VERSION: oldrel
+    CRAN: http://cran.rstudio.com
+
+  - R_VERSION: 3.1.3
+    CRAN: http://cran.rstudio.com
+
+  - R_VERSION: 3.1.0
+    CRAN: http://cran.rstudio.com
+    PKGTYPE: source
+
+matrix:
+fast_finish: true
+
+# <<< end of "added"
 
 build_script:
   - travis-tool.sh install_deps
