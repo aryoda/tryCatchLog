@@ -17,16 +17,16 @@
 
 
 
-#' Sets the logging functions that shall be used by tryCatchLog for the different severity levels
+#' Sets the logging functions that shall be used by \code{tryCatchLog} for the different severity levels
 #' 
 #' The logging functions must have at least one parameter: The logging message (as character)
 #' which must be the first argument.
 #' 
 #' The default logging functions are internal functions without any dependencies to other
-#' logging packages. They use the same logging output format as futile.logger version 1.4.3.
+#' logging packages. They use the same logging output format as \pkg{futile.logger} version 1.4.3.
 #' 
 #' If you want to disable any logging output you should use a decent logging framework
-#' which allows to set the logging threshold (e. g. futile.logger's flog.threshold).
+#' which allows to set the logging threshold (e. g. futile.logger's \code{\link[futile.logger]{flog.threshold}}).
 #' 
 #' The package-internal default logging functions are only a minimal implementation
 #' and are not meant to replace a decent logging framework.
@@ -36,7 +36,9 @@
 #' @param info.log.func   The error function for messages
 #'
 #' @return     Nothing
-#' 
+#'
+#' @seealso \code{\link{tryCatchLog}} 
+#'          
 #' @export
 #'
 #' @examples
@@ -45,7 +47,7 @@
 #'                        warn.log.func  = function(msg) invisible(),
 #'                        info.log.func  = function(msg) invisible())
 #' 
-set.logging.functions <- function(  error.log.func = function(msg) tryCatchLog:::log2console("ERROR", msg)
+set.logging.functions <- function(error.log.func   = function(msg) tryCatchLog:::log2console("ERROR", msg)
                                   , warn.log.func  = function(msg) tryCatchLog:::log2console("WARN",  msg)
                                   , info.log.func  = function(msg) tryCatchLog:::log2console("INFO",  msg)
 ) {

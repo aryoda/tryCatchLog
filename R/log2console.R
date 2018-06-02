@@ -3,8 +3,8 @@
 #' This is a package-internal function.
 #'
 #' @param severity.level  String containing the severity level
-#'                        (\code{exprERROR}, \code{exprWARN} or \code{exprINFO}) of the message
-#' @param msg             The message to be printed (as string).
+#'                        (\code{ERROR}, \code{WARN} or \code{INFO}) of the message
+#' @param msg             The message to be printed (as character).
 #'
 #' @return                The log message as it was printed to the console.
 #'                        \code{NA} is printed as empty string.

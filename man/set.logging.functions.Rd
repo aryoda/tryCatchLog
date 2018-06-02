@@ -2,7 +2,7 @@
 % Please edit documentation in R/set_logging_functions.R
 \name{set.logging.functions}
 \alias{set.logging.functions}
-\title{Sets the logging functions that shall be used by tryCatchLog for the different severity levels}
+\title{Sets the logging functions that shall be used by \code{tryCatchLog} for the different severity levels}
 \usage{
 set.logging.functions(error.log.func = function(msg)
   tryCatchLog:::log2console("ERROR", msg), warn.log.func = function(msg)
@@ -25,10 +25,10 @@ which must be the first argument.
 }
 \details{
 The default logging functions are internal functions without any dependencies to other
-logging packages. They use the same logging output format as futile.logger version 1.4.3.
+logging packages. They use the same logging output format as \pkg{futile.logger} version 1.4.3.
 
 If you want to disable any logging output you should use a decent logging framework
-which allows to set the logging threshold (e. g. futile.logger's flog.threshold).
+which allows to set the logging threshold (e. g. futile.logger's \code{\link[futile.logger]{flog.threshold}}).
 
 The package-internal default logging functions are only a minimal implementation
 and are not meant to replace a decent logging framework.
@@ -39,4 +39,7 @@ set.logging.functions( error.log.func = function(msg) invisible(),
                        warn.log.func  = function(msg) invisible(),
                        info.log.func  = function(msg) invisible())
 
+}
+\seealso{
+\code{\link{tryCatchLog}}
 }

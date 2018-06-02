@@ -48,28 +48,32 @@
 #'          If the package \pkg{futile.logger} is installed it will be used for writing logging output,
 #'          otherwise an internal basic logging output function is used.
 #'
-#'          Before you call \code{tryCatchLog} for the first time you should initialize the \pkg{futile.logger} first:
+#'          Before you call \code{tryCatchLog} for the first time you should initialize
+#'          the logging framework you are using (e. g.\pkg{futile.logger} to control
+#'          the log output (log to console or file etc.):
 #'
 #'          \preformatted{  library(futile.logger)
 #'   flog.appender(appender.file("my_app.log"))
 #'   flog.threshold(INFO)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL}
 #'
-#'          If you don't initialize the \pkg{futile.logger} at all the logging information will be written on the console only.
-#'
-#'          The following conditions are logged using the \pkg{futile.logger} package:
+#'          If you are using the \pkg{futile.logger} package \code{tryCatchLog} calls
+#'          these log functions for the different R conditions to log them:
+#'          
 #'          \enumerate{
 #'          \item error   -> \code{\link[futile.logger]{flog.error}}
 #'          \item warning -> \code{\link[futile.logger]{flog.warn}}
 #'          \item message -> \code{\link[futile.logger]{flog.info}}
 #'          }
 #'
-#'          \strong{`tryCatchLog` does only catch the above conditions, other (user-defined)
-#'          conditions are currently not catched and therefore not logged.}
+#'          \strong{`tryCatchLog` does only log the above conditions, other (user-defined)
+#'          conditions are currently not not logged but can be catched of course
+#'          by passing additional handler functions via the \code{...} argument.}
 #'
 #'          The log contains the call stack with the file names and line numbers (if available).
 #'
-#'          R does track source code references only if you set the option \code{keep.source} to TRUE via
+#'          R does track source code references of scripts only if you set the option \code{keep.source} to TRUE via
 #'          \code{options(keep.source = TRUE)}. Without this option this function cannot enrich source code references.
+#'          
 #'          If you use \command{Rscript} to start a non-interactive R script as batch job you
 #'          have to set this option since it is FALSE by default. You can add this option to your
 #'          \link{.Rprofile} file or use a startup R script that sets this option and sources your
@@ -114,9 +118,11 @@
 #'          \code{Rscript -e "options(keep.source = TRUE); source('my_main_function.R')"}
 #'
 #' @seealso \code{\link{tryLog}}, \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}},
-#'          \code{\link{getOption}}, \code{\link{last.tryCatchLog.result}}
+#'          \code{\link{getOption}}, \code{\link{last.tryCatchLog.result}},
+#'          \code{\link{set.logging.functions}}
 #'
 #' @references
+#'          \url{http://adv-r.had.co.nz/beyond-exception-handling.html}\cr
 #'          \url{https://stackoverflow.com/questions/39964040/r-catch-errors-and-continue-execution-after-logging-the-stacktrace-no-tracebac}
 #' @examples
 #' tryCatchLog(log(-1))   # logs a warning
@@ -174,9 +180,9 @@ tryCatchLog <- function(expr,
       log.msg <- build.log.output(log.entry)
 
       switch(severity,
-             ERROR = .tryCatchLog.env$error.log.func(log.msg),  # futile.logger::flog.error(log.msg),
-             WARN  = .tryCatchLog.env$warn.log.func(log.msg),   # futile.logger::flog.warn(log.msg),
-             INFO  = .tryCatchLog.env$info.log.func(log.msg)    # futile.logger::flog.info(log.msg)
+             ERROR = .tryCatchLog.env$error.log.func(log.msg),  # e. g. futile.logger::flog.error(log.msg),
+             WARN  = .tryCatchLog.env$warn.log.func(log.msg),   # e. g. futile.logger::flog.warn(log.msg),
+             INFO  = .tryCatchLog.env$info.log.func(log.msg)    # e. g. futile.logger::flog.info(log.msg)
       )
 
 

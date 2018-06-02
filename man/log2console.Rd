@@ -8,9 +8,9 @@ log2console(severity.level, msg)
 }
 \arguments{
 \item{severity.level}{String containing the severity level
-(\code{exprERROR}, \code{exprWARN} or \code{exprINFO}) of the message}
+(\code{ERROR}, \code{WARN} or \code{INFO}) of the message}
 
-\item{msg}{The message to be printed (as string).}
+\item{msg}{The message to be printed (as character).}
 }
 \value{
 The log message as it was printed to the console.
