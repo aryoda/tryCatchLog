@@ -7,6 +7,17 @@ context("test_log2console.R")
 
 
 
+# Woraround:
+# R < 3.3.0 does not yet know the functions "startsWith" and "endsWith",
+# so we need a workaround here to make the tests run on "older" R versions
+endsWith   <- function(x, suffix)
+  return(grepl(paste0(suffix, "$"), x))
+
+startsWith <- function(x, prefix)
+  return(grepl(paste0("^", prefix), x))
+
+
+
 test_that("log2console() works", {
 
   expect_output(
