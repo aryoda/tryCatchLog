@@ -22,6 +22,10 @@ environment:
     WARNINGS_ARE_ERRORS: 1
 
   matrix:
+  - R_VERSION: 3.2.0
+    R_ARCH: x64
+    CRAN: http://cran.rstudio.com
+    
   - R_VERSION: devel
     GCC_PATH: mingw_32
 
@@ -40,8 +44,6 @@ environment:
   - R_VERSION: oldrel
     CRAN: http://cran.rstudio.com
 
-  - R_VERSION: 3.2.0
-    R_ARCH: x64
 
 # Too old to make the testthat unit tests working on this R version
 #  - R_VERSION: 3.1.3
