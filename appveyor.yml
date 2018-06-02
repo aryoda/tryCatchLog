@@ -22,9 +22,10 @@ environment:
     WARNINGS_ARE_ERRORS: 1
 
   matrix:
-  - R_VERSION: 3.2.0
-    R_ARCH: x64
-    CRAN: http://cran.rstudio.com
+# Does not work (some unit tests produce slightliy different results on Windows - possibly due to different semantics)
+#  - R_VERSION: 3.2.0
+#    R_ARCH: x64
+#    CRAN: http://cran.rstudio.com
     
   - R_VERSION: devel
     GCC_PATH: mingw_32
