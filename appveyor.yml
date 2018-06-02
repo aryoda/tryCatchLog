@@ -34,8 +34,8 @@ environment:
 
   - R_VERSION: stable
 
-  - R_VERSION: patched
-    R_ARCH: x64
+#  - R_VERSION: patched
+#    R_ARCH: x64
 
   - R_VERSION: oldrel
     CRAN: http://cran.rstudio.com
