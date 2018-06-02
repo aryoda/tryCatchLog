@@ -229,14 +229,6 @@ demo(package = "tryCatchLog", topic = "tryCatchLog_demo")   # start a demo
 
 ## FAQ
 
-### Can I install the package via CRAN or from another repository
-
-A prebuilt package file is currently not available but planned (e. g. via a separate github release project).
-
-The package shall be published on [CRAN](https://cran.r-project.org/) only if there is enough demand for that.
-
-
-
 ### How do I find bug reports, feature requests and other issues?
 
 You can browse and add your own issues at https://github.com/aryoda/tryCatchLog/issues
@@ -495,6 +487,22 @@ To contribute code changes and extensions:
 
 
 ## Links
+
+### Background on R condition handling
+
+* Talk of Lionel Henry (RStudio) at eRum 2018: How to improve error handling
+  https://www.youtube.com/watch?v=-v1tp41kizk&t=0s&list=PLUBl0DoLa5SAo_XRnkQA5GtEORg9K7kMh&index=12
+
+* Beyond Exception Handling: Conditions and Restarts (Hadley Wickham):
+  http://adv-r.had.co.nz/beyond-exception-handling.html
+
+* Source [Code] References in R (Duncan Murdoch, 2010):
+  https://journal.r-project.org/archive/2010-2/RJournal_2010-2_Murdoch.pdf
+
+* Beyond Exception Handling: Conditions and Restarts (Peter Seibel, 2003 - 2005):
+  http://www.gigamonkeys.com/book/beyond-exception-handling-conditions-and-restarts.html
+  
+  
 
 ### Logging packages
 

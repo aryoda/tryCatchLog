@@ -1,21 +1,16 @@
-# library(futile.logger)
 # library(tryCatchLog)
 # library(testthat)
 
 
 
-context("append.to.last.tryCatchLog.result")
+context("test_append_to_last_tryCatchLog_result.R")
+
+
 
 # set up test context
 options("tryCatchLog.write.error.dump.file" = FALSE)
 options("tryCatchLog.silent.warnings"     = FALSE)
 options("tryCatchLog.silent.messages"     = FALSE)
-
-
-
-# flog.threshold("FATAL")                         # suppress logging of errors and warnings to avoid overly output
-# flog.threshold("INFO")
-
 
 
 

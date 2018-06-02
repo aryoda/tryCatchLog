@@ -401,6 +401,30 @@ tryCatchLog(source("your_main_script.R"))
 
 
 
+## Enabling source code references (file names and line numbers)
+
+To show **file names and line numbers** in the stack trace of the log output:
+
+* For R script files
+
+    R does track source code references of scripts only if you set `options(keep.source = TRUE)` before.
+
+    If you use `Rscript` to start a non-interactive R script as batch job you
+    have to set this option since it is FALSE by default.
+
+    You can add this option to your `.Rprofile` file or use a startup R script as stub to set this option
+
+
+* For installed packages
+
+    By default, most packages are built without source reference information.
+    Setting the environment variable `R_KEEP_PKG_SOURCE=yes` before installing a source package
+    will tell R to keep the source references.
+  
+    You can also use set `{options(keep.source.pkgs = TRUE)` before you install a package.
+
+
+
 ## FAQ
 
 You can find a FAQ with best practices at:

@@ -29,7 +29,7 @@ calling this function.
 }
 \details{
 The typical use case is to get and store the log output not only in a log file but
-also in another place that is not supported by \code{futile.logger}, e. g. in
+also in another place that is not supported by the logging framework, e. g. in
 a data base table of your application or displaying it in a GUI (user interface).
 
 Another use case is to review the last log output on the console during debugging.

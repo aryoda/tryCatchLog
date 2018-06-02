@@ -1,9 +1,8 @@
 library(testthat)
 library(tryCatchLog)
-# library(futile.logger)
 
 
-context("package loading")
+context("test_load_package.R")
 
 
 

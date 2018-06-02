@@ -1,5 +1,4 @@
 library(testthat)
-library(futile.logger)
 library(tryCatchLog)
 
 
