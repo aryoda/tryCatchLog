@@ -48,7 +48,7 @@ environment:
     PKGTYPE: source
 
 matrix:
-fast_finish: true
+  fast_finish: true
 
 # <<< end of "added"
 
