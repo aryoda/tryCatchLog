@@ -196,6 +196,14 @@ tryCatchLog <- function(expr,
     # in any case (duplicated condition or not)...
 
 
+        
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+    # Having handled a condition (calling a handler function) in withCallingHandlers does NOT stop it
+    # from propagating to other handlers up the call stack ("bubble up").
+    # This requires to call a "restart" (e. g. a predefined "muffle" [suppress] restart function).
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+    
+    
 
     # Suppresses the warning (logs it only)?
     if (silent.warnings & severity == "WARN") {
