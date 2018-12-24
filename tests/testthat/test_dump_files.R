@@ -23,7 +23,7 @@ options("tryCatchLog.silent.messages" = FALSE)
 
 # helper function to delete all existing dump files in the working directory
 # (used for test set-up)
-clean.up.dump.files <- function(path = '.') {
+clean.up.dump.files <- function(path = ".") {
   existing.dump.files <- list.files(path = path, pattern = "dump_.*\\.rda", full.names = T)
 
   if (length(existing.dump.files) > 0)
@@ -33,7 +33,7 @@ clean.up.dump.files <- function(path = '.') {
 
 
 # helper function to count the number of existing dump files
-number.of.dump.files <- function(path = '.') {
+number.of.dump.files <- function(path = ".") {
   dump.files <- list.files(path = path, pattern = "dump_.*\\.rda")
   return(length(dump.files))
 }
@@ -41,6 +41,7 @@ number.of.dump.files <- function(path = '.') {
 
 
 clean.up.dump.files()
+clean.up.dump.files("temp_subfolder")
 
 
 
@@ -184,15 +185,16 @@ test_that("dump file is created (error and dump default enabled)", {
 
 
 
-options("tryCatchLog.write.error.dump.folder" = 'temp_subfolder')
-test_that("dump file is created in a specifc (error and dump default enabled)", {
+options("tryCatchLog.write.error.dump.folder" = "temp_subfolder")
+
+test_that("dump file is created in a specifc folder (error and dump default enabled)", {
   tryCatchLog(
     log("a"),
     error = function(e) {
     }
   )
   expect_equal(number.of.dump.files('temp_subfolder'), 1)
-  clean.up.dump.files('temp_subfolder')
+  clean.up.dump.files("temp_subfolder")
 })
 
 
@@ -201,4 +203,4 @@ clean.up.dump.files()
 clean.up.dump.files('temp_subfolder')
 unlink("temp_subfolder")
 
-options("tryCatchLog.write.error.dump.file" = '.')
+options("tryCatchLog.write.error.dump.file" = ".")

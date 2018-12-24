@@ -90,18 +90,19 @@
 
 
   # Create and initialize package options if they do not already exist before loading the package.
-  # To avoid conflicts with other packages the option names use the name as prefix.
-  op <- options()
-  op.devtools <- list(
+  # To avoid conflicts with other packages coincidentally having the same option names
+  # the option names use the package name as prefix.
+  active.options  <- options()
+  default.options <- list(
     tryCatchLog.write.error.dump.file = FALSE,
-    tryCatchLog.write.error.folder = '.',
-    tryCatchLog.silent.warnings     = FALSE,
-    tryCatchLog.silent.messages     = FALSE
+    tryCatchLog.write.error.folder    = ".",
+    tryCatchLog.silent.warnings       = FALSE,
+    tryCatchLog.silent.messages       = FALSE
   )
 
-  toset <- !(names(op.devtools) %in% names(op))  # TRUE for each option that does not yet exist
+  to.set <- !(names(default.options) %in% names(active.options))  # TRUE for each option name that is not set
 
-  if (any(toset)) options(op.devtools[toset])
+  if (any(to.set)) options(default.options[to.set])
 
   invisible()
 }

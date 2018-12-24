@@ -5,10 +5,12 @@
 \title{Try an expression with condition logging and error handling}
 \usage{
 tryCatchLog(expr, ..., finally = NULL,
-  write.error.dump.file = getOption("tryCatchLog.write.error.dump.file", FALSE),
-  write.error.dump.folder = getOption("tryCatchLog.write.error.dump.folder", '.'),
-  silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
-  silent.messages = getOption("tryCatchLog.silent.messages", FALSE))
+  write.error.dump.file = getOption("tryCatchLog.write.error.dump.file",
+  FALSE),
+  write.error.dump.folder = getOption("tryCatchLog.write.error.dump.folder",
+  "."), silent.warnings = getOption("tryCatchLog.silent.warnings",
+  FALSE), silent.messages = getOption("tryCatchLog.silent.messages",
+  FALSE))
 }
 \arguments{
 \item{expr}{expression to be evaluated}
@@ -23,7 +25,7 @@ All condition handlers are passed to \code{\link{tryCatch}} as is
 
 \item{write.error.dump.file}{\code{TRUE}: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}}
 
-\item{write.error.dump.folder}{\code{path}: Saves the dump of the workspace in the specific \code{path} instead of the working directory}
+\item{write.error.dump.folder}{\code{path}: Saves the dump of the workspace in a specific folder instead of the working directory}
 
 \item{silent.warnings}{\code{TRUE}: Warnings are logged, but not propagated to the caller.\cr
 \code{FALSE}: Warnings are logged and treated according to the global
@@ -91,9 +93,8 @@ This function shall overcome some drawbacks of the standard \code{\link{tryCatch
          the call stack (\code{\link{sys.frames}}). This feature is very helpful for non-interactive R scripts ("batches").
 
          Setting the parameter \code{tryCatchLog.write.error.dump.folder} to a specific path allows to save the dump in a specific folder. 
-         If the path does not exist, the folder will be created using the recursive \code{dir.create()} function.
          If not set, the dump will be saved in the working directory. 
-
+         
          To start a post-mortem analysis after an error open a new R session and enter:
             \code{load("dump_20161016_164050.rda")   # replace the dump file name with your real file name
             debugger(last.dump)}

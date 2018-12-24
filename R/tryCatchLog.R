@@ -136,10 +136,10 @@ tryCatchLog <- function(expr,
                         # error = function(e) {if (!is.null(getOption("error", stop))) eval(getOption("error", stop)) }, # getOption("error", default = stop),
                         ...,
                         finally = NULL,
-                        write.error.dump.file = getOption("tryCatchLog.write.error.dump.file", FALSE),
-                        write.error.dump.folder = getOption("tryCatchLog.write.error.dump.folder", '.'),
-                        silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
-                        silent.messages = getOption("tryCatchLog.silent.messages", FALSE)
+                        write.error.dump.file   = getOption("tryCatchLog.write.error.dump.file", FALSE),
+                        write.error.dump.folder = getOption("tryCatchLog.write.error.dump.folder", "."),
+                        silent.warnings         = getOption("tryCatchLog.silent.warnings", FALSE),
+                        silent.messages         = getOption("tryCatchLog.silent.messages", FALSE)
                        )
 {
 
@@ -171,7 +171,8 @@ tryCatchLog <- function(expr,
       # https://bugs.r-project.org/bugzilla/show_bug.cgi?id=17116
       # An enhanced version of "dump.frames" was released in spring 2017 but does still not fulfill the requirements of tryCatchLog:
       # dump.frames(dumpto = dump.file.name, to.file = TRUE, include.GlobalEnv = TRUE)  # test it yourself!
-      dump.file.name <- format(timestamp, format = "dump_%Y%m%d_%H%M%S.rda")   # use %OS3 (= seconds incl. milliseconds) for finer precision
+      dump.file.name  <- format(timestamp, format = "dump_%Y%m%d_%H%M%S.rda")   # use %OS3 (= seconds incl. milliseconds) for finer precision
+      # TODO assert valid folder name
       dir.create(path <- write.error.dump.folder, recursive = T, showWarnings = F)
       utils::dump.frames()
       save.image(file = file.path(write.error.dump.folder, dump.file.name))

@@ -42,10 +42,10 @@
 #' tryLog(log("a"))  # logs an error
 #' @export
 tryLog <- function(expr,
-                   write.error.dump.file = getOption("tryCatchLog.write.error.dump.file", FALSE),
-                   write.error.dump.folder = getOption("tryCatchLog.write.error.dump.folder", '.'),
-                   silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
-                   silent.messages = getOption("tryCatchLog.silent.messages", FALSE))
+                   write.error.dump.file   = getOption("tryCatchLog.write.error.dump.file", FALSE),
+                   write.error.dump.folder = getOption("tryCatchLog.write.error.dump.folder", "."),
+                   silent.warnings         = getOption("tryCatchLog.silent.warnings", FALSE),
+                   silent.messages         = getOption("tryCatchLog.silent.messages", FALSE))
 {
   tryCatchLog(expr = expr,
               write.error.dump.file = write.error.dump.file,

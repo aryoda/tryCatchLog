@@ -5,6 +5,16 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
+## Version 1.1.1 (Dec. 24, 2018)
+
+* Added parameter and options to write dump files into a specific folder:
+  See new `write.error.dump.folder` parameter and new `tryCatchLog.write.error.dump.folder` option.
+  Contributed by Charles Epaillard.
+  Closes https://github.com/aryoda/tryCatchLog/issues/37
+  
+    **API breaking change:** `tryLog` has a changed API due to the newly inserted parameter `write.error.dump.folder`
+    Adjust your source code if you call `tryLog` and pass arguments by position).
+
 ## Version 1.1.0 (June 02, 2018)
 
 * Implemented feature request #10 (allow injection of own logging functions):
