@@ -13,7 +13,13 @@ https://www.gnu.org/prep/standards/standards.html#Documentation
   Closes https://github.com/aryoda/tryCatchLog/issues/37
   
     **API breaking change:** `tryLog` has a changed API due to the newly inserted parameter `write.error.dump.folder`
-    Adjust your source code if you call `tryLog` and pass arguments by position).
+    at position 3.
+    Adjust your source code if you call `tryLog` and pass arguments by position using more than 2 arguments).
+    
+* Added new function `get.pretty.tryCatchLog.options` for a convenient way of printing and logging
+  the current values of all options supported by the `tryCatchLog` package
+  
+  
 
 ## Version 1.1.0 (June 02, 2018)
 

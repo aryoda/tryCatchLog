@@ -2,6 +2,7 @@
 
 export(build.log.output)
 export(get.pretty.call.stack)
+export(get.pretty.tryCatchLog.options)
 export(is.windows)
 export(last.tryCatchLog.result)
 export(limitedLabelsCompact)
