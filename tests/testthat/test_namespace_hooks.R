@@ -6,6 +6,10 @@ context("test_namespace_hooks.R")
 
 
 
+source("init_unit_test.R")
+
+
+
 # These tests do check the namespace hook functions (for details see "?.onLoad")
 # These tests do NOT detach and reload the tryCatchLog package but call the hook functions directly.
 

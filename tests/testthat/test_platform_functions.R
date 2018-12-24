@@ -6,6 +6,10 @@ context("test_platform_functions.R")
 
 
 
+source("init_unit_test.R")
+
+
+
 test_that("NewLine is working", {
 
   # new line string is initialized

@@ -7,6 +7,10 @@ context("test_log2console.R")
 
 
 
+source("init_unit_test.R")
+
+
+
 # Woraround:
 # R < 3.3.0 does not yet know the functions "startsWith" and "endsWith",
 # so we need a workaround here to make the tests run on "older" R versions

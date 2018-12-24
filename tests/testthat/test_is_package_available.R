@@ -7,6 +7,10 @@ context("test_is_package_available.R")
 
 
 
+source("init_unit_test.R")
+
+
+
 test_that("is.package.available() works", {
   
   expect_true( tryCatchLog:::is.package.available("tryCatchLog"))

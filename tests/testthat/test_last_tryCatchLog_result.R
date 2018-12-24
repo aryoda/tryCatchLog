@@ -7,11 +7,7 @@ context("test_last_tryCatchLog_result.R")
 
 
 
-# set up test context
-options("tryCatchLog.write.error.dump.file" = FALSE)
-options("tryCatchLog.write.error.dump.folder" = ".")
-options("tryCatchLog.silent.warnings"     = FALSE)
-options("tryCatchLog.silent.messages"     = FALSE)
+source("init_unit_test.R")
 
 
 

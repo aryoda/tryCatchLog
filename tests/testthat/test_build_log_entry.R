@@ -7,11 +7,9 @@ context("test_build_log_entry.R")
 
 
 
-# set up test context
-options("tryCatchLog.write.error.dump.file" = FALSE)
-options("tryCatchLog.silent.warnings"       = FALSE)
-options("tryCatchLog.silent.messages"       = FALSE)
-options("tryCatchLog.write.error.dump.folder" = ".")
+source("init_unit_test.R")
+
+
 
 options("width" = 1000)  # default is 129
 

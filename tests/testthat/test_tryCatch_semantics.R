@@ -12,17 +12,13 @@ context("test_tryCatch_semantics.R")
 
 
 
+source("init_unit_test.R")
+
+
+
 # do restore changed error option at the end
 saved.options <- getOption("error")
 on.exit(options(error = saved.options))
-
-
-
-# set up test context
-options("tryCatchLog.write.error.dump.file" = FALSE)    # global default setting for all tryCatchLog call params "write.error.dump.file"
-options("tryCatchLog.write.error.dump.folder" = ".")
-options("tryCatchLog.silent.warnings" = FALSE)
-options("tryCatchLog.silent.messages" = FALSE)
 
 
 

@@ -13,10 +13,7 @@ context("test_dump_files.R")
 
 
 
-options("tryCatchLog.write.error.dump.file" = FALSE)
-options("tryCatchLog.write.error.dump.folder" = ".")
-options("tryCatchLog.silent.warnings" = FALSE)
-options("tryCatchLog.silent.messages" = FALSE)
+source("init_unit_test.R")
 
 
 
@@ -198,9 +195,11 @@ test_that("dump file is created in a specifc folder (error and dump default enab
 })
 
 
-#Cleanup
+
+# Cleanup ----------------------------------------------------------------------------
+
 clean.up.dump.files()
 clean.up.dump.files('temp_subfolder')
-unlink("temp_subfolder")
+unlink("temp_subfolder", recursive = TRUE)  # with the default value "FALSE" the folder is NOT deleted (see help)
 
-options("tryCatchLog.write.error.dump.file" = ".")
+options("tryCatchLog.write.error.dump.file" = ".")  # just to be sure :-)

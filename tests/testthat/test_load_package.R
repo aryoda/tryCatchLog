@@ -6,6 +6,10 @@ context("test_load_package.R")
 
 
 
+source("init_unit_test.R")
+
+
+
 # Disable these unit tests due to a bug in
 #  covr::package_coverage(type = "tests")"
 # # Error: identical(names(y), names) is not TRUE
