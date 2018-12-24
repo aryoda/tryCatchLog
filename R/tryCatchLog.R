@@ -34,6 +34,7 @@
 #'                              (no filtering, wrapping or changing of semantics).
 #' @param finally               expression to be evaluated at the end
 #' @param write.error.dump.file \code{TRUE}: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}
+#' @param write.error.dump.folder    \code{path}: Saves the dump of the workspace in a specific folder instead of the working directory
 #' @param silent.warnings       \code{TRUE}: Warnings are logged, but not propagated to the caller.\cr
 #'                              \code{FALSE}: Warnings are logged and treated according to the global
 #'                              setting in \code{\link{getOption}("warn")}. See also \code{\link{warning}}.
@@ -88,6 +89,10 @@
 #'          that led to the error. The dump contains the workspace and in the variable "last.dump"
 #'          the call stack (\code{\link{sys.frames}}). This feature is very helpful for non-interactive R scripts ("batches").
 #'
+#'          Setting the parameter \code{tryCatchLog.write.error.dump.folder} to a specific path allows to save the dump in a specific folder. 
+#           If the path does not exist, the folder will be created using the recursive \code{dir.create()} function.
+#'          If not set, the dump will be saved in the working directory. 
+#'          
 #'          To start a post-mortem analysis after an error open a new R session and enter:
 #'             \code{load("dump_20161016_164050.rda")   # replace the dump file name with your real file name
 #'             debugger(last.dump)}
@@ -132,6 +137,7 @@ tryCatchLog <- function(expr,
                         ...,
                         finally = NULL,
                         write.error.dump.file = getOption("tryCatchLog.write.error.dump.file", FALSE),
+                        write.error.dump.folder = getOption("tryCatchLog.write.error.dump.folder", '.'),
                         silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
                         silent.messages = getOption("tryCatchLog.silent.messages", FALSE)
                        )
@@ -166,9 +172,9 @@ tryCatchLog <- function(expr,
       # An enhanced version of "dump.frames" was released in spring 2017 but does still not fulfill the requirements of tryCatchLog:
       # dump.frames(dumpto = dump.file.name, to.file = TRUE, include.GlobalEnv = TRUE)  # test it yourself!
       dump.file.name <- format(timestamp, format = "dump_%Y%m%d_%H%M%S.rda")   # use %OS3 (= seconds incl. milliseconds) for finer precision
+      dir.create(path <- write.error.dump.folder, recursive = T, showWarnings = F)
       utils::dump.frames()
-      save.image(file = dump.file.name)
-
+      save.image(file = file.path(write.error.dump.folder, dump.file.name))
     }
 
 

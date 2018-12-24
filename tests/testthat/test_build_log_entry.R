@@ -11,6 +11,7 @@ context("test_build_log_entry.R")
 options("tryCatchLog.write.error.dump.file" = FALSE)
 options("tryCatchLog.silent.warnings"       = FALSE)
 options("tryCatchLog.silent.messages"       = FALSE)
+options("tryCatchLog.write.error.dump.folder" = ".")
 
 options("width" = 1000)  # default is 129
 
