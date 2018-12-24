@@ -94,6 +94,7 @@
   op <- options()
   op.devtools <- list(
     tryCatchLog.write.error.dump.file = FALSE,
+    tryCatchLog.write.error.folder = '.',
     tryCatchLog.silent.warnings     = FALSE,
     tryCatchLog.silent.messages     = FALSE
   )

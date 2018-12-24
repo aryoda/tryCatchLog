@@ -5,14 +5,17 @@
 \title{Try an expression with condition logging and error recovery}
 \usage{
 tryLog(expr,
-  write.error.dump.file = getOption("tryCatchLog.write.error.dump.file",
-  FALSE), silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
+  write.error.dump.file = getOption("tryCatchLog.write.error.dump.file", FALSE), 
+  write.error.dump.folder = getOption("tryCatchLog.write.error.dump.folder", '.'),
+  silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
   silent.messages = getOption("tryCatchLog.silent.messages", FALSE))
 }
 \arguments{
 \item{expr}{expression to be evaluated}
 
 \item{write.error.dump.file}{\code{TRUE}: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}}
+
+\item{write.error.dump.folder}{\code{path}: Saves the dump of the workspace in the specific \code{path} instead of the working directory}
 
 \item{silent.warnings}{\code{TRUE}: Warnings are logged, but not propagated to the caller.\cr
 \code{FALSE}: Warnings are logged and treated according to the global
