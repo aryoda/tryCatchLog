@@ -5,8 +5,9 @@
 \title{Try an expression with condition logging and error recovery}
 \usage{
 tryLog(expr,
-  write.error.dump.file = getOption("tryCatchLog.write.error.dump.file",
-  FALSE), silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
+  write.error.dump.file = getOption("tryCatchLog.write.error.dump.file", FALSE), 
+  write.error.dump.folder = getOption("tryCatchLog.write.error.dump.folder", '.'),
+  silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
   silent.messages = getOption("tryCatchLog.silent.messages", FALSE))
 }
 \arguments{
