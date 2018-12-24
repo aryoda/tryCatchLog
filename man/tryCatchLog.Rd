@@ -23,7 +23,7 @@ All condition handlers are passed to \code{\link{tryCatch}} as is
 
 \item{write.error.dump.file}{\code{TRUE}: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}}
 
-\item{write.error.dump.folder}{\code{path}: Saves the dump of the workspace in the specific \code{path} instead of the working directory
+\item{write.error.dump.folder}{\code{path}: Saves the dump of the workspace in the specific \code{path} instead of the working directory}
 
 \item{silent.warnings}{\code{TRUE}: Warnings are logged, but not propagated to the caller.\cr
 \code{FALSE}: Warnings are logged and treated according to the global
