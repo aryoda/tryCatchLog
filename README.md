@@ -61,8 +61,20 @@ If you have installed the vignette of the package on your local computer
 you can also read the tutorial offline via
 
 ```R
+# devtools::install(build_vignettes = TRUE)   # workaround to install the vignette if you build via RStudio
 browseVignettes("tryCatchLog")
 ```
+
+**Important:**
+
+- The vignette is only installed automatically if you install `tryCatchLog` from CRAN.
+
+- RStudio does currently **not** install the vignette HTML file if you "build and install".
+
+      Workaround manually to build and install the vignette in RStudio: 
+      
+      `devtools::install(build_vignettes = TRUE)`
+
 
 
 
