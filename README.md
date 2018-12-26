@@ -71,9 +71,8 @@ browseVignettes("tryCatchLog")
 
 - RStudio does currently **not** install the vignette HTML file if you "build and install".
 
-      Workaround manually to build and install the vignette in RStudio: 
-      
-      `devtools::install(build_vignettes = TRUE)`
+  Workaround manually to build and install the vignette in RStudio: 
+  `devtools::install(build_vignettes = TRUE)`
 
 
 
