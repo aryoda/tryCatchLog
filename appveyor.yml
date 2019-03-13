@@ -20,6 +20,7 @@ install:
 environment:
   global:
     WARNINGS_ARE_ERRORS: 1
+    USE_RTOOLS: true
 
   matrix:
 # Does not work (some unit tests produce slightliy different results on Windows - possibly due to different semantics)
