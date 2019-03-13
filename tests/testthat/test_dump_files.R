@@ -25,6 +25,8 @@ clean.up.dump.files <- function(path = ".") {
 
   if (length(existing.dump.files) > 0)
     file.remove(existing.dump.files)
+  
+  invisible(TRUE)
 }
 
 
@@ -191,6 +193,24 @@ test_that("dump file is created in a specifc folder (error and dump default enab
     }
   )
   expect_equal(number.of.dump.files('temp_subfolder'), 1)
+  clean.up.dump.files("temp_subfolder")
+})
+
+
+
+# Test case for issue #39 (errors in multi-threaded/multi-process code overwrite dump files)
+# See https://github.com/aryoda/tryCatchLog/issues/39
+test_that("dump files are not overwritten due to duplicated file names (non-deterministic test case!))", {
+  # may produce non-deterministic errors (the dump file name is time-dependent)!
+  num.trials <- 10
+  for(i in 1:num.trials) {
+    tryCatchLog(
+      log("a"),
+      error = function(e) {
+      }
+    )
+  }
+  expect_equal(number.of.dump.files('temp_subfolder'), num.trials)
   clean.up.dump.files("temp_subfolder")
 })
 

@@ -23,7 +23,9 @@ All condition handlers are passed to \code{\link{tryCatch}} as is
 
 \item{finally}{expression to be evaluated at the end}
 
-\item{write.error.dump.file}{\code{TRUE}: Saves a dump of the workspace and the call stack named \code{dump_<YYYYMMDD_HHMMSS>.rda}}
+\item{write.error.dump.file}{\code{TRUE}: Saves a dump of the workspace and the call stack named
+\code{dump_<YYYYMMDD>_at_<HHMMSS.sss>_PID_<process id>.rda}.
+This dump file name pattern shall ensure unique file names in parallel processing scenarios.}
 
 \item{write.error.dump.folder}{\code{path}: Saves the dump of the workspace in a specific folder instead of the working directory}
 

@@ -5,6 +5,15 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
+## Version 1.1.2 (March 13, 2019)
+
+* Fixed issue #39: Dump files may be overwritten when multiple errors occur at the same second
+  in the same or parallel processes. See: https://github.com/aryoda/tryCatchLog/issues/39
+* Creates a (hopefully) unique dump file name incl. milliseconds and the process id in the file name,
+  eg.: `dump_2019-03-13_at_15-39-33.086_PID_15270.rda`
+
+
+
 ## Version 1.1.1 (Dec. 24, 2018)
 
 * Added parameter and options to write dump files into a specific folder:

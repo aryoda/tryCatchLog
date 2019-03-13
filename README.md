@@ -2,7 +2,7 @@
 
 An R package to improve error handling compared to the standard tryCatch function
 
-**Current version: 1.1.1 (Dec 24, 2018).** See the [NEWS](NEWS.md) for most recent changes.
+**Current version: 1.1.2 (March 13, 2019).** See the [NEWS](NEWS.md) for most recent changes.
 
 [![Travis Build Status](https://travis-ci.org/aryoda/tryCatchLog.svg?branch=master)](https://travis-ci.org/aryoda/tryCatchLog)
 [![codecoverage statistics](https://codecov.io/gh/aryoda/tryCatchLog/branch/master/graph/badge.svg)](https://codecov.io/gh/aryoda/tryCatchLog)
@@ -42,7 +42,7 @@ The main advantages of the `tryCatchLog` function over `tryCatch` are
   **without** stopping the execution of the evaluated expression
   (unlike `tryCatch` does if you pass a warning handler function)
 
-This code was created as an answer to the stackoverflow question
+This package was initially created as an answer to the stackoverflow question.
 
 [R: Catch errors and continue execution while logging the stacktrace (no traceback available with tryCatch)](https://stackoverflow.com/questions/39964040/r-catch-errors-and-continue-execution-while-logging-the-stacktrace-no-tracebac)
 
@@ -113,7 +113,10 @@ devtools::install_github("aryoda/tryCatchLog", build_vignettes = TRUE)
 
 ### Dependencies
 
-`tryCatchLog` uses the package [`futile.logger`](https://cran.r-project.org/web/packages/futile.logger/index.html)
+`tryCatchLog` has minimal dependencies: Only base `R` and `utils`.
+
+It optionally (= if installed) uses the package
+[`futile.logger`](https://cran.r-project.org/web/packages/futile.logger/index.html)
 to write logging messages in a nice and structured format to a file or console.
 
 You can find the source code of `futile.logger` here: https://github.com/zatonovo/futile.logger
@@ -325,6 +328,20 @@ Enter the following command in a shell console (or via a shell script like `bash
 ```R
 Rscript -e "options(keep.source = TRUE); source('demo/tryCatchLog_demo.R')"  # source your own script
 ```
+
+
+### Does `tryCatchLog` work in parallelized processing scenarios?
+
+Yes. `tryCatchLog` is agnostic of parallel oder multi-threading scenarios since base R does use only one process.
+
+You only have to consider two things:
+
+1. The used logging framework is correctly configured for each parallel process to not overwrite the
+   log file of another process (eg. use the process ID in the logging file name)
+2. Be aware that theoretically a dump file could be overwritten by another dump file if
+   you have two errors within the same millisecond within the same process ID
+   This is very very unlikely!
+
 
 
 ### How do I perform a post-mortem analysis of my crashed R script?
