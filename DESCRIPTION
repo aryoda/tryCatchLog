@@ -1,6 +1,6 @@
 Package: tryCatchLog
 Title: Advanced 'tryCatch()' and 'try()' Functions
-Version: 1.1.2
+Version: 1.1.3
 Authors@R: c(
   person("Jürgen", "Altfeld", email = "jaltfeld@altfeld-im.de", role = c("aut", "cre", "cph")),
   person("Charles", "Epaillard", email = "charles.epaillard@gmail.com", role = "ctb")

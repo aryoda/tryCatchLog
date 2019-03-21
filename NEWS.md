@@ -5,7 +5,13 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
-## Version 1.1.2 (March 13, 2019)
+## Version 1.1.3 (March 21, 2019)
+
+* Fixed issue #41: Error when the `tryCatchLog` packages was not attached first using `library` or `depends`
+
+
+
+## Version 1.1.2 (March 13, 2019) - published at CRAN (March 20, 2019)
 
 * Fixed issue #39: Dump files may be overwritten when multiple errors occur at the same second
   in the same or parallel processes. See: https://github.com/aryoda/tryCatchLog/issues/39

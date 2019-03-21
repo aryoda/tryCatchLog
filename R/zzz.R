@@ -42,7 +42,7 @@
 
 
 # Package-global variables are stored in a package-internal environment.
-# This is a work-around to keep a package-internal state between differnt
+# This is a work-around to keep a package-internal state between differnet
 # calls of package functions.
 .tryCatchLog.env <- new.env(parent = emptyenv())   # hidden variable (from whom?)
 
@@ -59,24 +59,33 @@
   # packageStartupMessage("To get an overview over the package enter: help(package = 'tryCatchLog')")
   # packageStartupMessage(paste("Library path (libname):", libname))
 
-  .tryCatchLog.env$newline <- determine.platform.NewLine()
+  # .tryCatchLog.env$newline <- determine.platform.NewLine()
+  # 
+  # 
+  # 
+  # # Decide which logging functions to use
+  # if (is.package.available("futile.logger")) {
+  #   packageStartupMessage("Using futile.logger for logging...")
+  #   set.logging.functions(futile.logger::flog.error, futile.logger::flog.warn, futile.logger::flog.info)
+  # } else {
+  #   packageStartupMessage("futile.logger not found. Using tryCatchLog-internal functions for logging...")
+  #   set.logging.functions()    # Default: Activate the package-internal minimal logging functions
+  # }
 
-
-  
-  # Decide which logging functions to use
-  if (is.package.available("futile.logger")) {
+  # Indicate which logging functions to use
+  if (.tryCatchLog.env$found.futile.logger == TRUE) {             # is.package.available("futile.logger")) {
     packageStartupMessage("Using futile.logger for logging...")
-    set.logging.functions(futile.logger::flog.error, futile.logger::flog.warn, futile.logger::flog.info)
   } else {
     packageStartupMessage("futile.logger not found. Using tryCatchLog-internal functions for logging...")
-    set.logging.functions()    # Default: Activate the package-internal minimal logging functions
   }
-
+  
 }
 
 
 
 # Package "constructor" hook
+# See section ‘Good practice’ in '?.onAttach', eg.:
+# Loading a namespace should where possible be silent, with startup messages given by .onAttach.
 .onLoad <- function(libname, pkgname) {
 
 
@@ -104,5 +113,24 @@
 
   if (any(to.set)) options(default.options[to.set])
 
+  
+  
+  # Identify the correct new line character(s) for the current platform
+  .tryCatchLog.env$newline <- determine.platform.NewLine()
+  
+  
+  
+  # Decide which logging functions to use
+  if (is.package.available("futile.logger")) {
+    # packageStartupMessage("Using futile.logger for logging...")  # be silent in .onLoad (best practice)
+    set.logging.functions(futile.logger::flog.error, futile.logger::flog.warn, futile.logger::flog.info)
+    .tryCatchLog.env$found.futile.logger <- TRUE
+  } else {
+    # packageStartupMessage("futile.logger not found. Using tryCatchLog-internal functions for logging...")  # be silent in .onLoad (best practice)
+    set.logging.functions()    # Default: Activate the package-internal minimal logging functions
+    .tryCatchLog.env$found.futile.logger <- FALSE
+  }
+  
+  
   invisible()
 }

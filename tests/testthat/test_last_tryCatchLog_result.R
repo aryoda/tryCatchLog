@@ -1,4 +1,4 @@
-# library(tryCatchLog)
+# library(tryCatchLog)  # is commented out. Why?
 library(testthat)
 
 

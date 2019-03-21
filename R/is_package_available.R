@@ -17,12 +17,14 @@
 
 
 
-#' Checks if a package is installed an can be loaded
+#' Checks if a package is installed and can be loaded
 #'
 #' Use this function to check for optional package dependencies
 #' within this package.
 #'
 #' This is a package-internal function!
+#'
+#' See section ‘Good practice’ in '?.onAttach'.
 #'
 #' @param package.name   Name of the package (as string)
 #'

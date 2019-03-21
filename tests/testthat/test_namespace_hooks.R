@@ -36,7 +36,9 @@ test_that("internal package state is initialized", {
   with_mock(
     `tryCatchLog:::determine.platform.NewLine` = function() return(expected_Newline_value),
     `tryCatchLog:::is.package.available` = function(pkg.name) return(FALSE),
-    expect_message(tryCatchLog:::.onAttach(".", "tryCatchLog"),
+    expect_message({ tryCatchLog:::.onLoad(".", "tryCatchLog")
+                     tryCatchLog:::.onAttach(".", "tryCatchLog")
+                   },
                    "futile.logger not found. Using tryCatchLog-internal functions for logging",
                    info = "with no installed logging package the package-internal logging functions must be used")
   )
@@ -52,7 +54,8 @@ test_that("internal package state is initialized", {
 
   # DIRTY: Reset to correct value to avoid side effects for other unit tests
   # If this line fails many other unit test results may be wrong...
-  tryCatchLog:::.onAttach(".", "tryCatchLog")
+  tryCatchLog:::.onLoad(".", "tryCatchLog")
+  # tryCatchLog:::.onAttach(".", "tryCatchLog")  # old call (before fixing issue #41)
 
   # Check reset: New line string is initialized
   expect_true(tryCatchLog::platform.NewLine() %in% c("\n", "\r\n"))

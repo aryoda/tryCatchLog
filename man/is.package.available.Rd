@@ -2,7 +2,7 @@
 % Please edit documentation in R/is_package_available.R
 \name{is.package.available}
 \alias{is.package.available}
-\title{Checks if a package is installed an can be loaded}
+\title{Checks if a package is installed and can be loaded}
 \usage{
 is.package.available(package.name)
 }
@@ -20,6 +20,8 @@ within this package.
 }
 \details{
 This is a package-internal function!
+
+See section ‘Good practice’ in '?.onAttach'.
 }
 \examples{
 tryCatchLog:::is.package.available("tryCatchLog")  # must be TRUE :-)
