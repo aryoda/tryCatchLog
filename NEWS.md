@@ -7,11 +7,13 @@ https://www.gnu.org/prep/standards/standards.html#Documentation
 
 ## Version 1.1.4 (March 25, 2019) HOTFIX for CRAN
 
-* Fixes the issue #41: Error when the `tryCatchLog` package was not attached first using `library` or `depends`
+* Fixes the issue #41: Error when the `tryCatchLog` package was not attached first using `library` or `depends` (https://github.com/aryoda/tryCatchLog/issues/41)
 * Added simple unit test for issue #41
 * Restructured some unit tests since `testthat` with `devtools` has a known limitation required
   by some tests: "Can't detach package in tests"
   (https://github.com/r-lib/devtools/issues/1797)
+* Removed german umlaut from the `DESCRIPTION` file to keep it ASCII-only
+  (required due to a new note produced by the winbuilder service)
 
 
 

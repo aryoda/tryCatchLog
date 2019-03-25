@@ -51,7 +51,7 @@ source("disable_logging_output.R")
 
 # unit tests ------------------------------------------------------------------------------------------------------
 
-context("dump.to.file")
+# context("dump.to.file")  # confusing
 
 
 test_that("no dump file is created without an error", {
