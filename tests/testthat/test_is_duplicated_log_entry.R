@@ -1,5 +1,5 @@
 library(testthat)
-library(tryCatchLog)
+# library(tryCatchLog)  # do NOT load the library otherwise the test coverage is reported wrongly (not counted)
 
 
 context("test_is_duplicated_log_entry.R")

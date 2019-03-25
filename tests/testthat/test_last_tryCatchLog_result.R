@@ -1,4 +1,4 @@
-library(tryCatchLog)  # was commented out. Why?
+# library(tryCatchLog)  # is commented out. Why? Because the code coverage would not count correctly
 library(testthat)
 
 
