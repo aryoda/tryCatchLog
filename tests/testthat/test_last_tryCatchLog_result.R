@@ -1,4 +1,4 @@
-# library(tryCatchLog)  # is commented out. Why?
+library(tryCatchLog)  # was commented out. Why?
 library(testthat)
 
 

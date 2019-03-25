@@ -5,9 +5,19 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
-## Version 1.1.3 (March 21, 2019)
+## Version 1.1.4 (March 25, 2019) HOTFIX for CRAN
 
-* Fixed issue #41: Error when the `tryCatchLog` packages was not attached first using `library` or `depends`
+* Fixes the issue #41: Error when the `tryCatchLog` package was not attached first using `library` or `depends`
+* Added simple unit test for issue #41
+* Restructured some unit tests since `testthat` with `devtools` has a known limitation required
+  by some tests: "Can't detach package in tests"
+  (https://github.com/r-lib/devtools/issues/1797)
+
+
+
+## Version 1.1.3 (March 21, 2019) HOTFIX (github only)
+
+* Release candidate to fix issue #41: Error when the `tryCatchLog` package was not attached first using `library` or `depends`
 
 
 
