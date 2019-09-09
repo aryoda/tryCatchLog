@@ -1,8 +1,10 @@
 # tryCatchLog
 
-An R package to improve error handling compared to the standard tryCatch function
+An R package to improve error handling compared to the standard `tryCatch` function
 
 **Current version: 1.1.4 HOTFIX FOR CRAN (March 25, 2019).** See the [NEWS](NEWS.md) for the most recent changes.
+
+Note: The code coverage of the unit tests is above 90 % but `covr` does not support package unloading in unit tests so the reported code coverage in the `codecov` badge is less.
 
 [![Travis Build Status](https://travis-ci.org/aryoda/tryCatchLog.svg?branch=master)](https://travis-ci.org/aryoda/tryCatchLog)
 [![codecoverage statistics](https://codecov.io/gh/aryoda/tryCatchLog/branch/master/graph/badge.svg)](https://codecov.io/gh/aryoda/tryCatchLog)
@@ -121,10 +123,8 @@ to write logging messages in a nice and structured format to a file or console.
 
 You can find the source code of `futile.logger` here: https://github.com/zatonovo/futile.logger
 
-Note: To use your own logging function you just have to change the logging function calls in the file `R/tryCatchLog.R`
-      and [`source` the file](#option-2-source-the-code-instead-of-installing-a-package) or
-      [rebuild the package from source using RStudio](#build-the-trycatchlog-package-from-source-code-using-rstudio).
-      There is also an open [feature request to allow injection of your own logging functions](https://github.com/aryoda/tryCatchLog/issues/10).
+Note: To use your own logging functionality you just have to register your logging functions
+via `set.logging.functions()`. If the package `futile.logger` is installed it will be used automatically as default, otherwise a very basic internal logging function `log2console()` is used (that does not support any convenience functionality like setting the verbosity level but minimizes the dependencies from any other logging framework).
 
 
 
