@@ -2,7 +2,7 @@
 
 An R package to improve error handling compared to the standard `tryCatch` function
 
-**Current version: 1.1.4 HOTFIX FOR CRAN (March 25, 2019).** See the [NEWS](NEWS.md) for the most recent changes.
+**Current version: 1.1.5 (Oct. 2019).** See the [NEWS](NEWS.md) for the most recent changes.
 
 Note: The code coverage of the unit tests is above 90 % but `covr` does not support package unloading in unit tests so the reported code coverage in the `codecov` badge is less.
 
