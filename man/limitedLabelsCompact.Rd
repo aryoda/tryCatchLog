@@ -17,7 +17,9 @@ limitedLabelsCompact(value, compact = FALSE,
 Must be between 40 and 1000}
 }
 \value{
-A list of strings (one for each call)
+A list of strings (one for each call).
+                If \code{compact} is \code{TRUE} at the last call is returned even if it does not contain
+                a source code reference.
 }
 \description{
 Converts a call stack into a list of printable strings ("labels") with a limited length per call.

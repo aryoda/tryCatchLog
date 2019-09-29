@@ -2,7 +2,7 @@
 % Please edit documentation in R/build_log_entry.R
 \name{build.log.entry}
 \alias{build.log.entry}
-\title{Creates a log entry row containing all relevant logging information in columns}
+\title{Creates a log entry as a single \code{data.frame} row containing all relevant logging information in columns}
 \usage{
 build.log.entry(timestamp, severity, msg.text, call.stack, dump.file.name,
   omit.call.stack.items = 0)

@@ -292,6 +292,20 @@ flog.threshold(ERROR)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 
 
 
+### How can I suppress the full (and even the compact) call stack trace to simplify my log?
+
+Since version 1.1.5 (Oct. 2019) `tryCatchLog` and `tryCatch` have two additional arguments named
+`include.full.call.stack` and `include.compact.call.stack` which can also be configured globally
+via options.
+
+```R
+tryCatchLog(log(-1), include.full.call.stack = FALSE)  # specify per call
+tryCatchLog(log(-1), include.full.call.stack = FALSE, include.compact.call.stack = FALSE)  # shows only the message
+options(include.full.call.stack = FALSE)               # or configure it globally
+tryCatchLog(log(-1))                                   # is the same as the first call above
+```
+
+
 ### The stack trace does not contain script file names and line number. How can I enable this?
 
 You have to set the option `keep.source` to `TRUE` in your `.Rprofile` file (or the in the Rscript command

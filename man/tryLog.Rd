@@ -10,7 +10,11 @@ tryLog(expr,
   write.error.dump.folder = getOption("tryCatchLog.write.error.dump.folder",
   "."), silent.warnings = getOption("tryCatchLog.silent.warnings",
   FALSE), silent.messages = getOption("tryCatchLog.silent.messages",
-  FALSE))
+  FALSE),
+  include.full.call.stack = getOption("tryCatchLog.include.full.call.stack",
+  TRUE),
+  include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack",
+  TRUE))
 }
 \arguments{
 \item{expr}{expression to be evaluated}
@@ -21,12 +25,24 @@ This dump file name pattern shall ensure unique file names in parallel processin
 
 \item{write.error.dump.folder}{\code{path}: Saves the dump of the workspace in a specific folder instead of the working directory}
 
-\item{silent.warnings}{\code{TRUE}: Warnings are logged, but not propagated to the caller.\cr
+\item{silent.warnings}{\code{TRUE}: Warnings are logged only, but not propagated to the caller.\cr
 \code{FALSE}: Warnings are logged and treated according to the global
 setting in \code{\link{getOption}("warn")}. See also \code{\link{warning}}.}
 
 \item{silent.messages}{\code{TRUE}: Messages are logged, but not propagated to the caller.\cr
 \code{FALSE}: Messages are logged and propagated to the caller.}
+
+\item{include.full.call.stack}{Flag of type \code{\link{logical}}:
+Shall the full call stack be included in the log output? Since the full
+call stack may be very long and the compact call stack has enough details
+normally the full call stack can be omitted by passing \code{FALSE}.
+The default value can be changed globally by setting the option \code{tryCatchLog.include.full.call.stack}.}
+
+\item{include.compact.call.stack}{Flag of type \code{\link{logical}}:
+Shall the compact call stack (including only calls with source code references)
+be included in the log output? Note: If you ommit both the full and compact
+call stacks the message text will be output without call stacks.
+The default value can be changed globally by setting the option \code{tryCatchLog.include.compact.call.stack}.}
 }
 \value{
 The value of the expression (if \code{expr} is evaluated without an error.\cr
