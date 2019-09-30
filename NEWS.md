@@ -5,7 +5,7 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
-## Version 1.1.5 (Sept 31, 2019)
+## Version 1.1.5 (Sept 30, 2019)
 
 * Implemented feature request #44: Support configurable suppression of compact and full stack trace
   (https://github.com/aryoda/tryCatchLog/issues/44).

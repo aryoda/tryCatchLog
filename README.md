@@ -1,6 +1,6 @@
 # tryCatchLog
 
-An R package to improve error handling compared to the standard `tryCatch` function
+An R package to improve the error handling of the standard `tryCatch` and `try` function
 
 **Current version: 1.1.5 (Oct. 2019).** See the [NEWS](NEWS.md) for the most recent changes.
 
