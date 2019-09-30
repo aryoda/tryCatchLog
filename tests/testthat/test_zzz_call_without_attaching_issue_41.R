@@ -24,8 +24,14 @@ source("init_unit_test.R")
 test_that("tryCatchLog functions do work without attaching the package with 'library'", {
 
   # print("tryCatchLog" %in% .packages())   # https://stackoverflow.com/a/37668625
+
   
-  # testthat::skip("not yet working test case...")
+  
+  # Disable these unit tests due to a problem in
+  #  covr::package_coverage(type = "tests")"
+  # See test_load_package.R for details!
+  skip_if_not(("covr" %in% loadedNamespaces()) == FALSE, "This unit test is skipped during code coverage profiling with 'covr' due to a bug")
+  skip_on_travis()  # since I am using travis CI on github to derive the code coverage with covr
   
   
   

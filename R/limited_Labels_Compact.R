@@ -29,7 +29,9 @@
 #' @param maxwidth Maximum number of characters per call in the return value (longer strings will be cutted).
 #'                 Must be between 40 and 1000
 #'
-#' @return         A list of strings (one for each call)
+#' @return         A list of strings (one for each call).
+#'                 If \code{compact} is \code{TRUE} at the last call is returned even if it does not contain
+#'                 a source code reference.
 #'
 #' @details        R does track source code references only if you set the option "keep.source" to TRUE via
 #'                 \code{options(keep.source = TRUE)}. Without this option this function cannot enrich source code references.

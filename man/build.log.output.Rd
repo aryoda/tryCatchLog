@@ -4,8 +4,11 @@
 \alias{build.log.output}
 \title{Creates a single string suited as logging output}
 \usage{
-build.log.output(log.results, include.full.call.stack = TRUE,
-  include.severity = TRUE, include.timestamp = FALSE,
+build.log.output(log.results,
+  include.full.call.stack = getOption("tryCatchLog.include.full.call.stack",
+  TRUE),
+  include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack",
+  TRUE), include.severity = TRUE, include.timestamp = FALSE,
   use.platform.newline = FALSE)
 }
 \arguments{
@@ -15,7 +18,13 @@ containing the logging information to be prepared for the logging output.}
 
 \item{include.full.call.stack}{Flag of type \code{\link{logical}}:
 Shall the full call stack be included in the log output? Since the full
-call stack may be very long it can be omitted by passing \code{FALSE}.}
+call stack may be very long and the compact call stack has enough details
+normally the full call stack can be omitted by passing \code{FALSE}.}
+
+\item{include.compact.call.stack}{Flag of type \code{\link{logical}}:
+Shall the compact call stack (including only calls with source code references)
+be included in the log output? Note: If you ommit both the full and compact
+call stacks the message text will be output without call stacks.}
 
 \item{include.severity}{\code{logical} switch if the severity level (e. g. ERROR) shall be
 included in the output}
@@ -39,8 +48,12 @@ To view the formatted output print the logging output in a console use \code{\li
 (instead of printing the output with \code{\link{print}} which shows the newline escape codes).
 }
 \note{
-Supports also a single row created by the package internal function \code{\link{build.log.entry}}
-              as \code{log.results} argument.
+The logged call stack details (compact, full or both) can be configured globally
+              using the options \code{tryCatchLog.include.full.call.stack}
+              and \code{tryCatchLog.include.compact.call.stack}.
+
+              The result of the package internal function \code{\link{build.log.entry}}
+              can be passed as \code{log.results} argument.
 }
 \seealso{
 \code{\link{last.tryCatchLog.result}}

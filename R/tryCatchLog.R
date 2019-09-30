@@ -37,12 +37,21 @@
 #'                              \code{dump_<YYYYMMDD>_at_<HHMMSS.sss>_PID_<process id>.rda}.
 #'                              This dump file name pattern shall ensure unique file names in parallel processing scenarios.
 #' @param write.error.dump.folder    \code{path}: Saves the dump of the workspace in a specific folder instead of the working directory
-#' @param silent.warnings       \code{TRUE}: Warnings are logged, but not propagated to the caller.\cr
+#' @param silent.warnings       \code{TRUE}: Warnings are logged only, but not propagated to the caller.\cr
 #'                              \code{FALSE}: Warnings are logged and treated according to the global
 #'                              setting in \code{\link{getOption}("warn")}. See also \code{\link{warning}}.
 #' @param silent.messages       \code{TRUE}: Messages are logged, but not propagated to the caller.\cr
 #'                              \code{FALSE}: Messages are logged and propagated to the caller.
-#'
+#' @param include.full.call.stack  Flag of type \code{\link{logical}}:
+#'                     Shall the full call stack be included in the log output? Since the full
+#'                     call stack may be very long and the compact call stack has enough details
+#'                     normally the full call stack can be omitted by passing \code{FALSE}.
+#'                     The default value can be changed globally by setting the option \code{tryCatchLog.include.full.call.stack}.
+#' @param include.compact.call.stack Flag of type \code{\link{logical}}:
+#'                     Shall the compact call stack (including only calls with source code references)
+#'                     be included in the log output? Note: If you ommit both the full and compact
+#'                     call stacks the message text will be output without call stacks.
+#'                     The default value can be changed globally by setting the option \code{tryCatchLog.include.compact.call.stack}.
 #' @return                     the value of the expression passed in as parameter "expr"
 #'
 #' @details This function shall overcome some drawbacks of the standard \code{\link{tryCatch}} function.\cr
@@ -138,11 +147,13 @@ tryCatchLog <- function(expr,
                         # error = function(e) {if (!is.null(getOption("error", stop))) eval(getOption("error", stop)) }, # getOption("error", default = stop),
                         ...,
                         finally = NULL,
-                        write.error.dump.file   = getOption("tryCatchLog.write.error.dump.file", FALSE),
-                        write.error.dump.folder = getOption("tryCatchLog.write.error.dump.folder", "."),
-                        silent.warnings         = getOption("tryCatchLog.silent.warnings", FALSE),
-                        silent.messages         = getOption("tryCatchLog.silent.messages", FALSE)
-                       )
+                        write.error.dump.file      = getOption("tryCatchLog.write.error.dump.file", FALSE),
+                        write.error.dump.folder    = getOption("tryCatchLog.write.error.dump.folder", "."),
+                        silent.warnings            = getOption("tryCatchLog.silent.warnings", FALSE),
+                        silent.messages            = getOption("tryCatchLog.silent.messages", FALSE),
+                        include.full.call.stack    = getOption("tryCatchLog.include.full.call.stack", TRUE),
+                        include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack", TRUE)
+                        )
 {
 
 
@@ -192,7 +203,9 @@ tryCatchLog <- function(expr,
 
     if (!is.duplicated.log.entry(log.entry)) {
 
-      log.msg <- build.log.output(log.entry)
+      log.msg <- build.log.output(log.entry,
+                                  include.full.call.stack = include.full.call.stack,
+                                  include.compact.call.stack = include.compact.call.stack)
 
       switch(severity,
              ERROR = .tryCatchLog.env$error.log.func(log.msg),  # e. g. futile.logger::flog.error(log.msg),

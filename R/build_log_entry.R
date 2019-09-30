@@ -17,7 +17,7 @@
 
 
 
-#' Creates a log entry row containing all relevant logging information in columns
+#' Creates a log entry as a single \code{data.frame} row containing all relevant logging information in columns
 #'
 #' The serverity level should correspond to the condition class.
 #'

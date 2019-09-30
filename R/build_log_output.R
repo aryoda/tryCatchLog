@@ -27,7 +27,12 @@
 #'                     containing the logging information to be prepared for the logging output.
 #' @param include.full.call.stack  Flag of type \code{\link{logical}}:
 #'                     Shall the full call stack be included in the log output? Since the full
-#'                     call stack may be very long it can be omitted by passing \code{FALSE}.
+#'                     call stack may be very long and the compact call stack has enough details
+#'                     normally the full call stack can be omitted by passing \code{FALSE}.
+#' @param include.compact.call.stack Flag of type \code{\link{logical}}:
+#'                     Shall the compact call stack (including only calls with source code references)
+#'                     be included in the log output? Note: If you ommit both the full and compact
+#'                     call stacks the message text will be output without call stacks.
 #' @param include.severity   \code{logical} switch if the severity level (e. g. ERROR) shall be
 #'                           included in the output
 #' @param include.timestamp  \code{logical} switch if the timestamp of the catched condition shall be
@@ -47,13 +52,18 @@
 #' @seealso      \code{\link{last.tryCatchLog.result}}
 #'               \code{\link{build.log.entry}}
 #'
-#' @note         Supports also a single row created by the package internal function \code{\link{build.log.entry}}
-#'               as \code{log.results} argument.
+#' @note         The logged call stack details (compact, full or both) can be configured globally
+#'               using the options \code{tryCatchLog.include.full.call.stack}
+#'               and \code{tryCatchLog.include.compact.call.stack}.
+#' 
+#'               The result of the package internal function \code{\link{build.log.entry}}
+#'               can be passed as \code{log.results} argument.
 build.log.output <- function(log.results,
-                             include.full.call.stack = TRUE,
-                             include.severity = TRUE,
-                             include.timestamp = FALSE,
-                             use.platform.newline = FALSE) {
+                             include.full.call.stack    = getOption("tryCatchLog.include.full.call.stack", TRUE),
+                             include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack", TRUE),
+                             include.severity           = TRUE,
+                             include.timestamp          = FALSE,
+                             use.platform.newline       = FALSE) {
 
   # TODO Add arguments for incl.timestamp + incl.severity later (redundant output if a logging framework is used!)
 
@@ -75,15 +85,18 @@ build.log.output <- function(log.results,
                   "\n\n",
                   if (nchar(log.results$dump.file.name[i]) > 0)
                     paste0("Created dump file: ", log.results$dump.file.name[i], "\n\n"),
-                  "Compact call stack:",
-                  "\n",
-                  log.results$compact.stack.trace[i],
-                  "\n\n",
-                  if (include.full.call.stack) {paste0("Full call stack:",
-                                                "\n",
-                                                log.results$full.stack.trace[i],
-                                                "\n\n")
-                                               }
+                  if (include.compact.call.stack) {
+                    paste0("Compact call stack:",
+                           "\n",
+                           log.results$compact.stack.trace[i],
+                           "\n\n")
+                  },
+                  if (include.full.call.stack) {
+                    paste0("Full call stack:",
+                           "\n",
+                           log.results$full.stack.trace[i],
+                           "\n\n")
+                  }
            )
 
     i <- i + 1

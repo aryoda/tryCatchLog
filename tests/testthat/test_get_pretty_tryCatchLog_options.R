@@ -17,7 +17,7 @@ test_that("internal function get.pretty.option.value() works", {
   res <- tryCatchLog:::get.pretty.option.value("warn")
   
   # Should be: "Option warn = 0 (double)"
-  expect_match(res, "Option warn = -?[0123456789]+ \\(double\\)")
+  expect_match(res, "Option warn = -?[0123456789]+ \\(([a-zA-Z]+)\\)")
   
   
   
