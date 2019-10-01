@@ -24,6 +24,7 @@ environment:
   global:
     WARNINGS_ARE_ERRORS: 1
     USE_RTOOLS: true
+    PKGTYPE: both
     # DISABLED SINCE IT DOES NOT WORK (still build errors due to missing "suggested" packages like testhtat)
     #
     # Avoids errors of the form "Package suggested but not available" when executing
