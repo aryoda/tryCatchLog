@@ -24,8 +24,11 @@ environment:
   global:
     WARNINGS_ARE_ERRORS: 1
     USE_RTOOLS: true
+    # uses binary packages if available otherwise source packages
+    # important for devel build which may lack binary packages causing the CI builds to fail quite early (fast_finish: true)
+    # Note: Using source packages only may increase the build time massively
     PKGTYPE: both
-    # DISABLED SINCE IT DOES NOT WORK (still build errors due to missing "suggested" packages like testhtat)
+    # DISABLED SINCE IT DOES NOT WORK (still build errors due to missing "suggested" packages like testthat)
     #
     # Avoids errors of the form "Package suggested but not available" when executing
     #   R CMD check tryCatchLog.tar.gz --no-manual --as-cran --install-args=--build
@@ -40,13 +43,6 @@ environment:
 #  - R_VERSION: 3.2.0
 #    R_ARCH: x64
 #    CRAN: http://cran.rstudio.com
-    
-  - R_VERSION: devel
-    GCC_PATH: mingw_32
-
-  - R_VERSION: devel
-    R_ARCH: x64
-    GCC_PATH: mingw_64
 
   - R_VERSION: release
     R_ARCH: x64
@@ -59,6 +55,16 @@ environment:
   - R_VERSION: oldrel
     CRAN: http://cran.rstudio.com
 
+# build the devel versions as last jobs (otherwise matrix "fast_finish: true" would stop
+# when the devel version makes problems like missing packages even though
+# the non-devel versions would build successfully)
+
+  - R_VERSION: devel
+    GCC_PATH: mingw_32
+
+  - R_VERSION: devel
+    R_ARCH: x64
+    GCC_PATH: mingw_64
 
 # Too old to make the testthat unit tests working on this R version
 #  - R_VERSION: 3.1.3
@@ -82,11 +88,12 @@ matrix:
 # - travis-tool.sh install_github hadley/devtools
 # - travis-tool.sh install_r ggplot2
 build_script:
-  - travis-tool.sh install_r covr
-  - travis-tool.sh install_r testthat
-  - travis-tool.sh install_r knitr
-  - travis-tool.sh install_r rmarkdown
-  - travis-tool.sh install_r futile.logger
+# install_deps should always work - no need to install suggested packages manually...
+#  - travis-tool.sh install_r covr
+#  - travis-tool.sh install_r testthat
+#  - travis-tool.sh install_r knitr
+#  - travis-tool.sh install_r rmarkdown
+#  - travis-tool.sh install_r futile.logger
   - travis-tool.sh install_deps
 
 test_script:
