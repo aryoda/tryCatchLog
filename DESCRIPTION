@@ -21,5 +21,6 @@ Suggests:
     futile.logger,
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    covr
 VignetteBuilder: knitr
