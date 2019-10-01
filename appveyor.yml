@@ -21,6 +21,13 @@ environment:
   global:
     WARNINGS_ARE_ERRORS: 1
     USE_RTOOLS: true
+    # Avoids errors of the form "Package suggested but not available" when executing
+    #   R CMD check tryCatchLog.tar.gz --no-manual --as-cran --install-args=--build
+    # Packages suggested but not available:
+    #   'futile.logger', 'testthat', 'knitr', 'rmarkdown', 'covr'
+The suggested packages are required for a complete check.
+    _R_CHECK_FORCE_SUGGESTS_: false
+    
 
   matrix:
 # Does not work (some unit tests produce slightliy different results on Windows - possibly due to different semantics)
