@@ -76,7 +76,16 @@ matrix:
 
 # <<< end of "added"
 
+# To install packages manuall you could add:
+# - travis-tool.sh install_github RDatatable/data.table
+# - travis-tool.sh install_github hadley/devtools
+# - travis-tool.sh install_r ggplot2
 build_script:
+  - travis-tool.sh install_r covr
+  - travis-tool.sh install_r testthat
+  - travis-tool.sh install_r knitr
+  - travis-tool.sh install_r rmarkdown
+  - travis-tool.sh install_r futile.logger
   - travis-tool.sh install_deps
 
 test_script:
