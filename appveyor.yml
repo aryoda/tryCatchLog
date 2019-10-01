@@ -1,5 +1,8 @@
 # DO NOT CHANGE the "init" and "install" sections below
 
+# For details see:
+# https://github.com/krlmlr/r-appveyor
+
 # Download script file from GitHub
 init:
   ps: |
@@ -21,12 +24,14 @@ environment:
   global:
     WARNINGS_ARE_ERRORS: 1
     USE_RTOOLS: true
+    # DISABLED SINCE IT DOES NOT WORK (still build errors due to missing "suggested" packages like testhtat)
+    #
     # Avoids errors of the form "Package suggested but not available" when executing
     #   R CMD check tryCatchLog.tar.gz --no-manual --as-cran --install-args=--build
     # Packages suggested but not available:
     #   'futile.logger', 'testthat', 'knitr', 'rmarkdown', 'covr'
     # The suggested packages are required for a complete check.
-    _R_CHECK_FORCE_SUGGESTS_: false
+    # _R_CHECK_FORCE_SUGGESTS_: false
     
 
   matrix:
