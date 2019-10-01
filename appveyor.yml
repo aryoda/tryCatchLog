@@ -25,7 +25,7 @@ environment:
     #   R CMD check tryCatchLog.tar.gz --no-manual --as-cran --install-args=--build
     # Packages suggested but not available:
     #   'futile.logger', 'testthat', 'knitr', 'rmarkdown', 'covr'
-The suggested packages are required for a complete check.
+    # The suggested packages are required for a complete check.
     _R_CHECK_FORCE_SUGGESTS_: false
     
 
