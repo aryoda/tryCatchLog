@@ -13,24 +13,24 @@ source("init_unit_test.R")
 
 
 test_that("internal function get.pretty.option.value() works", {
-  
+
   res <- tryCatchLog:::get.pretty.option.value("warn")
-  
+
   # Should be: "Option warn = 0 (double)"
   expect_match(res, "Option warn = -?[0123456789]+ \\(([a-zA-Z]+)\\)")
-  
-  
-  
+
+
+
   res2 <- tryCatchLog:::get.pretty.option.value("this.option does not exist for sure")
-  
+
   expect_match(res2, "Option this.option does not exist for sure = (not set)", fixed = TRUE)
-  
+
 })
 
 
 
 test_that("get.pretty.tryCatchLog.options() works", {
-  
+
   res <- get.pretty.tryCatchLog.options()
 
   expected <- paste("Option tryCatchLog.write.error.dump.file = FALSE (logical)",

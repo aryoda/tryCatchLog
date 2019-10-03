@@ -29,14 +29,14 @@
 #' @param package.name   Name of the package (as string)
 #'
 #' @return \code{TRUE} if the packages is installed, otherwise \code{FALSE}
-#' 
+#'
 #' http://r-pkgs.had.co.nz/description.html
 #'
 #' @examples
 #' tryCatchLog:::is.package.available("tryCatchLog")  # must be TRUE :-)
-#' 
+#'
 is.package.available <- function(package.name) {
-  
+
   return(requireNamespace(package.name, quietly = TRUE))
-  
+
 }

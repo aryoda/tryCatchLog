@@ -86,6 +86,3 @@ options("tryCatchLog.write.error.dump.file" = FALSE)    # global default setting
 options("tryCatchLog.write.error.dump.folder" = ".")
 options("tryCatchLog.silent.warnings" = FALSE)
 options("tryCatchLog.silent.messages" = FALSE)
-
-
-

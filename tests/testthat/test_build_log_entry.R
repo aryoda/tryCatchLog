@@ -60,12 +60,12 @@ test_that("stack trace is correct", {
                )
   )
 
-  
-  
+
+
   expected_FST <- paste(readLines("expected_full_stack_trace.txt"), collapse = "\n")
   # writeLines(log.entry$full.stack.trace, "expected_full_stack_trace.txt")  # to write the expected result after checking it manually
   expect_equal(log.entry$full.stack.trace, expected_FST, "full stack trace")
-  
+
 
 
   log.entry <- tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", stack.trace, "", 6)

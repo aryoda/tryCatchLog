@@ -60,9 +60,9 @@
   # packageStartupMessage(paste("Library path (libname):", libname))
 
   # .tryCatchLog.env$newline <- determine.platform.NewLine()
-  # 
-  # 
-  # 
+  #
+  #
+  #
   # # Decide which logging functions to use
   # if (is.package.available("futile.logger")) {
   #   packageStartupMessage("Using futile.logger for logging...")
@@ -78,7 +78,7 @@
   } else {
     packageStartupMessage("futile.logger not found. Using tryCatchLog-internal functions for logging...")
   }
-  
+
 }
 
 
@@ -95,7 +95,7 @@
 
 
   # init package-global variables
-  .tryCatchLog.env$last.log = data.frame()
+  .tryCatchLog.env$last.log <- data.frame()
 
 
   # Create and initialize package options if they do not already exist before loading the package.
@@ -113,13 +113,13 @@
 
   if (any(to.set)) options(default.options[to.set])
 
-  
-  
+
+
   # Identify the correct new line character(s) for the current platform
   .tryCatchLog.env$newline <- determine.platform.NewLine()
-  
-  
-  
+
+
+
   # Decide which logging functions to use
   if (is.package.available("futile.logger")) {
     # packageStartupMessage("Using futile.logger for logging...")  # be silent in .onLoad (best practice)
@@ -130,7 +130,7 @@
     set.logging.functions()    # Default: Activate the package-internal minimal logging functions
     .tryCatchLog.env$found.futile.logger <- FALSE
   }
-  
-  
+
+
   invisible()
 }

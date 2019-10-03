@@ -100,4 +100,3 @@ test_that("existing options are left untouched when package is loaded", {
   expect_true(getOption("tryCatchLog.silent.messages"))
 
 })
-

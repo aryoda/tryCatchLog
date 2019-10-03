@@ -22,4 +22,3 @@ test_that("conflict in Windows OS recognition throws a warning", {
   )
 
 })
-  

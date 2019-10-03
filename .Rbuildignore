@@ -9,4 +9,4 @@ R/dump\.frames\.dev\.R
 ^appveyor\.yml$
 ^README\.md$
 ^LICENSE_HEADER_TEMPLATE.txt$
-
+^\.lintr$

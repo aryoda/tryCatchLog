@@ -72,7 +72,7 @@ last.tryCatchLog.result <- function() {
 #' @note         THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
 reset.last.tryCatchLog.result <- function() {
 
-  .tryCatchLog.env$last.log = data.frame()
+  .tryCatchLog.env$last.log <- data.frame()
 
   invisible(TRUE)
 
@@ -111,4 +111,3 @@ append.to.last.tryCatchLog.result <- function(new.log.entry) {
   return(.tryCatchLog.env$last.log)
 
 }
-

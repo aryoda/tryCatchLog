@@ -50,14 +50,13 @@
 #' @examples
 #' limitedLabelsCompact(sys.calls(), TRUE)
 #' @export
-limitedLabelsCompact <- function(value, compact = FALSE, maxwidth = getOption("width") - 5L)
-{
+limitedLabelsCompact <- function(value, compact = FALSE, maxwidth = getOption("width") - 5L) {
+
   # create vector of source references (file and row numbers) for each call item of the stack
-  srcrefs <- sapply(value, function(v)
-  {
-    srcref <- attr(v,"srcref")
-    if (!is.null(srcref))
-    {
+  srcrefs <- sapply(value, function(v) {
+
+    srcref <- attr(v, "srcref")
+    if (!is.null(srcref)) {
       srcfile <- attr(srcref, "srcfile")
       paste0(basename(srcfile$filename), "#", srcref[1L], ": ")
     }
@@ -79,8 +78,7 @@ limitedLabelsCompact <- function(value, compact = FALSE, maxwidth = getOption("w
   maxwidth <- min(maxwidth, 1000L)
   value <- strtrim(value, maxwidth)
 
-  if (compact == TRUE)
-  {
+  if (compact == TRUE) {
     # return only call stack items that contain a source reference
     srcrefs.available <- srcrefs != ""
     srcrefs.available[1] <- TRUE          # always return the first row!

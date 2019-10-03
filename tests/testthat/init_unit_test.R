@@ -10,4 +10,3 @@ options("tryCatchLog.write.error.dump.file"   = FALSE)
 options("tryCatchLog.write.error.dump.folder" = ".")
 options("tryCatchLog.silent.warnings"         = FALSE)
 options("tryCatchLog.silent.messages"         = FALSE)
-

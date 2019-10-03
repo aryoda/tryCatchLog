@@ -32,11 +32,12 @@ test_that("internal package state is initialized", {
   # tests -----------------------------------------------------------------------------------------------------------
 
   expected_Newline_value <- "test_result"
-  
+
   with_mock(
     `tryCatchLog:::determine.platform.NewLine` = function() return(expected_Newline_value),
     `tryCatchLog:::is.package.available` = function(pkg.name) return(FALSE),
-    expect_message({ tryCatchLog:::.onLoad(".", "tryCatchLog")
+    expect_message({
+                     tryCatchLog:::.onLoad(".", "tryCatchLog")
                      tryCatchLog:::.onAttach(".", "tryCatchLog")
                    },
                    "futile.logger not found. Using tryCatchLog-internal functions for logging",
@@ -67,13 +68,13 @@ test_that("internal package state is initialized", {
 test_that("futile.logger is used if it is installed", {
 
   skip_if_not_installed("futile.logger")
-  
+
 #  with_mock(
 #    `tryCatchLog:::is.package.available` = function(pkg.name) return(TRUE),
     # expect_silent(tryCatchLog:::.onAttach(".", "tryCatchLog"))
     expect_message(tryCatchLog:::.onAttach(".", "tryCatchLog"), "Using futile.logger for logging")
 #  )
-  
+
 })
 
 

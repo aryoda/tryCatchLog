@@ -74,7 +74,7 @@ get.sys.name <- function() {
 # Just a wrapper function to support mocking of the base function in testthat unit tests via "with_mock"
 # (see ?with_mock)
 get.platform.OS.type <- function() {
-  return(.Platform$OS.type) 
+  return(.Platform$OS.type)
 }
 
 

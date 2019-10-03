@@ -10,7 +10,7 @@ library(tryCatchLog)
 # Sys.getlocale()
 
 # https://stackoverflow.com/questions/47977951/how-to-ensure-english-error-messages-in-testthat-unit-tests
-Sys.setenv("LANGUAGE"="EN")  # work-around to always create english R (error) messages
+Sys.setenv("LANGUAGE" = "EN")  # work-around to always create english R (error) messages
 
 
 

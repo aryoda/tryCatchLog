@@ -70,9 +70,10 @@ test_that("exactly one error, warning and message occurs", {
     expect_message(
       expect_error(tryCatchLog(
                    tryCatchLog(
-                     tryCatchLog({message("throw.a.message")
-                                  warning("throw.a.warning")
-                                  stop("throw.an.error")
+                     tryCatchLog({
+                                   message("throw.a.message")
+                                   warning("throw.a.warning")
+                                   stop("throw.an.error")
                                  })
                    )
                  ),

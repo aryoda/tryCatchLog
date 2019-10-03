@@ -25,16 +25,16 @@ test_that("tryCatchLog functions do work without attaching the package with 'lib
 
   # print("tryCatchLog" %in% .packages())   # https://stackoverflow.com/a/37668625
 
-  
-  
+
+
   # Disable these unit tests due to a problem in
   #  covr::package_coverage(type = "tests")"
   # See test_load_package.R for details!
   skip_if_not(("covr" %in% loadedNamespaces()) == FALSE, "This unit test is skipped during code coverage profiling with 'covr' due to a bug")
   skip_on_travis()  # since I am using travis CI on github to derive the code coverage with covr
-  
-  
-  
+
+
+
   # if the package is not loaded "detach" throws an error: invalid 'name' argument
   # Issue "Can't detach package in tests":
   # THIS IS NOT SUPPORTED BY DEVTOOLS, YOU HAVE TO RUN TESTTHAT WITHOUT DEVTOOLS FOR THIS:
@@ -43,7 +43,7 @@ test_that("tryCatchLog functions do work without attaching the package with 'lib
   detach("package:tryCatchLog", character.only = TRUE, unload = TRUE)
 
   expect_false(isNamespaceLoaded("tryCatchLog"), info = "precondition failed: tryCatchLog package may not be attached")
-  
+
   expect_output(
     expect_error(tryCatchLog::tryCatchLog(stop("hello_error_message")),
                   regexp = "hello_error_message",
@@ -55,8 +55,5 @@ test_that("tryCatchLog functions do work without attaching the package with 'lib
   # load the namespace again to avoid side effects on other unit tests.
   # This must be done within the test_that function to prevent side effects on other tests (whyever)
   library(tryCatchLog)
-  
+
 })
-  
-
-

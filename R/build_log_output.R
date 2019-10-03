@@ -55,7 +55,7 @@
 #' @note         The logged call stack details (compact, full or both) can be configured globally
 #'               using the options \code{tryCatchLog.include.full.call.stack}
 #'               and \code{tryCatchLog.include.compact.call.stack}.
-#' 
+#'
 #'               The result of the package internal function \code{\link{build.log.entry}}
 #'               can be passed as \code{log.results} argument.
 build.log.output <- function(log.results,
@@ -73,7 +73,7 @@ build.log.output <- function(log.results,
 
   # append every row of the log result to the output
   res <- ""
-  i = 1
+  i <- 1
   while (i <= NROW(log.results)) {
 
     res <- paste0(res,

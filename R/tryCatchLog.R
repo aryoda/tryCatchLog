@@ -70,7 +70,7 @@
 #'
 #'          If you are using the \pkg{futile.logger} package \code{tryCatchLog} calls
 #'          these log functions for the different R conditions to log them:
-#'          
+#'
 #'          \enumerate{
 #'          \item error   -> \code{\link[futile.logger]{flog.error}}
 #'          \item warning -> \code{\link[futile.logger]{flog.warn}}
@@ -85,7 +85,7 @@
 #'
 #'          R does track source code references of scripts only if you set the option \code{keep.source} to TRUE via
 #'          \code{options(keep.source = TRUE)}. Without this option this function cannot enrich source code references.
-#'          
+#'
 #'          If you use \command{Rscript} to start a non-interactive R script as batch job you
 #'          have to set this option since it is FALSE by default. You can add this option to your
 #'          \link{.Rprofile} file or use a startup R script that sets this option and sources your
@@ -100,10 +100,10 @@
 #'          that led to the error. The dump contains the workspace and in the variable "last.dump"
 #'          the call stack (\code{\link{sys.frames}}). This feature is very helpful for non-interactive R scripts ("batches").
 #'
-#'          Setting the parameter \code{tryCatchLog.write.error.dump.folder} to a specific path allows to save the dump in a specific folder. 
+#'          Setting the parameter \code{tryCatchLog.write.error.dump.folder} to a specific path allows to save the dump in a specific folder.
 #           If the path does not exist, the folder will be created using the recursive \code{dir.create()} function.
-#'          If not set, the dump will be saved in the working directory. 
-#'          
+#'          If not set, the dump will be saved in the working directory.
+#'
 #'          To start a post-mortem analysis after an error open a new R session and enter:
 #'             \code{load("dump_20161016_164050.rda")   # replace the dump file name with your real file name
 #'             debugger(last.dump)}
@@ -153,13 +153,11 @@ tryCatchLog <- function(expr,
                         silent.messages            = getOption("tryCatchLog.silent.messages", FALSE),
                         include.full.call.stack    = getOption("tryCatchLog.include.full.call.stack", TRUE),
                         include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack", TRUE)
-                        )
-{
+                        ) {
 
 
   # closure ---------------------------------------------------------------------------------------------------------
-  cond.handler = function(c)
-  {
+  cond.handler <- function(c) {
 
     call.stack     <- sys.calls()          # "sys.calls" within "withCallingHandlers" is like a traceback!
     log.message    <- c$message            # TODO: Should we use conditionMessage instead?
@@ -176,8 +174,8 @@ tryCatchLog <- function(expr,
 
 
     # Save dump to allow post mortem debugging?
-    if (write.error.dump.file == TRUE & severity == "ERROR")
-    {
+    if (write.error.dump.file == TRUE & severity == "ERROR") {
+
       # See"?dump.frames" on how to load and debug the dump in a later interactive R session!
       # See https://stackoverflow.com/questions/40421552/r-how-make-dump-frames-include-all-variables-for-later-post-mortem-debugging/40431711#40431711
       # why you should avoid dump.frames(to.file = TRUE)...
@@ -192,7 +190,7 @@ tryCatchLog <- function(expr,
       # https://github.com/aryoda/tryCatchLog/issues/39
       # Example dump file name: dump_2019-03-13_at_15-39-33.086_PID_15270.rda
       dump.file.name  <- paste0(format(timestamp, format = "dump_%Y-%m-%d_at_%H-%M-%OS3"), "_PID_", Sys.getpid(), ".rda")  # %OS3 (= seconds incl. milliseconds)
-      dir.create(path <- write.error.dump.folder, recursive = T, showWarnings = F)
+      dir.create(path = write.error.dump.folder, recursive = T, showWarnings = F)
       utils::dump.frames()
       save.image(file = file.path(write.error.dump.folder, dump.file.name))  # an existing file would be overwritten silently :-()
     }
@@ -224,14 +222,14 @@ tryCatchLog <- function(expr,
     # in any case (duplicated condition or not)...
 
 
-        
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # Having handled a condition (calling a handler function) in withCallingHandlers does NOT stop it
     # from propagating to other handlers up the call stack ("bubble up").
     # This requires to call a "restart" (e. g. a predefined "muffle" [suppress] restart function).
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-    
-    
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 
     # Suppresses the warning (logs it only)?
     if (silent.warnings & severity == "WARN") {

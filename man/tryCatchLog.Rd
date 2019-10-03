@@ -80,7 +80,7 @@ This function shall overcome some drawbacks of the standard \code{\link{tryCatch
 
          If you are using the \pkg{futile.logger} package \code{tryCatchLog} calls
          these log functions for the different R conditions to log them:
-         
+
          \enumerate{
          \item error   -> \code{\link[futile.logger]{flog.error}}
          \item warning -> \code{\link[futile.logger]{flog.warn}}
@@ -95,7 +95,7 @@ This function shall overcome some drawbacks of the standard \code{\link{tryCatch
 
          R does track source code references of scripts only if you set the option \code{keep.source} to TRUE via
          \code{options(keep.source = TRUE)}. Without this option this function cannot enrich source code references.
-         
+
          If you use \command{Rscript} to start a non-interactive R script as batch job you
          have to set this option since it is FALSE by default. You can add this option to your
          \link{.Rprofile} file or use a startup R script that sets this option and sources your
@@ -110,9 +110,9 @@ This function shall overcome some drawbacks of the standard \code{\link{tryCatch
          that led to the error. The dump contains the workspace and in the variable "last.dump"
          the call stack (\code{\link{sys.frames}}). This feature is very helpful for non-interactive R scripts ("batches").
 
-         Setting the parameter \code{tryCatchLog.write.error.dump.folder} to a specific path allows to save the dump in a specific folder. 
-         If not set, the dump will be saved in the working directory. 
-         
+         Setting the parameter \code{tryCatchLog.write.error.dump.folder} to a specific path allows to save the dump in a specific folder.
+         If not set, the dump will be saved in the working directory.
+
          To start a post-mortem analysis after an error open a new R session and enter:
             \code{load("dump_20161016_164050.rda")   # replace the dump file name with your real file name
             debugger(last.dump)}

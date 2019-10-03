@@ -11,14 +11,14 @@
 #'
 #' @examples
 #' tryCatchLog:::log2console("WARN", "this is my last warning")
-#' 
+#'
 log2console <- function(severity.level, msg) {
 
   if (is.na(msg))
-    msg = ""
-  
-  
-  
+    msg <- ""
+
+
+
   stopifnot(!is.null(severity.level))
   stopifnot(severity.level %in% c("ERROR", "WARN", "INFO"))
   stopifnot(is.character(msg))
@@ -28,11 +28,11 @@ log2console <- function(severity.level, msg) {
   # (not UTC which would allow to combine different log output with
   #  different time zones more easily).
   log.time <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
-   
+
   res <- sprintf("%s [%s] %s\n", severity.level, log.time, msg, "\n")
 
   cat(res)
 
-  
+
   invisible(res)
 }

@@ -81,5 +81,3 @@ test_that("errors are silent but returned as object of 'try-error' class", {
 test_that("tryCatchLog did throw an error", {
   expect_error(tryCatchLog(log("abc"), error = stop))
 })
-
-

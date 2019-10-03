@@ -39,7 +39,7 @@ test_that("call stack 'include*' args works", {
       , "Compact call stack:"
       , fixed = TRUE)
   )
-  
+
   expect_warning(
     expect_output(
       tryLog(log(-1), include.full.call.stack = T, include.compact.call.stack = T)
@@ -53,7 +53,7 @@ test_that("call stack 'include*' args works", {
       , "Full call stack:"
       , fixed = TRUE)
   )
-  
+
 })
 
 
@@ -70,11 +70,11 @@ test_that("contains only included call stacks", {
   #           (?!searchword)  =  look ahead to be sure the searchword is not found...
   #       The new line (\n) and carriage return (\r) must also be consumed as a character
   #       to match the complete end of string with $
-  
-  
+
+
   # Simple "does not contain" example
   # expect_output(cat("hello world"), "^((?!bye).)*$", perl = TRUE)
-  
+
   expect_output(
     tryLog(log(-1), include.full.call.stack = T, include.compact.call.stack = F, silent.warnings = TRUE)
     , "^((?!Compact call stack)(.|\\n|\\r))*$", perl = TRUE)
@@ -90,40 +90,38 @@ test_that("contains only included call stacks", {
 
 
 test_that("suppressed call stack is still visible in last.tryCatchLog.result", {
-  
-  expect_output(  # just to capture the output which would polute the test summary otherwise
+
+  expect_output(
+      # just to capture the output which would polute the test summary otherwise
       tryLog(log(-1), include.full.call.stack = F, include.compact.call.stack = F, silent.warnings = T)
   )
-  
+
   x <- last.tryCatchLog.result()
-  
+
   expect_equal(NROW(x), 1)
-  
+
   expect_is(x$compact.stack.trace, "character", info = "compact stack trace must always be in the last.tryCatchLog.result")
   expect_is(x$full.stack.trace, "character", info = "full stack trace must always be in the last.tryCatchLog.result")
-  
+
 })
 
 
 
 
-# 
+#
 # tryCatchLog(log(-1), include.full.call.stack = F)
 # tryCatchLog(log(-1), include.full.call.stack = F, include.compact.call.stack = F)
-# 
-# 
+#
+#
 # tryLog(log(-1), include.full.call.stack = T, include.compact.call.stack = T)
 # tryLog(log(-1), include.full.call.stack = F)
 # tryLog(log(-1), include.full.call.stack = F, include.compact.call.stack = F)
-# 
+#
 # log(-1)
-# 
+#
 # flog.threshold(ERROR)
 # flog.threshold(INFO)
 # library(futile.logger)
 # ?flog.threshold
-# 
+#
 # x <- tryCatchLog::last.tryCatchLog.result()
-
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     

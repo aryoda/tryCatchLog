@@ -1,0 +1,15 @@
+linters: with_defaults(
+  line_length_linter = NULL,
+  object_name_linter = NULL,
+  object_length_linter = object_length_linter(34),
+  commented_code_linter = NULL)
+exclusions: list(
+    "demo/tryCatchLog_demo.R",
+    "vignettes/01_license.Rmd_child",
+    "vignettes/02_toc.Rmd_child",
+    "vignettes/05_overview.Rmd_child",
+    "vignettes/10_standard_R_conditions.Rmd_child",
+    "vignettes/20_tryCatchLog.Rmd_child",
+    "vignettes/90_appendix.Rmd_child",
+    "vignettes/tryCatchLog-intro.R",
+    "vignettes/tryCatchLog-intro.Rmd")

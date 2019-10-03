@@ -11,6 +11,8 @@ r:
 
 r_packages:
   - covr
+  - lintr
+
 
 
 # This option forces all WARNINGS from R CMD check to become build failures (default true).
@@ -21,6 +23,11 @@ warnings_are_errors: true
 branches:
   only:
   - master
+
+# Taken from: https://github.com/lockedata/HIBPwned/blob/master/.travis.yml
+after_script:
+  - R CMD INSTALL $PKG_TARBALL
+  - Rscript -e 'lintr::lint_package()'
 
 # https://github.com/codecov/example-r
 after_success:

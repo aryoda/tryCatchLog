@@ -18,16 +18,16 @@
 
 
 #' Sets the logging functions that shall be used by \code{tryCatchLog} for the different severity levels
-#' 
+#'
 #' The logging functions must have at least one parameter: The logging message (as character)
 #' which must be the first argument.
-#' 
+#'
 #' The default logging functions are internal functions without any dependencies to other
 #' logging packages. They use the same logging output format as \pkg{futile.logger} version 1.4.3.
-#' 
+#'
 #' If you want to disable any logging output you should use a decent logging framework
 #' which allows to set the logging threshold (e. g. futile.logger's \code{\link[futile.logger]{flog.threshold}}).
-#' 
+#'
 #' The package-internal default logging functions are only a minimal implementation
 #' and are not meant to replace a decent logging framework.
 #'
@@ -37,8 +37,8 @@
 #'
 #' @return     Nothing
 #'
-#' @seealso \code{\link{tryCatchLog}} 
-#'          
+#' @seealso \code{\link{tryCatchLog}}
+#'
 #' @export
 #'
 #' @examples
@@ -46,22 +46,22 @@
 #' set.logging.functions( error.log.func = function(msg) invisible(),
 #'                        warn.log.func  = function(msg) invisible(),
 #'                        info.log.func  = function(msg) invisible())
-#' 
+#'
 set.logging.functions <- function(error.log.func   = function(msg) tryCatchLog:::log2console("ERROR", msg)
                                   , warn.log.func  = function(msg) tryCatchLog:::log2console("WARN",  msg)
                                   , info.log.func  = function(msg) tryCatchLog:::log2console("INFO",  msg)
 ) {
-  
+
   stopifnot(is.function(error.log.func))
   stopifnot(is.function(warn.log.func))
   stopifnot(is.function(info.log.func))
-  
-  
-  
+
+
+
   # remember the active logging functions in the package-internal environment
   .tryCatchLog.env$error.log.func <- error.log.func
   .tryCatchLog.env$warn.log.func  <- warn.log.func
   .tryCatchLog.env$info.log.func  <- info.log.func
-  
+
   invisible()
 }

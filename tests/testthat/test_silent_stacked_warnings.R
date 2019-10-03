@@ -30,7 +30,7 @@ test_that("silent.warnings work with stacked handler", {
   log <- last.tryCatchLog.result()
 
   expect_equal(NROW(log), 1)
-  expect_equal(log[1,]$severity, "WARN")
+  expect_equal(log[1, ]$severity, "WARN")
 
 
 
@@ -54,7 +54,7 @@ test_that("silent.warnings work with stacked handler", {
   log <- last.tryCatchLog.result()
 
   expect_equal(NROW(log), 1)
-  expect_equal(log[1,]$severity, "WARN")
+  expect_equal(log[1, ]$severity, "WARN")
 
 
 
@@ -68,7 +68,7 @@ test_that("silent.warnings work with stacked handler", {
   log <- last.tryCatchLog.result()
 
   expect_equal(NROW(log), 1)
-  expect_equal(log[1,]$severity, "WARN")
+  expect_equal(log[1, ]$severity, "WARN")
 
 
 
@@ -82,6 +82,6 @@ test_that("silent.warnings work with stacked handler", {
   log <- last.tryCatchLog.result()
 
   expect_equal(NROW(log), 1)
-  expect_equal(log[1,]$severity, "WARN")
+  expect_equal(log[1, ]$severity, "WARN")
 
 })

@@ -63,13 +63,17 @@ test_that("last logged condition contains all conditions", {
   expect_warning(tryCatchLog(log(-1)))
   expect_equal(NROW(last.tryCatchLog.result()), 1)
 
-  expect_error(expect_warning(tryCatchLog({log(-1); log("a")}, error = stop)))
+  expect_error(expect_warning(tryCatchLog({
+                                             log(-1); log("a")
+                                          }, error = stop)))
   expect_equal(NROW(last.tryCatchLog.result()), 2)
 
-  expect_error(expect_warning(tryCatchLog({message("hello"); log(-1); log("a")}, error = stop)))
+  expect_error(expect_warning(tryCatchLog({
+                                            message("hello"); log(-1); log("a")
+                                          }, error = stop)))
   expect_equal(NROW(last.tryCatchLog.result()), 3)
 
-  expect_equal(substr(last.tryCatchLog.result()[1,]$msg.text, 1, 5), "hello")
+  expect_equal(substr(last.tryCatchLog.result()[1, ]$msg.text, 1, 5), "hello")
 
 })
 
@@ -77,7 +81,9 @@ test_that("last logged condition contains all conditions", {
 
 test_that("column values are correct", {
 
-  expect_error(expect_warning(tryCatchLog({message("hello"); log(-1); log("a")}, error = stop)))
+  expect_error(expect_warning(tryCatchLog({
+                                             message("hello"); log(-1); log("a")
+                                          }, error = stop)))
 
   log <- last.tryCatchLog.result()
 
@@ -87,5 +93,3 @@ test_that("column values are correct", {
   expect_equal(class(log$full.stack.trace), "character")
 
 })
-
-

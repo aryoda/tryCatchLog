@@ -25,7 +25,7 @@ clean.up.dump.files <- function(path = ".") {
 
   if (length(existing.dump.files) > 0)
     file.remove(existing.dump.files)
-  
+
   invisible(TRUE)
 }
 
@@ -70,8 +70,7 @@ test_that("no dump file is created for a warning", {
 
 
 
-test_that("no dump file is created with an error but disabled write.error.dump.file parameter",
-          {
+test_that("no dump file is created with an error but disabled write.error.dump.file parameter", {
             tryCatchLog(
               log("a"),
               error = function(e) {
@@ -88,8 +87,7 @@ test_that("no dump file is created with an error but disabled write.error.dump.f
 
 
 
-test_that("dump file is created with an error and write.error.dump.file parameter enabled",
-          {
+test_that("dump file is created with an error and write.error.dump.file parameter enabled", {
             tryCatchLog(
               log("a"),
               error = function(e) {
@@ -192,7 +190,7 @@ test_that("dump file is created in a specifc folder (error and dump default enab
     error = function(e) {
     }
   )
-  expect_equal(number.of.dump.files('temp_subfolder'), 1)
+  expect_equal(number.of.dump.files("temp_subfolder"), 1)
   clean.up.dump.files("temp_subfolder")
 })
 
@@ -203,14 +201,14 @@ test_that("dump file is created in a specifc folder (error and dump default enab
 test_that("dump files are not overwritten due to duplicated file names (non-deterministic test case!))", {
   # may produce non-deterministic errors (the dump file name is time-dependent)!
   num.trials <- 10
-  for(i in 1:num.trials) {
+  for (i in 1:num.trials) {
     tryCatchLog(
       log("a"),
       error = function(e) {
       }
     )
   }
-  expect_equal(number.of.dump.files('temp_subfolder'), num.trials)
+  expect_equal(number.of.dump.files("temp_subfolder"), num.trials)
   clean.up.dump.files("temp_subfolder")
 })
 
@@ -219,7 +217,7 @@ test_that("dump files are not overwritten due to duplicated file names (non-dete
 # Cleanup ----------------------------------------------------------------------------
 
 clean.up.dump.files()
-clean.up.dump.files('temp_subfolder')
+clean.up.dump.files("temp_subfolder")
 unlink("temp_subfolder", recursive = TRUE)  # with the default value "FALSE" the folder is NOT deleted (see help)
 
 options("tryCatchLog.write.error.dump.file" = ".")  # just to be sure :-)

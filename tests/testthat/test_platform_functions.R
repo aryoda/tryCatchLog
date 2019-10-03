@@ -34,15 +34,19 @@ test_that("NewLine is working", {
 test_that("OS-specific newlines work", {
 
   # Simulate an OS to test all OS-specific newlines
-  with_mock( `tryCatchLog::is.windows` = function() { return(TRUE) },
-             expect_true(tryCatchLog::is.windows()),
-             expect_equal(tryCatchLog:::determine.platform.NewLine(), "\r\n")
+  with_mock(`tryCatchLog::is.windows` = function() {
+                                                      return(TRUE)
+                                                   },
+            expect_true(tryCatchLog::is.windows()),
+            expect_equal(tryCatchLog:::determine.platform.NewLine(), "\r\n")
   )
 
   # Simulate an OS to test all OS-specific newlines
-  with_mock( `tryCatchLog::is.windows` = function() { return(FALSE) },
-             expect_false(tryCatchLog::is.windows()),
-             expect_equal(tryCatchLog:::determine.platform.NewLine(), "\n")
+  with_mock(`tryCatchLog::is.windows` = function() {
+                                                     return(FALSE)
+                                                   },
+            expect_false(tryCatchLog::is.windows()),
+            expect_equal(tryCatchLog:::determine.platform.NewLine(), "\n")
   )
 
 })

@@ -48,8 +48,8 @@ tryLog <- function(expr,
                    silent.messages            = getOption("tryCatchLog.silent.messages", FALSE),
                    include.full.call.stack    = getOption("tryCatchLog.include.full.call.stack", TRUE),
                    include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack", TRUE)
-                   )
-{
+                   ) {
+
   tryCatchLog(expr = expr,
               write.error.dump.file = write.error.dump.file,
               write.error.dump.folder = write.error.dump.folder,

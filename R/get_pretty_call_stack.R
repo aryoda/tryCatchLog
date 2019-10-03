@@ -42,8 +42,7 @@
 #'          since tryCatch unwinds the call stack to the tryCatch position and the source of the condition cannot be identified anymore.
 #' @seealso \code{\link{tryCatchLog}}, \code{\link{tryLog}}, \code{\link{limitedLabelsCompact}}
 #' @export
-get.pretty.call.stack <- function(call.stack, omit.last.items = 0, compact = FALSE)
-{
+get.pretty.call.stack <- function(call.stack, omit.last.items = 0, compact = FALSE) {
   if (is.null(call.stack))
     return("")
 
@@ -53,8 +52,7 @@ get.pretty.call.stack <- function(call.stack, omit.last.items = 0, compact = FAL
                                 - omit.last.items)]
 
   pretty.call.stack <- limitedLabelsCompact(call.stack, compact)
-  call.stack.formatted <- paste(" ", 1:length(pretty.call.stack), pretty.call.stack, collapse = "\n")
+  call.stack.formatted <- paste(" ", seq_along(pretty.call.stack), pretty.call.stack, collapse = "\n")
 
   return(call.stack.formatted)
 }
-

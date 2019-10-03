@@ -58,7 +58,7 @@ test_that("log output is correct", {
 
 
 
-  log.entry$dump.file.name = "my.dump.file123.rda"
+  log.entry$dump.file.name <- "my.dump.file123.rda"
   out4 <- tryCatchLog::build.log.output(log.entry)
   expect_match(out4, "Created dump file: my.dump.file123.rda", fixed = TRUE, info = "dump file name is in output")
 
@@ -77,7 +77,9 @@ test_that("log output is correct", {
 
 test_that("multiple log entry rows work", {
 
-  expect_error(expect_warning(tryCatchLog({log(-1); log("abc")})))
+  expect_error(expect_warning(tryCatchLog({
+                                            log(-1); log("abc")
+                                          })))
 
   log.entries <- last.tryCatchLog.result()
 
