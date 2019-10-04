@@ -4,7 +4,7 @@ An R package to improve the error handling of the standard `tryCatch` and `try` 
 
 **Current version: 1.1.5 (Oct. 2019).** See the [NEWS](NEWS.md) for the most recent changes.
 
-Note: The code coverage of the unit tests is above 90 % but `covr` does not support package unloading in unit tests so the reported code coverage in the `codecov` badge is less.
+
 
 [![Travis Build Status](https://travis-ci.org/aryoda/tryCatchLog.svg?branch=master)](https://travis-ci.org/aryoda/tryCatchLog)
 [![codecoverage statistics](https://codecov.io/gh/aryoda/tryCatchLog/branch/master/graph/badge.svg)](https://codecov.io/gh/aryoda/tryCatchLog)
