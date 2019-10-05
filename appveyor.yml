@@ -36,7 +36,7 @@ environment:
     #   'futile.logger', 'testthat', 'knitr', 'rmarkdown', 'covr'
     # The suggested packages are required for a complete check.
     # _R_CHECK_FORCE_SUGGESTS_: false
-    
+
 
   matrix:
 # Does not work (some unit tests produce slightliy different results on Windows - possibly due to different semantics)
@@ -60,11 +60,11 @@ environment:
 # the non-devel versions would build successfully)
 
   - R_VERSION: devel
-    GCC_PATH: mingw_32
-
-  - R_VERSION: devel
     R_ARCH: x64
     GCC_PATH: mingw_64
+
+  - R_VERSION: devel
+    GCC_PATH: mingw_32
 
 # Too old to make the testthat unit tests working on this R version
 #  - R_VERSION: 3.1.3
