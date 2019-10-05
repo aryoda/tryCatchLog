@@ -22,7 +22,7 @@ install:
 # >>> Added June 02, 2018
 environment:
   global:
-    WARNINGS_ARE_ERRORS: 1
+    WARNINGS_ARE_ERRORS: 0
     USE_RTOOLS: true
     # uses binary packages if available otherwise source packages
     # important for devel build which may lack binary packages causing the CI builds to fail quite early (fast_finish: true)
