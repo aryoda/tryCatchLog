@@ -1,7 +1,6 @@
 # History files
 .Rhistory
 .Rapp.history
-
 # Session Data files
 .RData
 # Example code in package build process
@@ -35,3 +34,6 @@ tests/testthat/dump*.rda
 inst/doc
 # Disabled again since Rd files are required for travis CI (or I have to find a way to roxygenize on travis)
 # /man/*.Rd
+Rprof.out
+Rprofmem.out
+/R/profile_test.R

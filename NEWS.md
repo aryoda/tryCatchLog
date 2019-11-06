@@ -5,6 +5,25 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
+## Version 1.1.6 (Nov 6, 2019)
+
+* CRAN release version (with fixed broken unit test that caused this
+  package to be removed from CRAN three weeks ago)
+* Fixed CRAN submission finding:
+
+> Thanks, we see:
+>
+>   Found the following (possibly) invalid file URIs:
+>     URI: LICENSE
+>       From: inst/doc/tryCatchLog-intro.html
+>     URI: cond
+>       From: NEWS.md
+>
+> Please include the files in the correct directories or link to documents 
+> via fully specified URLs.
+
+
+
 ## Version 1.1.5 (Sept 30, 2019)
 
 * Implemented feature request #44: Support configurable suppression of compact and full stack trace
@@ -175,7 +194,7 @@ https://www.gnu.org/prep/standards/standards.html#Documentation
 ## Version 0.9.5 (Nov. 18, 2017)
 
 * Added: Function `last.tryCatchLog.log` to retrieve the log output of the call of `tryLog` or `tryCatchLog`
-* Fixed bug #17: tryCatchLog throws: Error in value[[3L]](cond) : unused argument (cond)
+* Fixed bug #17: tryCatchLog throws: Error in value`[[3L]](cond)` : unused argument (cond)
 * NULL as value for error argument throws an explicit error (instead of an implicit deep down in R)
 * Improved: Documentation
 
