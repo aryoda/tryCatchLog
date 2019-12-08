@@ -2,9 +2,9 @@
 
 An R package to improve the error handling of the standard `tryCatch` and `try` function
 
-**Current version: 1.1.5 (Oct. 2019).** See the [NEWS](NEWS.md) for the most recent changes.
+**Current version: 1.1.6 (Nov 2019).** See the [NEWS](NEWS.md) for the most recent changes.
 
-**Important open issue: `tryCatchLog` was removed from CRAN (see [issue #50](https://github.com/aryoda/tryCatchLog/issues/50)) - it will be re-submitted to CRAN until Nov 10, 2019**
+**`tryCatchLog` was removed from CRAN mid of Oct, 2019 (see [issue #50](https://github.com/aryoda/tryCatchLog/issues/50)) - it is available again on CRAN since Nov 7, 2019 - sorry for any inconvenience!**
 
 
 
