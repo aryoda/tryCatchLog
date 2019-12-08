@@ -1,5 +1,5 @@
 Child Rmd files are currently not supported as vignettes in R and knitr
-but I needed them to create the vignette and training slides from the same
+but I needed them to create the vignette and training slides by reusing the same
 content in Rmd files.
 
 As a workaround I had to
@@ -11,9 +11,9 @@ As a workaround I had to
 
 This avoids
 1. failures to build the vignette due to missing child Rmd files
-2. missing child Rmd files the built source package file
+2. missing child Rmd files in the built source package file
 3. child vignettes shown as stand-alone vignettes in "browseVignettes()"
-4. Wrong warnings in "R CMD check" due to missing vignette header tags in child Rmd files.
+4. wrong warnings in "R CMD check" due to missing vignette header tags in child Rmd files.
 
 This is a workaround until the gap is solved and released in R and knitr.
 
