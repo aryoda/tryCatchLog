@@ -83,7 +83,7 @@ build.log.output <- function(log.results,
                     paste0("[", log.results$severity[i], "] "),
                   log.results$msg.text[i],
                   if (!is.na(log.results$pid[i]))
-                    " ", log.results$pid[i], # No condition required, won't show if NULL
+                    paste0(" ", log.results$pid[i]), # No condition required, won't show if NULL
                   "\n\n",
                   if (nchar(log.results$dump.file.name[i]) > 0)
                     paste0("Created dump file: ", log.results$dump.file.name[i], "\n\n"),
