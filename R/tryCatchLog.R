@@ -32,6 +32,7 @@
 #'                              \code{error}, \code{warning}, \code{message} and \code{interrupt}.
 #'                              All condition handlers are passed to \code{\link{tryCatch}} as is
 #'                              (no filtering, wrapping or changing of semantics).
+#' @param pid                   a process id or other text identifier that will be added to msg.text
 #' @param finally               expression to be evaluated at the end
 #' @param write.error.dump.file \code{TRUE}: Saves a dump of the workspace and the call stack named
 #'                              \code{dump_<YYYYMMDD>_at_<HHMMSS.sss>_PID_<process id>.rda}.
@@ -146,6 +147,7 @@
 tryCatchLog <- function(expr,
                         # error = function(e) {if (!is.null(getOption("error", stop))) eval(getOption("error", stop)) }, # getOption("error", default = stop),
                         ...,
+                        pid = NULL,
                         finally = NULL,
                         write.error.dump.file      = getOption("tryCatchLog.write.error.dump.file", FALSE),
                         write.error.dump.folder    = getOption("tryCatchLog.write.error.dump.folder", "."),
@@ -197,7 +199,7 @@ tryCatchLog <- function(expr,
 
 
 
-    log.entry <- build.log.entry(timestamp, severity, log.message, call.stack, dump.file.name, omit.call.stack.items = 1)
+    log.entry <- build.log.entry(timestamp, severity, log.message, pid, call.stack, dump.file.name, omit.call.stack.items = 1)
 
     if (!is.duplicated.log.entry(log.entry)) {
 

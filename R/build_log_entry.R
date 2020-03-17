@@ -24,6 +24,7 @@
 #' @param timestamp       logging timestamp as \code{\link{POSIXct}} (normally by calling \code{\link{Sys.time}})
 #' @param severity        severity level of the log entry ((ERROR, WARN, INFO etc.)
 #' @param msg.text        Logging message (e. g. error message)
+#' @param pid             a process id or other text identifier that will be added to msg.text
 #' @param call.stack      a call stack created by \code{\link{sys.calls}}
 #' @param dump.file.name  name of the created dump file (leave empty if the \code{\link{tryCatchLog}}
 #'                        argument \code{write.error.dump.file} is \code{FALSE}
@@ -47,7 +48,7 @@
 #'               \code{\link{build.log.output}}
 #'
 #' @note         THIS IS A PACKAGE INTERNAL FUNCTION AND THEREFORE NOT EXPORTED.
-build.log.entry <- function(timestamp, severity, msg.text, call.stack, dump.file.name, omit.call.stack.items = 0) {
+build.log.entry <- function(timestamp, severity, msg.text, pid, call.stack, dump.file.name, omit.call.stack.items = 0) {
 
   stopifnot(inherits(timestamp, "POSIXct"))
 
@@ -56,6 +57,7 @@ build.log.entry <- function(timestamp, severity, msg.text, call.stack, dump.file
   log.entry <- data.frame(timestamp           = timestamp,
                           severity            = severity,
                           msg.text            = msg.text,
+                          pid                 = ifelse(is.null(pid), NA, pid),
                           compact.stack.trace = get.pretty.call.stack(call.stack, omit.call.stack.items, compact = TRUE),
                           full.stack.trace    = get.pretty.call.stack(call.stack, omit.call.stack.items),
                           dump.file.name      = dump.file.name,
