@@ -4,17 +4,17 @@
 \alias{tryLog}
 \title{Try an expression with condition logging and error recovery}
 \usage{
-tryLog(expr,
-  write.error.dump.file = getOption("tryCatchLog.write.error.dump.file",
-  FALSE),
-  write.error.dump.folder = getOption("tryCatchLog.write.error.dump.folder",
-  "."), silent.warnings = getOption("tryCatchLog.silent.warnings",
-  FALSE), silent.messages = getOption("tryCatchLog.silent.messages",
-  FALSE),
-  include.full.call.stack = getOption("tryCatchLog.include.full.call.stack",
-  TRUE),
+tryLog(
+  expr,
+  write.error.dump.file = getOption("tryCatchLog.write.error.dump.file", FALSE),
+  write.error.dump.folder = getOption("tryCatchLog.write.error.dump.folder", "."),
+  silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
+  silent.messages = getOption("tryCatchLog.silent.messages", FALSE),
+  include.full.call.stack = getOption("tryCatchLog.include.full.call.stack", TRUE),
   include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack",
-  TRUE))
+    TRUE),
+  execution.context.msg = ""
+)
 }
 \arguments{
 \item{expr}{expression to be evaluated}
@@ -36,13 +36,22 @@ setting in \code{\link{getOption}("warn")}. See also \code{\link{warning}}.}
 Shall the full call stack be included in the log output? Since the full
 call stack may be very long and the compact call stack has enough details
 normally the full call stack can be omitted by passing \code{FALSE}.
-The default value can be changed globally by setting the option \code{tryCatchLog.include.full.call.stack}.}
+The default value can be changed globally by setting the option \code{tryCatchLog.include.full.call.stack}.
+The full call stack can always be found via \code{\link{last.tryCatchLog.result}}.}
 
 \item{include.compact.call.stack}{Flag of type \code{\link{logical}}:
 Shall the compact call stack (including only calls with source code references)
 be included in the log output? Note: If you ommit both the full and compact
 call stacks the message text will be output without call stacks.
-The default value can be changed globally by setting the option \code{tryCatchLog.include.compact.call.stack}.}
+The default value can be changed globally by setting the option \code{tryCatchLog.include.compact.call.stack}.
+The compact call stack can always be found via \code{\link{last.tryCatchLog.result}}.}
+
+\item{execution.context.msg}{a text identifier (eg. the PID or a variable value) that will be added to msg.text
+for catched conditions. This makes it easier to identify the runtime state that caused
+a condition esp. in parallel execution scenarios.
+The value must be of length 1 and will be coerced to character.
+Expressions are not allowed.
+The added output has the form: \code{{execution.context.msg: your_value}}}
 }
 \value{
 The value of the expression (if \code{expr} is evaluated without an error.\cr
@@ -50,8 +59,8 @@ The value of the expression (if \code{expr} is evaluated without an error.\cr
         and error condition as the \code{"condition"} attribute.
 }
 \description{
-\code{tryLog} is a wrapper function around \code{\link{tryCatchLog}}
-that traps any errors that occur during the evaluation of an expression without stopping the execution
+\code{tryLog} is implemented by calling \code{\link{tryCatchLog}}
+and traps any errors that occur during the evaluation of an expression without stopping the execution
 of the script (similar to \code{\link{try}}). Errors, warnings and messages are logged.
 In contrast to \code{\link{tryCatchLog}} it returns but does not stop in case of an error and therefore does
 not have the \code{error} and \code{finally} parameters to pass in custom handler functions.
@@ -62,8 +71,9 @@ not have the \code{error} and \code{finally} parameters to pass in custom handle
          Error messages are never printed to the \code{\link{stderr}} connection but logged only.
 }
 \examples{
-tryLog(log(-1))   # logs a warning
+tryLog(log(-1))   # logs a warning (logarithm of a negative number is not possible)
 tryLog(log("a"))  # logs an error
+tryCatchLog(log(-1), execution.context.msg = Sys.getpid())
 }
 \seealso{
 \code{\link{tryCatchLog}},

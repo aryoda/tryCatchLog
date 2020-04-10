@@ -5,6 +5,29 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
+## Version 1.1.7 (April 6, 2020)
+
+* Implemented feature request #52: Add runtime context information to conditions
+  (https://github.com/aryoda/tryCatchLog/issues/52)
+
+  Added the argument `execution.context.msg` to the `tryCatchLog` and `try` functions
+  to support an text identifier (eg. the PID or a variable value) that will be added to msg.text
+  for catched conditions. This makes it easier to identify the runtime state that caused
+  a condition esp. in parallel execution scenarios.
+  
+  Idea and core implementation contributed by user '1beb'
+  via pull request #53 (https://github.com/aryoda/tryCatchLog/pull/53).
+  THX!
+  
+  **Note:** In `tryLog` the new argument was added at the end to keep the function signature
+        compatible to existing code. In `tryCatchLog` the new argument was added as 3rd
+        argument to make it more visible. The signature is still compatible since it follows
+        the `...` argument which requires all subsequent arguments to be named in calls.
+* Fixed bug: `last.tryCatchLog.result()` has sometimes not been reset in case of an internal error
+  so that the result of the previous `tryCatchLog` or `tryLog` call was returned.
+  
+  
+
 ## Version 1.1.6 (Nov 6, 2019)
 
 * CRAN release version (with fixed broken unit test that caused this
@@ -28,6 +51,7 @@ https://www.gnu.org/prep/standards/standards.html#Documentation
 
 * Implemented feature request #44: Support configurable suppression of compact and full stack trace
   (https://github.com/aryoda/tryCatchLog/issues/44).
+  
   `tryCatchLog` and `tryCatch` now have two additional arguments named
   `include.full.call.stack` and `include.compact.call.stack` which can also be configured globally
   via options.

@@ -4,8 +4,15 @@
 \alias{build.log.entry}
 \title{Creates a log entry as a single \code{data.frame} row containing all relevant logging information in columns}
 \usage{
-build.log.entry(timestamp, severity, msg.text, call.stack, dump.file.name,
-  omit.call.stack.items = 0)
+build.log.entry(
+  timestamp,
+  severity,
+  msg.text,
+  execution.context.msg,
+  call.stack,
+  dump.file.name,
+  omit.call.stack.items = 0
+)
 }
 \arguments{
 \item{timestamp}{logging timestamp as \code{\link{POSIXct}} (normally by calling \code{\link{Sys.time}})}
@@ -14,10 +21,13 @@ build.log.entry(timestamp, severity, msg.text, call.stack, dump.file.name,
 
 \item{msg.text}{Logging message (e. g. error message)}
 
+\item{execution.context.msg}{a text identifier (eg. the PID or a variable value) that will be appended to msg.text
+for catched conditions. Must be a character or an error is thrown.}
+
 \item{call.stack}{a call stack created by \code{\link{sys.calls}}}
 
 \item{dump.file.name}{name of the created dump file (leave empty if the \code{\link{tryCatchLog}}
-argument \code{write.error.dump.file} is \code{FALSE}}
+argument \code{write.error.dump.file} is \code{FALSE})}
 
 \item{omit.call.stack.items}{the number of stack trace items to ignore (= last x calls) in
 the passed \code{call.stack} since they are caused by using \code{tryCatchLog}}

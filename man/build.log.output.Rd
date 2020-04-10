@@ -4,12 +4,15 @@
 \alias{build.log.output}
 \title{Creates a single string suited as logging output}
 \usage{
-build.log.output(log.results,
-  include.full.call.stack = getOption("tryCatchLog.include.full.call.stack",
-  TRUE),
+build.log.output(
+  log.results,
+  include.full.call.stack = getOption("tryCatchLog.include.full.call.stack", TRUE),
   include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack",
-  TRUE), include.severity = TRUE, include.timestamp = FALSE,
-  use.platform.newline = FALSE)
+    TRUE),
+  include.severity = TRUE,
+  include.timestamp = FALSE,
+  use.platform.newline = FALSE
+)
 }
 \arguments{
 \item{log.results}{A \code{data.frame} and member of the class \code{tryCatchLog.log.entry}

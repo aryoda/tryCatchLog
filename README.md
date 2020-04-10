@@ -2,9 +2,7 @@
 
 An R package to improve the error handling of the standard `tryCatch` and `try` function
 
-**Current version: 1.1.6 (Nov 2019).** See the [NEWS](NEWS.md) for the most recent changes.
-
-**`tryCatchLog` was removed from CRAN mid of Oct, 2019 (see [issue #50](https://github.com/aryoda/tryCatchLog/issues/50)) - it is available again on CRAN since Nov 7, 2019 - sorry for any inconvenience!**
+**Current version: 1.1.7 (April 2020).** See the [NEWS](NEWS.md) for the most recent changes.
 
 
 
@@ -38,12 +36,13 @@ This repository provides the source code of an advanced `tryCatch` function for 
 The main advantages of the `tryCatchLog` function over `tryCatch` are
 
 * **Easy logging** of errors, warnings and messages into a file or console
+* supports code with [parallel execution logic](#does-trycatchlog-work-in-parallelized-processing-scenarios)
 * **Complete stack trace with references to the source file names and line numbers**
   to identify the source of errors and warnings
   (R's `traceback` does not contain the full stack trace if you catch errors and warnings!)
 * allows **[post-mortem analysis](#how-do-i-perform-a-post-mortem-analysis-of-my-crashed-r-script) after errors by creating a dump file** with all variables of the global environment (workspace) and each function called (via `dump.frames`) - very helpful for batch jobs that you cannot debug on the server directly to reproduce the error!
-* Logging of warnings (and other non-error conditions)
-  **without** stopping the execution of the evaluated expression
+* **Logs warnings** (and other non-error conditions)
+  **without stopping the execution** of the evaluated expression
   (unlike `tryCatch` does if you pass a warning handler function)
 
 This package was initially created as an answer to the stackoverflow question.
@@ -272,6 +271,10 @@ and this is exactly what `tryCatchLog` does!
 
 ### How can I write the log output into a file instead of the console?
 
+Please read the documentation of the logging package you are using.
+
+Eg. for `futile.logger` you can redirect the log into a file with this code:
+
 ```R
 library(futile.logger)
 
@@ -283,7 +286,9 @@ flog.appender(appender.file("my_app.log"))
 
 ### How can I reduce the amount of logged conditions?
 
-Set the threshold of the `futile.logger` accordingly:
+Please read the documentation of the logging package you are using on how the change the logging level (threshold).
+
+Eg. to set the threshold of the `futile.logger` use:
 
 ```R
 library(futile.logger)
@@ -348,15 +353,100 @@ Rscript -e "options(keep.source = TRUE); source('demo/tryCatchLog_demo.R')"  # s
 
 ### Does `tryCatchLog` work in parallelized processing scenarios?
 
-Yes. `tryCatchLog` is agnostic of parallel oder multi-threading scenarios since base R does use only one process.
+Yes. `tryCatchLog` is agnostic of parallel oder multi-threading scenarios.
 
-You only have to consider two things:
+Since version 1.1.7 (April 2020) the new argument `execution.context.msg` makes it possible
+to add runtime information like a thread or process information to the message of catched conditions
+(see the help in `?tryCatchLog` and the FAQ entry for `execution.context.msg` for details and an example).
 
-1. The used logging framework is correctly configured for each parallel process to not overwrite the
-   log file of another process (eg. use the process ID in the logging file name)
-2. Be aware that theoretically a dump file could be overwritten by another dump file if
-   you have two errors within the same millisecond within the same process ID
-   This is very very unlikely!
+Basically you have to consider these things:
+
+1. Enable the logging of the process ID (PID) to be able to identify the process that caused problems
+   (eg. use the process ID in the logging file name or in the log output - see the PID FAQ below for an example)
+2. Configure the used logging framework for each parallel process to not overwrite the
+   log file of another process (eg. by adding the PID to the logging file name)
+3. Be aware that theoretically a dump file could be overwritten by another dump file if
+   you have two errors within the same millisecond within the same PID
+   This is very very unlikely by could happen!
+
+**Beware:**
+
+You should **not** initiate parallel execution logic with the code expression passed as `expr` argument
+to `tryCatchLog` or `tryLog` since this is untested (there are so many different parallel execution packages).
+Instead you should start the parallel execution from outside and within the same process you can
+use `tryCatchLog` and `tryLog` as usual.
+
+
+
+### How can I add the process ID (PID) to the logging output?
+
+This depends on the logging framework you are using (read the documentation of the according package).
+
+Normally you don't need the PID in the logs since R uses a single process only.
+If you are using a package that supports parallel processing it makes sense to log the PID too.
+
+For `futile.logger` you can enable the PID logging with this code snippet:
+
+```R
+# The CRAN version of futile.logger is quite old (v1.4.3 from 2016-07-10 as of today/March 17, 2020):
+# The github version has quite more features. To install it use:
+# devtools::install_github("zatonovo/futile.logger")  # installs version 1.4.4
+library(futile.logger)
+library(tryCatchLog)
+flog.layout(layout.simple.parallel)     # Use a default format with a process id
+flog.info(paste0("PID=", Sys.getpid())) # The logged PID should be the R PID
+tryCatchLog(warning("Something is strange..."), include.full.call.stack = FALSE, include.compact.call.stack = FALSE)
+```
+
+A typical logging entry does now show the PID after the timestamp:
+
+```R
+> flog.info(paste0("PID=", Sys.getpid()))
+INFO [2020-03-17 21:33:11 30423] PID=30423
+> tryCatchLog(warning("Something is strange..."))
+WARN [2020-03-17 21:33:11 30423] [WARN] Something is strange...
+...
+Warning message:
+In withCallingHandlers(expr, error = cond.handler, warning = cond.handler,  :
+  Something is strange...
+...
+```
+
+
+### How can I use the argument `execution.context.msg` for better debugging of loops or parallel execution?
+
+The `tryCatchLog` package helps to catch and log condition messages and the code lines causing the condition.
+
+What is missing is the program state during execution as context to narrow down the context that caused an error.
+
+A typical example are loops:
+
+```R
+library(tryCatchLog)
+library(foreach)  # support parallel execution (if you provice an parallel execution engine too)
+options(tryCatchLog.include.full.call.stack = FALSE) # reduce the ouput for demo purposes
+res <- foreach(i = 1:12) %dopar% {
+         tryCatchLog(log(10 - i), execution.context.msg = as.character(i))   # try to find the bug (logarithm of a negative number is not allowed)!
+}
+```
+
+which shows the "loop number" then in the condition message which helps you to narrow down
+the problem during debugging:
+
+```R
+WARN [2020-04-06 22:40:36] [WARN] NaNs produced {execution.context.msg: 11}
+
+Compact call stack:
+  1 foreach(i = 1:12) %dopar% {
+  2 #2: tryCatchLog(log(10 - i), execution.context.msg = as.character(i))
+...
+
+WARN [2020-04-06 22:40:36] [WARN] NaNs produced {execution.context.msg: 12}
+...
+```
+
+Without the loop number debugging would be more time consuming to find the execution state
+that causes the problem.
 
 
 
