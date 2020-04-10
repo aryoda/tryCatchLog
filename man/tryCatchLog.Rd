@@ -4,17 +4,19 @@
 \alias{tryCatchLog}
 \title{Try an expression with condition logging and error handling}
 \usage{
-tryCatchLog(expr, ..., finally = NULL,
-  write.error.dump.file = getOption("tryCatchLog.write.error.dump.file",
-  FALSE),
-  write.error.dump.folder = getOption("tryCatchLog.write.error.dump.folder",
-  "."), silent.warnings = getOption("tryCatchLog.silent.warnings",
-  FALSE), silent.messages = getOption("tryCatchLog.silent.messages",
-  FALSE),
-  include.full.call.stack = getOption("tryCatchLog.include.full.call.stack",
-  TRUE),
+tryCatchLog(
+  expr,
+  ...,
+  execution.context.msg = "",
+  finally = NULL,
+  write.error.dump.file = getOption("tryCatchLog.write.error.dump.file", FALSE),
+  write.error.dump.folder = getOption("tryCatchLog.write.error.dump.folder", "."),
+  silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
+  silent.messages = getOption("tryCatchLog.silent.messages", FALSE),
+  include.full.call.stack = getOption("tryCatchLog.include.full.call.stack", TRUE),
   include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack",
-  TRUE))
+    TRUE)
+)
 }
 \arguments{
 \item{expr}{expression to be evaluated}
@@ -24,6 +26,13 @@ Usual condition names are
 \code{error}, \code{warning}, \code{message} and \code{interrupt}.
 All condition handlers are passed to \code{\link{tryCatch}} as is
 (no filtering, wrapping or changing of semantics).}
+
+\item{execution.context.msg}{a text identifier (eg. the PID or a variable value) that will be added to msg.text
+for catched conditions. This makes it easier to identify the runtime state that caused
+a condition esp. in parallel execution scenarios.
+The value must be of length 1 and will be coerced to character.
+Expressions are not allowed.
+The added output has the form: \code{{execution.context.msg: your_value}}}
 
 \item{finally}{expression to be evaluated at the end}
 
@@ -44,13 +53,15 @@ setting in \code{\link{getOption}("warn")}. See also \code{\link{warning}}.}
 Shall the full call stack be included in the log output? Since the full
 call stack may be very long and the compact call stack has enough details
 normally the full call stack can be omitted by passing \code{FALSE}.
-The default value can be changed globally by setting the option \code{tryCatchLog.include.full.call.stack}.}
+The default value can be changed globally by setting the option \code{tryCatchLog.include.full.call.stack}.
+The full call stack can always be found via \code{\link{last.tryCatchLog.result}}.}
 
 \item{include.compact.call.stack}{Flag of type \code{\link{logical}}:
 Shall the compact call stack (including only calls with source code references)
 be included in the log output? Note: If you ommit both the full and compact
 call stacks the message text will be output without call stacks.
-The default value can be changed globally by setting the option \code{tryCatchLog.include.compact.call.stack}.}
+The default value can be changed globally by setting the option \code{tryCatchLog.include.compact.call.stack}.
+The compact call stack can always be found via \code{\link{last.tryCatchLog.result}}.}
 }
 \value{
 the value of the expression passed in as parameter "expr"
@@ -145,7 +156,17 @@ This function shall overcome some drawbacks of the standard \code{\link{tryCatch
 }
 
 \examples{
-tryCatchLog(log(-1))   # logs a warning
+tryCatchLog(log(-1))   # logs a warning (logarithm of a negative number is not possible)
+tryLog(log(-1), execution.context.msg = Sys.getpid())
+
+\dontrun{
+# Use case for "execution.context.msg" argument: Loops and parallel execution
+library(foreach)       # support parallel execution (requires an parallel execution plan)
+options(tryCatchLog.include.full.call.stack = FALSE) # reduce the ouput for demo purposes
+res <- foreach(i = 1:12) \%dopar\% {
+         tryCatchLog(log(10 - i), execution.context.msg = i)
+}
+}
 }
 \references{
 \url{http://adv-r.had.co.nz/beyond-exception-handling.html}\cr

@@ -28,7 +28,7 @@ test_that("log output is correct", {
   # load("tests/testthat/stack_trace.RData")
   load("stack_trace.RData")  # creates variable "stack.trace"
 
-  log.entry <- tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", stack.trace, "", 0)
+  log.entry <- tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", "", stack.trace, "", 0)
 
   out1 <- tryCatchLog::build.log.output(log.entry, include.full.call.stack = FALSE)
   # Due to a OSX bug R emits a warning in versions below 3.4.3 here:
@@ -98,7 +98,7 @@ test_that("multiple log entry rows work", {
 test_that("include args do work", {
 
   timestamp <- as.POSIXct("12/31/2010 9:00", format = "%m/%d/%Y %H:%M")
-  log.entry <- tryCatchLog:::build.log.entry(timestamp, "ERROR", "MESSAGE", NULL, "dump_123.rda", 0)
+  log.entry <- tryCatchLog:::build.log.entry(timestamp, "ERROR", "MESSAGE", "", NULL, "dump_123.rda", 0)
 
   out <- build.log.output(log.entry, include.severity = TRUE, include.timestamp = TRUE)
   expect_equal(out, "2010-12-31 09:00:00 [ERROR] MESSAGE\n\nCreated dump file: dump_123.rda\n\nCompact call stack:\n\n\nFull call stack:\n\n\n")
@@ -137,5 +137,72 @@ test_that("platform-specific newline works", {
     expect_false(grepl("\n", out, fixed = TRUE)),
     expect_true(grepl("<platform_newline>", out, fixed = TRUE))
   )
+
+})
+
+
+
+test_that("log output includes execution.context.msg", {
+
+  # The example stack trace was produced and saved with:
+  # tryLog(log("abc")) # with breakpoint in the function "tryCatchLog" to save the internal variable "call.stack"
+  # save(stack.trace, file = "stack_trace.RData")
+  # load("tests/testthat/stack_trace.RData")
+  load("stack_trace.RData")  # creates variable "stack.trace"
+
+  log.entry <- tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", "ctx1", stack.trace, "", 0)
+
+  out1 <- tryCatchLog::build.log.output(log.entry, include.full.call.stack = FALSE)
+  # Due to a OSX bug R emits a warning in versions below 3.4.3 here:
+  #   In as.POSIXlt.POSIXct(x, tz) : unknown timezone 'default/Europe/Berlin'
+  # The reason is that the default timezone cannot be recognized by R anymore due to an OSX update.
+  # Symptom:   Sys.timezone()  # returns NA instead of a timezone string
+  # See https://stackoverflow.com/questions/47709061/sys-date-showing-the-wrong-date
+
+  # cat(out1)   # how it looks like
+  expected1 <- "[ERROR] msg {execution.context.msg: ctx1}\n\nCompact call stack:\n  1 tryLog(log(\"abc\"))\n  2 tryLog.R#49: tryCatchLog(expr = expr, dump.errors.to.file = dump.errors.to.file, error = function(e) {\n  3 tryCatchLog.R#135: tryCatch(withCallingHandlers(expr, error = function(e) {\n\n"
+
+  expect_equal(out1, expected1)
+
+
+
+  log.entry <- tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", NA_character_, stack.trace, "", 0)
+
+  out2 <- tryCatchLog::build.log.output(log.entry, include.full.call.stack = FALSE)
+  # Due to a OSX bug R emits a warning in versions below 3.4.3 here:
+  #   In as.POSIXlt.POSIXct(x, tz) : unknown timezone 'default/Europe/Berlin'
+  # The reason is that the default timezone cannot be recognized by R anymore due to an OSX update.
+  # Symptom:   Sys.timezone()  # returns NA instead of a timezone string
+  # See https://stackoverflow.com/questions/47709061/sys-date-showing-the-wrong-date
+
+  # cat(out2)   # how it looks like
+  expected2 <- "[ERROR] msg\n\nCompact call stack:\n  1 tryLog(log(\"abc\"))\n  2 tryLog.R#49: tryCatchLog(expr = expr, dump.errors.to.file = dump.errors.to.file, error = function(e) {\n  3 tryCatchLog.R#135: tryCatch(withCallingHandlers(expr, error = function(e) {\n\n"
+
+  expect_equal(out2, expected2)
+
+})
+
+
+test_that("log output contains execution.context.msg", {
+
+  expect_error(expect_warning(tryCatchLog({
+                                            log(-1); log("abc")
+                                          }, execution.context.msg = "my context")
+                             )
+  )
+
+  log.entries <- last.tryCatchLog.result()
+
+  expect_equal(NROW(log.entries), 2)
+
+  out1 <- build.log.output(log.entries)
+
+  # Expect:
+  # [WARN] NaNs produced {execution.context.msg: my context}
+  # [ERROR] non-numeric argument to mathematical function {execution.context.msg: my context}
+  expect_match(out1, paste0(".*\\[WARN\\] NaNs produced \\{execution\\.context\\.msg: my context\\}",
+                            ".*",
+                            "\\[ERROR\\] non-numeric argument to mathematical function \\{execution\\.context\\.msg: my context\\}.*"))
+
 
 })

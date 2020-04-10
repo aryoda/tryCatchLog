@@ -30,7 +30,7 @@ How to build the vignette in RStudio:
 
 Open questions:
 
-- Is it possible to support all R versions (with and without the fixed version) with one single vingnette code?
+- Is it possible to support all R versions (with and without the fixed version) with one single vignette code?
 
 TODOs:
 

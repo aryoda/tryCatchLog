@@ -32,7 +32,12 @@
 #'                              \code{error}, \code{warning}, \code{message} and \code{interrupt}.
 #'                              All condition handlers are passed to \code{\link{tryCatch}} as is
 #'                              (no filtering, wrapping or changing of semantics).
-#' @param pid                   a process id or other text identifier that will be added to msg.text
+#' @param execution.context.msg a text identifier (eg. the PID or a variable value) that will be added to msg.text
+#'                              for catched conditions. This makes it easier to identify the runtime state that caused
+#'                              a condition esp. in parallel execution scenarios.
+#'                              The value must be of length 1 and will be coerced to character.
+#'                              Expressions are not allowed.
+#'                              The added output has the form: \code{{execution.context.msg: your_value}}
 #' @param finally               expression to be evaluated at the end
 #' @param write.error.dump.file \code{TRUE}: Saves a dump of the workspace and the call stack named
 #'                              \code{dump_<YYYYMMDD>_at_<HHMMSS.sss>_PID_<process id>.rda}.
@@ -48,11 +53,13 @@
 #'                     call stack may be very long and the compact call stack has enough details
 #'                     normally the full call stack can be omitted by passing \code{FALSE}.
 #'                     The default value can be changed globally by setting the option \code{tryCatchLog.include.full.call.stack}.
+#'                     The full call stack can always be found via \code{\link{last.tryCatchLog.result}}.
 #' @param include.compact.call.stack Flag of type \code{\link{logical}}:
 #'                     Shall the compact call stack (including only calls with source code references)
 #'                     be included in the log output? Note: If you ommit both the full and compact
 #'                     call stacks the message text will be output without call stacks.
 #'                     The default value can be changed globally by setting the option \code{tryCatchLog.include.compact.call.stack}.
+#'                     The compact call stack can always be found via \code{\link{last.tryCatchLog.result}}.
 #' @return                     the value of the expression passed in as parameter "expr"
 #'
 #' @details This function shall overcome some drawbacks of the standard \code{\link{tryCatch}} function.\cr
@@ -142,12 +149,22 @@
 #'          \url{http://adv-r.had.co.nz/beyond-exception-handling.html}\cr
 #'          \url{https://stackoverflow.com/questions/39964040/r-catch-errors-and-continue-execution-after-logging-the-stacktrace-no-tracebac}
 #' @examples
-#' tryCatchLog(log(-1))   # logs a warning
+#' tryCatchLog(log(-1))   # logs a warning (logarithm of a negative number is not possible)
+#' tryLog(log(-1), execution.context.msg = Sys.getpid())
+#'
+#' \dontrun{
+#' # Use case for "execution.context.msg" argument: Loops and parallel execution
+#' library(foreach)       # support parallel execution (requires an parallel execution plan)
+#' options(tryCatchLog.include.full.call.stack = FALSE) # reduce the ouput for demo purposes
+#' res <- foreach(i = 1:12) %dopar% {
+#'          tryCatchLog(log(10 - i), execution.context.msg = i)
+#' }
+#' }
 #' @export
 tryCatchLog <- function(expr,
                         # error = function(e) {if (!is.null(getOption("error", stop))) eval(getOption("error", stop)) }, # getOption("error", default = stop),
                         ...,
-                        pid = NULL,
+                        execution.context.msg      = "",
                         finally = NULL,
                         write.error.dump.file      = getOption("tryCatchLog.write.error.dump.file", FALSE),
                         write.error.dump.folder    = getOption("tryCatchLog.write.error.dump.folder", "."),
@@ -155,7 +172,24 @@ tryCatchLog <- function(expr,
                         silent.messages            = getOption("tryCatchLog.silent.messages", FALSE),
                         include.full.call.stack    = getOption("tryCatchLog.include.full.call.stack", TRUE),
                         include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack", TRUE)
-                        ) {
+) {
+
+  reset.last.tryCatchLog.result()   # TODO If an internal error is thrown in the code above the last result will be kept. Fix this?
+
+
+  # Validate user input
+
+  unlisted.exec.ctx.msg <- unlist(execution.context.msg, recursive = TRUE)  # flatten deeply nested data structures to recognize the real length
+
+  if (length(unlisted.exec.ctx.msg) > 1) {
+    warning("tryCatchLog: The value of the argument 'execution.context.msg' has more than one element. Only the first element will be used.")
+    execution.context.msg = unlisted.exec.ctx.msg[1]
+  }
+
+  if (length(execution.context.msg) == 0)   execution.context.msg <- ""
+  if (!is.character(execution.context.msg)) execution.context.msg <- as.character(execution.context.msg)
+  if (is.na(execution.context.msg))         execution.context.msg <- ""
+
 
 
   # closure ---------------------------------------------------------------------------------------------------------
@@ -199,12 +233,12 @@ tryCatchLog <- function(expr,
 
 
 
-    log.entry <- build.log.entry(timestamp, severity, log.message, pid, call.stack, dump.file.name, omit.call.stack.items = 1)
+    log.entry <- build.log.entry(timestamp, severity, log.message, execution.context.msg, call.stack, dump.file.name, omit.call.stack.items = 1)
 
     if (!is.duplicated.log.entry(log.entry)) {
 
       log.msg <- build.log.output(log.entry,
-                                  include.full.call.stack = include.full.call.stack,
+                                  include.full.call.stack    = include.full.call.stack,
                                   include.compact.call.stack = include.compact.call.stack)
 
       switch(severity,
@@ -255,10 +289,6 @@ tryCatchLog <- function(expr,
 
 
   # function logic --------------------------------------------------------------------------------------------------
-
-  reset.last.tryCatchLog.result()
-
-
 
   tryCatch(
     withCallingHandlers(expr,

@@ -19,8 +19,8 @@
 
 #' Try an expression with condition logging and error recovery
 #'
-#' \code{tryLog} is a wrapper function around \code{\link{tryCatchLog}}
-#' that traps any errors that occur during the evaluation of an expression without stopping the execution
+#' \code{tryLog} is implemented by calling \code{\link{tryCatchLog}}
+#' and traps any errors that occur during the evaluation of an expression without stopping the execution
 #' of the script (similar to \code{\link{try}}). Errors, warnings and messages are logged.
 #' In contrast to \code{\link{tryCatchLog}} it returns but does not stop in case of an error and therefore does
 #' not have the \code{error} and \code{finally} parameters to pass in custom handler functions.
@@ -38,8 +38,9 @@
 #' @seealso \code{\link{tryCatchLog}},
 #'          \code{\link{last.tryCatchLog.result}}
 #' @examples
-#' tryLog(log(-1))   # logs a warning
+#' tryLog(log(-1))   # logs a warning (logarithm of a negative number is not possible)
 #' tryLog(log("a"))  # logs an error
+#' tryCatchLog(log(-1), execution.context.msg = Sys.getpid())
 #' @export
 tryLog <- function(expr,
                    write.error.dump.file      = getOption("tryCatchLog.write.error.dump.file", FALSE),
@@ -47,18 +48,20 @@ tryLog <- function(expr,
                    silent.warnings            = getOption("tryCatchLog.silent.warnings", FALSE),
                    silent.messages            = getOption("tryCatchLog.silent.messages", FALSE),
                    include.full.call.stack    = getOption("tryCatchLog.include.full.call.stack", TRUE),
-                   include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack", TRUE)
-                   ) {
+                   include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack", TRUE),
+                   execution.context.msg      = ""
+) {
 
   tryCatchLog(expr = expr,
-              write.error.dump.file = write.error.dump.file,
-              write.error.dump.folder = write.error.dump.folder,
+              execution.context.msg      = execution.context.msg,
+              write.error.dump.file      = write.error.dump.file,
+              write.error.dump.folder    = write.error.dump.folder,
               error = function(e) {
                 msg <- conditionMessage(e)
                 invisible(structure(msg, class = "try-error", condition = e))
               },
-              silent.warnings = silent.warnings,
-              silent.messages = silent.messages,
-              include.full.call.stack = include.full.call.stack,
+              silent.warnings            = silent.warnings,
+              silent.messages            = silent.messages,
+              include.full.call.stack    = include.full.call.stack,
               include.compact.call.stack = include.compact.call.stack)
 }

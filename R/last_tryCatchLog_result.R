@@ -19,8 +19,8 @@
 
 #' Gets the logging result of the last call to \code{tryCatchLog} or \code{tryLog}
 #'
-#' The last logging result after calling \code{tryCatchLog} or \code{tryLog} can be retrieved by
-#' calling this function.
+#' This funktion makes the logging results of all thrown conditions of the last \code{tryCatchLog} or \code{tryLog} call
+#' available in a structured form (\code{data.frame}).
 #'
 #' The typical use case is to get and store the log output not only in a log file but
 #' also in another place that is not supported by the logging framework, e. g. in
@@ -34,12 +34,16 @@
 #'         \item{timestamp   - creation date and time of the logging entry}
 #'         \item{severity    - the serverity level of the log entry (ERROR, WARN, INFO etc.)}
 #'         \item{msg.text    - the message text of the log entry}
-#'         \item{compact.stack.trace - the short stack trace containing only entries with source code
-#'                                     references down to line of code that has thrown the condition}
-#'         \item{full.stack.trace    - the full stack trace with all calls down to the line of code that
-#'                                     has thrown the condition (including calls to R internal functions
-#'                                     and other functions even when the source code in not available).}
-#'         \item{dump.file.name      - name of the created dump file (if any)}
+#'         \item{execution.context.msg - text identifier (eg. the PID or a variable value)
+#'                                       as passed as argument to \code{\link{tryCatchLog}} or \code{\link{tryLog}}
+#'                                       to make it easier to identify the runtime state that caused
+#'                                       a condition esp. in parallel execution scenarios}
+#'         \item{compact.stack.trace   - the short stack trace containing only entries with source code
+#'                                       references down to line of code that has thrown the condition}
+#'         \item{full.stack.trace      - the full stack trace with all calls down to the line of code that
+#'                                       has thrown the condition (including calls to R internal functions
+#'                                       and other functions even when the source code in not available).}
+#'         \item{dump.file.name        - name of the created dump file (if any)}
 #'         }
 #'
 #'         If no condition is logged at all an empty \code{data.table} is returned.

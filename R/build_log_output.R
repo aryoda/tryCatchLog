@@ -71,9 +71,10 @@ build.log.output <- function(log.results,
 
 
 
-  # append every row of the log result to the output
+  # append every row of the log result to the output (yes it is a loop ;-)
   res <- ""
   i <- 1
+
   while (i <= NROW(log.results)) {
 
     res <- paste0(res,
@@ -82,8 +83,8 @@ build.log.output <- function(log.results,
                   if (include.severity)
                     paste0("[", log.results$severity[i], "] "),
                   log.results$msg.text[i],
-                  if (!is.na(log.results$pid[i]))
-                    paste0(" ", log.results$pid[i]), # No condition required, won't show if NULL
+                  if (!is.na(log.results$execution.context.msg[i]) && !log.results$execution.context.msg[i] == "")
+                    paste0(" {execution.context.msg: ", log.results$execution.context.msg[i], "}"), # No condition required, won't show if NULL
                   "\n\n",
                   if (nchar(log.results$dump.file.name[i]) > 0)
                     paste0("Created dump file: ", log.results$dump.file.name[i], "\n\n"),

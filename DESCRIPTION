@@ -1,9 +1,10 @@
 Package: tryCatchLog
 Title: Advanced 'tryCatch()' and 'try()' Functions
-Version: 1.1.6
+Version: 1.1.7
 Authors@R: c(
   person("Juergen", "Altfeld", email = "jaltfeld@altfeld-im.de", role = c("aut", "cre", "cph")),
-  person("Charles", "Epaillard", email = "charles.epaillard@gmail.com", role = "ctb")
+  person("Charles", "Epaillard", email = "charles.epaillard@gmail.com", role = "ctb"),
+  person("Brandon", "Bertelsen", email = "brandon@bertelsen.ca", role = "ctb")
   )
 Description: Advanced tryCatch() and try() functions for better error handling
              (logging, stack trace with source code references and support for post-mortem analysis via dump files).
@@ -16,7 +17,7 @@ URL: https://github.com/aryoda/tryCatchLog
 BugReports: https://github.com/aryoda/tryCatchLog/issues
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0
+RoxygenNote: 7.1.0
 Suggests:
     futile.logger,
     testthat,
