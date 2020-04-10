@@ -103,4 +103,3 @@ test_that("invalid execution.context.msg values are recognized", {
   expect_error(tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", NULL, NA, "", 0), regexp = "length(execution.context.msg) == 1", fixed = T)
 
 })
-
