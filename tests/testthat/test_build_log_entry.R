@@ -94,13 +94,13 @@ test_that("invalid execution.context.msg values are recognized", {
 
   expect_error(tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", 123, NA, "", 0), regexp = "is.character(execution.context.msg)", fixed = T)
 
-  expect_error(tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", NA , NA, "", 0), regexp = "is.character(execution.context.msg)", fixed = T)
+  expect_error(tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", NA, NA, "", 0), regexp = "is.character(execution.context.msg)", fixed = T)
 
   expect_silent(tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", NA_character_, NA, "", 0))
 
-  expect_error(tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", c("ctx1", "ctx2") , NA, "", 0), regexp = "length(execution.context.msg) == 1", fixed = T)
+  expect_error(tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", c("ctx1", "ctx2"), NA, "", 0), regexp = "length(execution.context.msg) == 1", fixed = T)
 
-  expect_error(tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", NULL , NA, "", 0), regexp = "length(execution.context.msg) == 1", fixed = T)
+  expect_error(tryCatchLog:::build.log.entry(Sys.time(), "ERROR", "msg", NULL, NA, "", 0), regexp = "length(execution.context.msg) == 1", fixed = T)
 
 })
 

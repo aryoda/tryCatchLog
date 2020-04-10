@@ -183,7 +183,7 @@ tryCatchLog <- function(expr,
 
   if (length(unlisted.exec.ctx.msg) > 1) {
     warning("tryCatchLog: The value of the argument 'execution.context.msg' has more than one element. Only the first element will be used.")
-    execution.context.msg = unlisted.exec.ctx.msg[1]
+    execution.context.msg <- unlisted.exec.ctx.msg[1]
   }
 
   if (length(execution.context.msg) == 0)   execution.context.msg <- ""

@@ -84,14 +84,14 @@ test_that("execution.context.msg with coercion works",  {
   expect_warning(tryCatchLog(warning("test"), execution.context.msg = 2L), "test")
   expect_equal(last.tryCatchLog.result()$execution.context.msg[1], "2")
 
-  a = 10 + 5
+  a <- 10 + 5
   expect_warning(tryCatchLog(warning("test"), execution.context.msg = a), "test")
   expect_equal(last.tryCatchLog.result()$execution.context.msg[1], "15")
 
   expect_warning(tryCatchLog(warning("test"), execution.context.msg = 100 + 10), "test")
   expect_equal(last.tryCatchLog.result()$execution.context.msg[1], "110")
 
-  expect_warning(tryCatchLog(warning("test"), execution.context.msg = list(a=3, b="x")), "test")
+  expect_warning(tryCatchLog(warning("test"), execution.context.msg = list(a = 3, b = "x")), "test")
   expect_equal(last.tryCatchLog.result()$execution.context.msg[1], "3")
 
   # test a data type that cannot be converted to character ("closure")
@@ -108,7 +108,7 @@ test_that("execution.context.msg with nested elements and length > 1 works",  {
   expect_equal(last.tryCatchLog.result()$execution.context.msg[1], "21")
 
   # expression with nesting level 3
-  expect_warning(tryCatchLog(warning("test"), execution.context.msg = list(a=list(b=list(c=1:10)))), "test")
+  expect_warning(tryCatchLog(warning("test"), execution.context.msg = list(a = list(b = list(c = 1:10)))), "test")
   expect_equal(last.tryCatchLog.result()$execution.context.msg[1], "1")
 
 })

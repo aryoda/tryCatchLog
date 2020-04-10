@@ -36,7 +36,7 @@ This repository provides the source code of an advanced `tryCatch` function for 
 The main advantages of the `tryCatchLog` function over `tryCatch` are
 
 * **Easy logging** of errors, warnings and messages into a file or console
-* supports code with [parallel execution logic](#does-trycatchlog-work-in-parallelized-processing-scenarios)
+* supports code with **[parallel execution logic](#does-trycatchlog-work-in-parallelized-processing-scenarios)**
 * **Complete stack trace with references to the source file names and line numbers**
   to identify the source of errors and warnings
   (R's `traceback` does not contain the full stack trace if you catch errors and warnings!)
