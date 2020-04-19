@@ -43,7 +43,7 @@ The main advantages of the `tryCatchLog` function over `tryCatch` are
 * allows **[post-mortem analysis](#how-do-i-perform-a-post-mortem-analysis-of-my-crashed-r-script) after errors by creating a dump file** with all variables of the global environment (workspace) and each function called (via `dump.frames`) - very helpful for batch jobs that you cannot debug on the server directly to reproduce the error!
 * **Logs warnings** (and other non-error conditions)
   **without stopping the execution** of the evaluated expression
-  (unlike `tryCatch` does if you pass a warning handler function)
+  (unlike `tryCatch` does if you pass a warning handler function, see [this example](#whats-the-problem-with-trycatch))
 
 This package was initially created as an answer to the stackoverflow question.
 
@@ -258,9 +258,32 @@ This means
 
 * you cannot use `traceback` to identify the source code line that cause the problem
   (see the help `?traceback`: *Errors which are caught via try or tryCatch do not generate a traceback...*)
-* if you catch non-errors like warnings (e. g. to write them to a log file) the execution
+* if you catch non-error conditions like warnings (e. g. to write them to a log file) the execution
   of the evaluated expression is stopped (canceled)
-  but normally you do **not** want to stop after warnings
+  but normally you do **not** want to stop after warnings but log the warning only and continue with the
+  normal program flow:
+  
+  ```R
+  fw <- function() {
+    print("before warning")
+    warning("a warning message")
+    print("after warning")
+  }
+  
+  fw()
+  # [1] "before warning"
+  # [1] "after warning"
+  # Warning message:
+  # In fw() : a warning message
+  
+  tryCatch(fw(), warning = function(w) print("+ warning catched"))
+  # [1] "before warning"
+  # [1] "+ warning catched"  
+
+  try(fw())
+  # [1] "before warning"
+  # [1] "after warning"  
+  ```
   
 To overcome the drawbacks of `tryCatch` you must use a combination of an outer `tryCatch` call that executes
 the expression within and inner `withCallingHandlers` function call. This creates a lot of boilerplate code
