@@ -37,3 +37,5 @@ inst/doc
 Rprof.out
 Rprofmem.out
 /R/profile_test.R
+# keep the "work in progress" folder on the local machine only
+/wip

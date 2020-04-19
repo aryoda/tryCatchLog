@@ -10,3 +10,5 @@ R/dump\.frames\.dev\.R
 ^README\.md$
 ^LICENSE_HEADER_TEMPLATE.txt$
 ^\.lintr$
+# keep the "work in progress" folder on the local machine only
+^wip$
