@@ -260,7 +260,7 @@ tryCatchLog <- function(expr,
         dir.create(path = write.error.dump.folder, recursive = T, showWarnings = F)
         utils::dump.frames()
         save.image(file = file.path(write.error.dump.folder, dump.file.name))  # an existing file would be overwritten silently :-()
-        log.entry$dump.file.name = dump.file.name
+        log.entry$dump.file.name <- dump.file.name
       }
 
 
