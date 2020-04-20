@@ -19,11 +19,13 @@ tryCatchLog(
 )
 }
 \arguments{
-\item{expr}{expression to be evaluated}
+\item{expr}{R expression to be evaluated}
 
 \item{...}{condition handler functions (as in \code{\link{tryCatch}}).
-Usual condition names are
+The following condition names are mainly used in R:
 \code{error}, \code{warning}, \code{message} and \code{interrupt}.
+A handler for user-defined conditions can be established for the
+generic \code{condition} super class.
 All condition handlers are passed to \code{\link{tryCatch}} as is
 (no filtering, wrapping or changing of semantics).}
 
@@ -34,7 +36,8 @@ The value must be of length 1 and will be coerced to character.
 Expressions are not allowed.
 The added output has the form: \code{{execution.context.msg: your_value}}}
 
-\item{finally}{expression to be evaluated at the end}
+\item{finally}{expression to be evaluated at the end (after executing the expressiond
+and calling the matching handler).}
 
 \item{write.error.dump.file}{\code{TRUE}: Saves a dump of the workspace and the call stack named
 \code{dump_<YYYYMMDD>_at_<HHMMSS.sss>_PID_<process id>.rda}.
@@ -67,13 +70,16 @@ The compact call stack can always be found via \code{\link{last.tryCatchLog.resu
 the value of the expression passed in as parameter "expr"
 }
 \description{
-This function evaluates an expression passed in the \code{expr} parameter and executes
-the error handler function passed as parameter \code{error} in case of an error condition.
+This function evaluates an expression passed in the \code{expr} parameter,
+logs all conditions and executes the condition handlers passed in \code{...} (if any).
 }
 \details{
 The \code{finally} expression is then always evaluated at the end.
 
-Conditions are logged with the function call stack (including file names and line numbers).
+Condition handlers work as in base R's \code{\link{tryCatch}}.
+
+Conditions are also logged including the function call stack
+with file names and line numbers (if available).
 
 This function shall overcome some drawbacks of the standard \code{\link{tryCatch}} function.\cr
          For more details see \url{https://github.com/aryoda/tryCatchLog}.
@@ -93,14 +99,16 @@ This function shall overcome some drawbacks of the standard \code{\link{tryCatch
          these log functions for the different R conditions to log them:
 
          \enumerate{
-         \item error   -> \code{\link[futile.logger]{flog.error}}
-         \item warning -> \code{\link[futile.logger]{flog.warn}}
-         \item message -> \code{\link[futile.logger]{flog.info}}
+         \item error     -> \code{\link[futile.logger]{flog.error}}
+         \item warning   -> \code{\link[futile.logger]{flog.warn}}
+         \item message   -> \code{\link[futile.logger]{flog.info}}
+         \item interrupt -> \code{\link[futile.logger]{flog.info}}
          }
 
-         \strong{`tryCatchLog` does only log the above conditions, other (user-defined)
-         conditions are currently not not logged but can be catched of course
-         by passing additional handler functions via the \code{...} argument.}
+         \strong{`tryCatchLog` does log all conditions (incl. user-defined conditions).}
+
+         Since the interrupt condition does not have an error message attribute \code{tryCatchLog}
+         uses "User-requested interrupt" as message in the logs.
 
          The log contains the call stack with the file names and line numbers (if available).
 
@@ -159,6 +167,10 @@ This function shall overcome some drawbacks of the standard \code{\link{tryCatch
 tryCatchLog(log(-1))   # logs a warning (logarithm of a negative number is not possible)
 tryLog(log(-1), execution.context.msg = Sys.getpid())
 
+# set and unset an option
+options("tryCatchLog.write.error.dump.folder" = "my_log")
+options("tryCatchLog.write.error.dump.folder" = NULL)
+
 \dontrun{
 # Use case for "execution.context.msg" argument: Loops and parallel execution
 library(foreach)       # support parallel execution (requires an parallel execution plan)
@@ -174,6 +186,7 @@ res <- foreach(i = 1:12) \%dopar\% {
 }
 \seealso{
 \code{\link{tryLog}}, \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}},
-         \code{\link{getOption}}, \code{\link{last.tryCatchLog.result}},
-         \code{\link{set.logging.functions}}
+         \code{\link{last.tryCatchLog.result}}, \code{\link{set.logging.functions}},
+         \code{\link{tryCatch}}, \code{\link{withCallingHandlers}}, \code{\link{signalCondition}},
+         \code{\link{getOption}}
 }

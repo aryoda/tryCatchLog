@@ -5,6 +5,14 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
+## Version 1.1.8 (April xx, 2020)
+
+* Implemented feature requests #14 and #45: Support logging of all conditions (incl. user-defined conditions).
+  * Interrupt conditions are logged with the message "User-requested interrupt"
+    even though R does not deliver a message.  (incl. user-defined and interrupt)
+  * https://github.com/aryoda/tryCatchLog/issues/14
+  * https://github.com/aryoda/tryCatchLog/issues/45
+
 ## Version 1.1.7 (April 6, 2020)
 
 * Implemented feature request #52: Add runtime context information to conditions

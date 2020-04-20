@@ -13,6 +13,10 @@ is.duplicated.log.entry(log.entry)
 \code{TRUE} if the \code{log.entry} is a duplicate, else \code{FALSE}
 }
 \description{
+DEPRECATED due to a required signature change to fix issue #55:
+           https://github.com/aryoda/tryCatchLog/issues/55
+}
+\details{
 The \code{log.entry} is checked against the existing log entries from
 \code{\link{last.tryCatchLog.result}} using the following columns:
         \enumerate{
@@ -21,7 +25,7 @@ The \code{log.entry} is checked against the existing log entries from
         }
 }
 \note{
-Required function to fix issue # 18
+Required function to fix issue #18
        (\url{https://github.com/aryoda/tryCatchLog/issues/18})
 }
 \seealso{

@@ -17,35 +17,25 @@
 
 
 
-#' Check if a new log entry would be a duplicate of on an already existing log entry
+#' Check if a condition is already logged in the \code{\link{last.tryCatchLog.result}}
 #'
-#' DEPRECATED due to a required signature change to fix issue #55:
-#'            https://github.com/aryoda/tryCatchLog/issues/55
 #'
-#' The \code{log.entry} is checked against the existing log entries from
-#' \code{\link{last.tryCatchLog.result}} using the following columns:
-#'         \enumerate{
-#'         \item{msg.text}
-#'         \item{full.stack.trace}
-#'         }
 #'
-#' @note  Required function to fix issue #18
-#'        (\url{https://github.com/aryoda/tryCatchLog/issues/18})
+#' @note Introduced as replacement for \code{is.duplicated.log.entry} due to
+#'       a required signature change to fix issue #55
+#'       (https://github.com/aryoda/tryCatchLog/issues/55).
 #'
-#' @param log.entry  A \code{data.frame} with the new log entry (exactly one row)
+#' @param msg.text           the condition message as it would be logged
+#' @param full.stack.trace   the call stack of the condition
 #'
-#' @return  \code{TRUE} if the \code{log.entry} is a duplicate, else \code{FALSE}
+#' @return  \code{TRUE} if the condition is already contained in the current log, else \code{FALSE}
 #'
 #' @seealso \code{\link{last.tryCatchLog.result}},
 #'          \code{\link{build.log.entry}}
-is.duplicated.log.entry <- function(log.entry) {
+is.already.logged <- function(msg.text, full.stack.trace) {
 
-  # warning("DEPRECATED function due to a required signature change to fix issue #55")
-
-  if (is.null(log.entry))
-    return(TRUE)    # an empty entry is useless - treat it like a duplicate
-
-  stopifnot("tryCatchLog.log.entry" %in% class(log.entry))
+  if (is.null(msg.text) & is.null(full.stack.trace))
+    return(TRUE)    # treat missing arguments like a duplicate
 
 
 
@@ -54,7 +44,7 @@ is.duplicated.log.entry <- function(log.entry) {
   if (NROW(log) < 1)
     res <- FALSE
   else
-    res <- any(log$msg.text == log.entry$msg.text & log$full.stack.trace == log.entry$full.stack.trace)
+    res <- any(log$msg.text == msg.text & log$full.stack.trace == full.stack.trace)
 
   return(res)
 

@@ -17,7 +17,7 @@ tryLog(
 )
 }
 \arguments{
-\item{expr}{expression to be evaluated}
+\item{expr}{R expression to be evaluated}
 
 \item{write.error.dump.file}{\code{TRUE}: Saves a dump of the workspace and the call stack named
 \code{dump_<YYYYMMDD>_at_<HHMMSS.sss>_PID_<process id>.rda}.

@@ -19,17 +19,22 @@
 
 #' Try an expression with condition logging and error handling
 #'
-#' This function evaluates an expression passed in the \code{expr} parameter and executes
-#' the error handler function passed as parameter \code{error} in case of an error condition.
+#' This function evaluates an expression passed in the \code{expr} parameter,
+#' logs all conditions and executes the condition handlers passed in \code{...} (if any).
 #'
 #' The \code{finally} expression is then always evaluated at the end.
 #'
-#' Conditions are logged with the function call stack (including file names and line numbers).
+#' Condition handlers work as in base R's \code{\link{tryCatch}}.
 #'
-#' @param expr                  expression to be evaluated
+#' Conditions are also logged including the function call stack
+#' with file names and line numbers (if available).
+#'
+#' @param expr                  R expression to be evaluated
 #' @param ...                   condition handler functions (as in \code{\link{tryCatch}}).
-#'                              Usual condition names are
+#'                              The following condition names are mainly used in R:
 #'                              \code{error}, \code{warning}, \code{message} and \code{interrupt}.
+#'                              A handler for user-defined conditions can be established for the
+#'                              generic \code{condition} super class.
 #'                              All condition handlers are passed to \code{\link{tryCatch}} as is
 #'                              (no filtering, wrapping or changing of semantics).
 #' @param execution.context.msg a text identifier (eg. the PID or a variable value) that will be added to msg.text
@@ -38,7 +43,8 @@
 #'                              The value must be of length 1 and will be coerced to character.
 #'                              Expressions are not allowed.
 #'                              The added output has the form: \code{{execution.context.msg: your_value}}
-#' @param finally               expression to be evaluated at the end
+#' @param finally               expression to be evaluated at the end (after executing the expressiond
+#'                              and calling the matching handler).
 #' @param write.error.dump.file \code{TRUE}: Saves a dump of the workspace and the call stack named
 #'                              \code{dump_<YYYYMMDD>_at_<HHMMSS.sss>_PID_<process id>.rda}.
 #'                              This dump file name pattern shall ensure unique file names in parallel processing scenarios.
@@ -80,14 +86,16 @@
 #'          these log functions for the different R conditions to log them:
 #'
 #'          \enumerate{
-#'          \item error   -> \code{\link[futile.logger]{flog.error}}
-#'          \item warning -> \code{\link[futile.logger]{flog.warn}}
-#'          \item message -> \code{\link[futile.logger]{flog.info}}
+#'          \item error     -> \code{\link[futile.logger]{flog.error}}
+#'          \item warning   -> \code{\link[futile.logger]{flog.warn}}
+#'          \item message   -> \code{\link[futile.logger]{flog.info}}
+#'          \item interrupt -> \code{\link[futile.logger]{flog.info}}
 #'          }
 #'
-#'          \strong{`tryCatchLog` does only log the above conditions, other (user-defined)
-#'          conditions are currently not not logged but can be catched of course
-#'          by passing additional handler functions via the \code{...} argument.}
+#'          \strong{`tryCatchLog` does log all conditions (incl. user-defined conditions).}
+#'
+#'          Since the interrupt condition does not have an error message attribute \code{tryCatchLog}
+#'          uses "User-requested interrupt" as message in the logs.
 #'
 #'          The log contains the call stack with the file names and line numbers (if available).
 #'
@@ -142,8 +150,9 @@
 #'          \code{Rscript -e "options(keep.source = TRUE); source('my_main_function.R')"}
 #'
 #' @seealso \code{\link{tryLog}}, \code{\link{limitedLabels}}, \code{\link{get.pretty.call.stack}},
-#'          \code{\link{getOption}}, \code{\link{last.tryCatchLog.result}},
-#'          \code{\link{set.logging.functions}}
+#'          \code{\link{last.tryCatchLog.result}}, \code{\link{set.logging.functions}},
+#'          \code{\link{tryCatch}}, \code{\link{withCallingHandlers}}, \code{\link{signalCondition}},
+#'          \code{\link{getOption}}
 #'
 #' @references
 #'          \url{http://adv-r.had.co.nz/beyond-exception-handling.html}\cr
@@ -151,6 +160,10 @@
 #' @examples
 #' tryCatchLog(log(-1))   # logs a warning (logarithm of a negative number is not possible)
 #' tryLog(log(-1), execution.context.msg = Sys.getpid())
+#'
+#' # set and unset an option
+#' options("tryCatchLog.write.error.dump.folder" = "my_log")
+#' options("tryCatchLog.write.error.dump.folder" = NULL)
 #'
 #' \dontrun{
 #' # Use case for "execution.context.msg" argument: Loops and parallel execution
@@ -162,7 +175,6 @@
 #' }
 #' @export
 tryCatchLog <- function(expr,
-                        # error = function(e) {if (!is.null(getOption("error", stop))) eval(getOption("error", stop)) }, # getOption("error", default = stop),
                         ...,
                         execution.context.msg      = "",
                         finally = NULL,
@@ -195,16 +207,24 @@ tryCatchLog <- function(expr,
   # closure ---------------------------------------------------------------------------------------------------------
   cond.handler <- function(c) {
 
-    call.stack     <- sys.calls()          # "sys.calls" within "withCallingHandlers" is like a traceback!
     log.message    <- c$message            # TODO: Should we use conditionMessage instead?
+
+    if (is.null(log.message)) {
+      if (inherits(c, "interrupt")) log.message <- "User-requested interrupt"
+      else                          log.message <- ""
+    }
+
     timestamp      <- Sys.time()
+    call.stack     <- sys.calls()          # "sys.calls" within "withCallingHandlers" is like a traceback!
     dump.file.name <- ""
 
-    # stack.trace <<- call.stack     # helper code for updating the "test_build_log_entry" unit test
+    # stack.trace <<- call.stack     # helper code for updating the expected result of the "test_build_log_entry" unit test
 
-    severity <-       if (inherits(c, "error"))   "ERROR"
-                 else if (inherits(c, "warning")) "WARN"
-                 else if (inherits(c, "message")) "INFO"
+    severity <-       if (inherits(c, "error"))     "ERROR"
+                 else if (inherits(c, "warning"))   "WARN"
+                 else if (inherits(c, "message"))   "INFO"
+                 else if (inherits(c, "interrupt")) "INFO"
+                 else if (inherits(c, "condition")) "INFO"
                  else stop(sprintf("Unsupported condition class %s!", class(c)))
 
 
@@ -235,19 +255,24 @@ tryCatchLog <- function(expr,
 
     log.entry <- build.log.entry(timestamp, severity, log.message, execution.context.msg, call.stack, dump.file.name, omit.call.stack.items = 1)
 
+
+
+    # Design decision: To identify duplicated log entries (due to stacked/nested tryCatchLog expressions)
+    #                  the message and full stack trace are compared.
+    #                  Another solution would have been to "tag" each already logged condition eg.
+    #                  by adding an attribute but this would mean to change the condition object!
+    # if (!is.already.logged(log.message, call.stack)) {
     if (!is.duplicated.log.entry(log.entry)) {
 
-      log.msg <- build.log.output(log.entry,
-                                  include.full.call.stack    = include.full.call.stack,
-                                  include.compact.call.stack = include.compact.call.stack)
+      log.msg <-   build.log.output(log.entry,
+                                    include.full.call.stack    = include.full.call.stack,
+                                    include.compact.call.stack = include.compact.call.stack)
 
       switch(severity,
              ERROR = .tryCatchLog.env$error.log.func(log.msg),  # e. g. futile.logger::flog.error(log.msg),
              WARN  = .tryCatchLog.env$warn.log.func(log.msg),   # e. g. futile.logger::flog.warn(log.msg),
              INFO  = .tryCatchLog.env$info.log.func(log.msg)    # e. g. futile.logger::flog.info(log.msg)
       )
-
-
 
       append.to.last.tryCatchLog.result(log.entry)
 
@@ -260,9 +285,16 @@ tryCatchLog <- function(expr,
 
 
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    # Having handled a condition (calling a handler function) in withCallingHandlers does NOT stop it
+    # Having handled a condition (calling a handler function) in "withCallingHandlers" does NOT stop it
     # from propagating to other handlers up the call stack ("bubble up").
     # This requires to call a "restart" (e. g. a predefined "muffle" [suppress] restart function).
+    #
+    # To "muffle" a condition within a handler established via "withCallingHandlers" means to
+    # explicity saying that the handler has handled the condition.
+    # This stops the condition from propagating to other matching handlers.
+    #
+    # TODO: Conditions signaled with base::signalCondition() cannot be muffled.
+    #       Verify this (this would mean user-defined conditions would always propagate!)!
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
@@ -270,7 +302,7 @@ tryCatchLog <- function(expr,
     # Suppresses the warning (logs it only)?
     if (silent.warnings & severity == "WARN") {
       # flog.info("invoked restart")
-      invokeRestart("muffleWarning")           # the warning will NOT bubble up now!
+      invokeRestart("muffleWarning")           # the warning will NOT bubble up ("propagate") now!
     } else {
       # The warning bubbles up and the execution resumes only if no warning handler is established
       # higher in the call stack via try or tryCatch
@@ -278,13 +310,13 @@ tryCatchLog <- function(expr,
 
 
 
-    if (silent.messages & severity == "INFO") {
-      invokeRestart("muffleMessage")            # the message will not bubble up now (logs it only)
+    if (silent.messages & inherits(c, "message")) {   # interrupt and user-defined conditions may not be suppressed!
+      invokeRestart("muffleMessage")                  # the message will not bubble up ("propagate") now  but will only be logged
     } else {
       # Just to make it clear here: The message bubbles up now
     }
 
-  }
+  } # end of closure function "cond.handler"
 
 
 
@@ -292,12 +324,14 @@ tryCatchLog <- function(expr,
 
   tryCatch(
     withCallingHandlers(expr,
-                        error   = cond.handler,
-                        warning = cond.handler,
-                        message = cond.handler
+                        # Note: withCallingHandlers calls all matching handlers (not only the first one).
+                        #       So it suffice to handle the super class "condition" to log everything!
+                        # error     = cond.handler,
+                        # warning   = cond.handler,
+                        # message   = cond.handler,
+                        # interrupt = cond.handler,
+                        condition = cond.handler
     ),       # end of withCallingHandlers
-    # pass error handler argument of tryCatchLog to tryCatch
-    # error = err.handler, # error,
     ...,
     finally = finally
   )
