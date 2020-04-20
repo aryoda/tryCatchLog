@@ -19,9 +19,6 @@
 
 #' Check if a new log entry would be a duplicate of on an already existing log entry
 #'
-#' DEPRECATED due to a required signature change to fix issue #55:
-#'            https://github.com/aryoda/tryCatchLog/issues/55
-#'
 #' The \code{log.entry} is checked against the existing log entries from
 #' \code{\link{last.tryCatchLog.result}} using the following columns:
 #'         \enumerate{
@@ -39,8 +36,6 @@
 #' @seealso \code{\link{last.tryCatchLog.result}},
 #'          \code{\link{build.log.entry}}
 is.duplicated.log.entry <- function(log.entry) {
-
-  # warning("DEPRECATED function due to a required signature change to fix issue #55")
 
   if (is.null(log.entry))
     return(TRUE)    # an empty entry is useless - treat it like a duplicate

@@ -229,30 +229,6 @@ tryCatchLog <- function(expr,
 
 
 
-    # Save dump to allow post mortem debugging?
-    if (write.error.dump.file == TRUE & severity == "ERROR") {
-
-      # See"?dump.frames" on how to load and debug the dump in a later interactive R session!
-      # See https://stackoverflow.com/questions/40421552/r-how-make-dump-frames-include-all-variables-for-later-post-mortem-debugging/40431711#40431711
-      # why you should avoid dump.frames(to.file = TRUE)...
-      # https://bugs.r-project.org/bugzilla/show_bug.cgi?id=17116
-      # An enhanced version of "dump.frames" was released in spring 2017 but does still not fulfill the requirements of tryCatchLog:
-      # dump.frames(dumpto = dump.file.name, to.file = TRUE, include.GlobalEnv = TRUE)  # test it yourself!
-      # See ?strptime for the available formatting codes...
-      #
-      # Creates a (hopefully) unique dump file name even in case of multiple parallel processes
-      # or multiple sequential errors in the same R process.
-      # Fixes issue #39 by appending fractional seconds (milliseconds) and the process id (PID)
-      # https://github.com/aryoda/tryCatchLog/issues/39
-      # Example dump file name: dump_2019-03-13_at_15-39-33.086_PID_15270.rda
-      dump.file.name  <- paste0(format(timestamp, format = "dump_%Y-%m-%d_at_%H-%M-%OS3"), "_PID_", Sys.getpid(), ".rda")  # %OS3 (= seconds incl. milliseconds)
-      dir.create(path = write.error.dump.folder, recursive = T, showWarnings = F)
-      utils::dump.frames()
-      save.image(file = file.path(write.error.dump.folder, dump.file.name))  # an existing file would be overwritten silently :-()
-    }
-
-
-
     log.entry <- build.log.entry(timestamp, severity, log.message, execution.context.msg, call.stack, dump.file.name, omit.call.stack.items = 1)
 
 
@@ -263,6 +239,31 @@ tryCatchLog <- function(expr,
     #                  by adding an attribute but this would mean to change the condition object!
     # if (!is.already.logged(log.message, call.stack)) {
     if (!is.duplicated.log.entry(log.entry)) {
+
+      # Save dump to allow post mortem debugging?
+      if (write.error.dump.file == TRUE & severity == "ERROR") {
+
+        # See"?dump.frames" on how to load and debug the dump in a later interactive R session!
+        # See https://stackoverflow.com/questions/40421552/r-how-make-dump-frames-include-all-variables-for-later-post-mortem-debugging/40431711#40431711
+        # why you should avoid dump.frames(to.file = TRUE)...
+        # https://bugs.r-project.org/bugzilla/show_bug.cgi?id=17116
+        # An enhanced version of "dump.frames" was released in spring 2017 but does still not fulfill the requirements of tryCatchLog:
+        # dump.frames(dumpto = dump.file.name, to.file = TRUE, include.GlobalEnv = TRUE)  # test it yourself!
+        # See ?strptime for the available formatting codes...
+        #
+        # Creates a (hopefully) unique dump file name even in case of multiple parallel processes
+        # or multiple sequential errors in the same R process.
+        # Fixes issue #39 by appending fractional seconds (milliseconds) and the process id (PID)
+        # https://github.com/aryoda/tryCatchLog/issues/39
+        # Example dump file name: dump_2019-03-13_at_15-39-33.086_PID_15270.rda
+        dump.file.name  <- paste0(format(timestamp, format = "dump_%Y-%m-%d_at_%H-%M-%OS3"), "_PID_", Sys.getpid(), ".rda")  # %OS3 (= seconds incl. milliseconds)
+        dir.create(path = write.error.dump.folder, recursive = T, showWarnings = F)
+        utils::dump.frames()
+        save.image(file = file.path(write.error.dump.folder, dump.file.name))  # an existing file would be overwritten silently :-()
+        log.entry$dump.file.name = dump.file.name
+      }
+
+
 
       log.msg <-   build.log.output(log.entry,
                                     include.full.call.stack    = include.full.call.stack,

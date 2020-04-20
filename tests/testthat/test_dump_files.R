@@ -4,6 +4,7 @@
 # Clean it up at the beginning of a test!
 
 library(testthat)
+library(tryCatchLog)
 
 
 
@@ -51,9 +52,6 @@ source("disable_logging_output.R")
 
 # unit tests ------------------------------------------------------------------------------------------------------
 
-# context("dump.to.file")  # confusing
-
-
 test_that("no dump file is created without an error", {
   tryCatchLog(TRUE, write.error.dump.file = TRUE)
   expect_equal(number.of.dump.files(), 0)
@@ -71,42 +69,42 @@ test_that("no dump file is created for a warning", {
 
 
 test_that("no dump file is created with an error but disabled write.error.dump.file parameter", {
-            tryCatchLog(
-              log("a"),
-              error = function(e) {
-              },
-              write.error.dump.file = FALSE
-            )
-            expect_equal(number.of.dump.files(), 0)
+  tryCatchLog(
+    log("a"),
+    error = function(e) {
+    },
+    write.error.dump.file = FALSE
+  )
+  expect_equal(number.of.dump.files(), 0)
 
-            clean.up.dump.files()
+  clean.up.dump.files()
 
-            log <- last.tryCatchLog.result()
-            expect_equal(log$dump.file.name, "", info = "no dump file contained in log")
-          })
+  log <- last.tryCatchLog.result()
+  expect_equal(log$dump.file.name, "", info = "no dump file contained in log")
+})
 
 
 
 test_that("dump file is created with an error and write.error.dump.file parameter enabled", {
-            tryCatchLog(
-              log("a"),
-              error = function(e) {
-              },
-              write.error.dump.file = TRUE
-            )
+  tryCatchLog(
+    log("a"),
+    error = function(e) {
+    },
+    write.error.dump.file = TRUE
+  )
 
-            expect_equal(number.of.dump.files(), 1)
+  expect_equal(number.of.dump.files(), 1)
 
-            log <- last.tryCatchLog.result()
+  log <- last.tryCatchLog.result()
 
-            # Check for correct logging of dump file name
-            expect_true(!is.na(log$dump.file.name))
-            expect_gt(nchar(log$dump.file.name), 0)
-            expect_true(file.exists(log$dump.file.name), info = "correct dump file contained in log")
-            # print(log$dump.file.name)
+  # Check for correct logging of dump file name
+  expect_true(!is.na(log$dump.file.name))
+  expect_gt(nchar(log$dump.file.name), 0)
+  expect_true(file.exists(log$dump.file.name), info = "correct dump file contained in log")
+  # print(log$dump.file.name)
 
-            clean.up.dump.files()
-          })
+  clean.up.dump.files()
+})
 
 
 
@@ -184,6 +182,8 @@ test_that("dump file is created (error and dump default enabled)", {
 
 options("tryCatchLog.write.error.dump.folder" = "temp_subfolder")
 
+
+
 test_that("dump file is created in a specifc folder (error and dump default enabled)", {
   tryCatchLog(
     log("a"),
@@ -214,10 +214,67 @@ test_that("dump files are not overwritten due to duplicated file names (non-dete
 
 
 
+options("tryCatchLog.write.error.dump.folder" = NULL)
+# getOption("tryCatchLog.write.error.dump.folder", ".")
+
+test_that("exactly one dump file is created in stacked tryCatchLog calls with handlers", {
+
+  # inner and outer error handler
+  tryCatchLog(
+    tryCatchLog(
+      log("a"),
+      error = function(e) {
+      },
+      write.error.dump.file = TRUE),
+    error = function(e) {
+    },
+    write.error.dump.file = TRUE
+  )
+
+  expect_equal(number.of.dump.files(), 1)
+
+  log <- last.tryCatchLog.result()
+
+  # Check for correct logging of dump file name
+  expect_true(!is.na(log$dump.file.name))
+  expect_gt(nchar(log$dump.file.name), 0)
+  expect_true(file.exists(log$dump.file.name), info = "correct dump file contained in log")
+  # print(log$dump.file.name)
+
+  clean.up.dump.files()
+})
+
+
+
+test_that("exactly one dump file is created in stacked tryCatchLog calls without handlers", {
+
+  # inner and outer error handler
+  expect_error(tryCatchLog(
+    tryCatchLog(
+      log("a"),
+      write.error.dump.file = TRUE),
+    write.error.dump.file = TRUE
+  ))
+
+  expect_equal(number.of.dump.files(), 1)
+
+  log <- last.tryCatchLog.result()
+
+  # Check for correct logging of dump file name
+  expect_true(!is.na(log$dump.file.name))
+  expect_gt(nchar(log$dump.file.name), 0)
+  expect_true(file.exists(log$dump.file.name), info = "correct dump file contained in log")
+  # print(log$dump.file.name)
+
+  clean.up.dump.files()
+})
+
+
+
 # Cleanup ----------------------------------------------------------------------------
 
 clean.up.dump.files()
 clean.up.dump.files("temp_subfolder")
 unlink("temp_subfolder", recursive = TRUE)  # with the default value "FALSE" the folder is NOT deleted (see help)
 
-options("tryCatchLog.write.error.dump.file" = ".")  # just to be sure :-)
+options("tryCatchLog.write.error.dump.file" = NULL)   #  ".")  # just to be sure :-)
