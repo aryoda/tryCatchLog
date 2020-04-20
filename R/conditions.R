@@ -2,7 +2,7 @@
 # Taken from Hadley Wickham: http://adv-r.had.co.nz/beyond-exception-handling.html
 condition <- function(class, message = "", ...) {
 
-  call = sys.call(-1)   # function call that created the condition
+  call <- sys.call(-1)   # function call that created the condition
 
   structure(
     class = c(class, "condition"),
