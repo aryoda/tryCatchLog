@@ -12,7 +12,7 @@ https://www.gnu.org/prep/standards/standards.html#Documentation
     even though R does not deliver a message.  (incl. user-defined and interrupt)
   * https://github.com/aryoda/tryCatchLog/issues/14
   * https://github.com/aryoda/tryCatchLog/issues/45
-* Fixed bug #55: Duplicated error dump files in stacked tryCatchLog calls
+* Fixed bug #55: Duplicated error dump files in nested tryCatchLog calls
   * https://github.com/aryoda/tryCatchLog/issues/55
 
 ## Version 1.1.7 (April 6, 2020)
