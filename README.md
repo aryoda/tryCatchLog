@@ -353,6 +353,21 @@ If this doesn't work you can also play around with the option `show.error.locati
 
 
 
+### The stack trace does not contain R file names and line number for my **packages**. How can I enable this?
+
+To see the file name and line numbers of conditions thrown in your own (or other packages) installed from source
+you have
+
+1. to enable the `keep.source.pkgs` option **before** (you install the packages!)
+
+    ```R
+    options(keep.source.pkgs = TRUE)
+    ```
+
+2. install the packages from a source package (binary packages do not have source code included at all)
+
+
+
 ### How to show line numbers for conditions (errors) when sourcing an R file?
 
 You have to enable the `keep.source` option and source the R file with the `keep.source` parameter
@@ -482,7 +497,8 @@ This is **most helpful in production environments with batch jobs** where you ca
 to step through your R code to reproduce and fix the error.
 
 `tryCatchLog` therefore has the feature to create a "memory" dump file that contains the workspace
-and in the variable "last.dump" the call stack produced by the R function "sys.frames".
+and the object values along the call stack
+(stored in the variable "last.dump" which is created by calling the R function "sys.frames").
 
 Note: `tryCatchLog` does also allow you to write a memory dump for every catched error that did not stop the execution
 (to allow you to analyse the error later after the R script has finished).
@@ -502,14 +518,14 @@ Note: `tryCatchLog` does also allow you to write a memory dump for every catched
 
 4. Start a new R session on your local computer
 
-5. Load the dump file
+5. Load the dump file (or click on the `.rda` file in RStudio)
 
     ```R
-    load("dump_20161016_164050.rda"  # replace the file name before! The file is contained in the log file in the logged error message!
+    load("dump_20161016_164050.rda"  # insert your .rda file name which is contained in the log file in the logged error message!
     ```
 
     You can see now all the objects in the global workspace that existed when the error occured.
-    You furthermore see a variable `last.dump` that was injected by `tryCatchLog` that contains
+    You also see a variable `last.dump` that was injected by `tryCatchLog` and contains
     the call stack and the variables visible within each function call.
 
 6. Start the debugger
@@ -519,7 +535,7 @@ Note: `tryCatchLog` does also allow you to write a memory dump for every catched
     ```
 
     **Note:** The debugger does only allow you to examine the visible variables within the different call stack levels.
-    You cannot step through the source code interactively.
+    You cannot step through the source code interactively as the word "debugger" does imply.
     
     You will now see the error message and the full stack trace (list of function calls up to the point
     the error occured in your R script), e. g.:
@@ -558,11 +574,11 @@ Note: `tryCatchLog` does also allow you to write a memory dump for every catched
 
 7.  Walk through the call stack and examine the variable values
 
-    You can now enter the number a number (and press <ENTER>) to switch into the environment
+    You can now enter a number (and press <ENTER>) to switch into the environment
     of a function call to see the visible variables in RStudio or by entering `ls()` in the console.
     By entering the variable name into the console you can see the current value.
     
-    To go back to the call stack menu type "f" (= "finish") into the console at the `Browse[1]>` prompt
+    To go back to the call stack menu type **"f" (= "finish")** into the console at the `Browse[1]>` prompt
     and choose a new call stack environment.
     
     To learn more about the concept of an R `environment` you can read the excellent tutorial
@@ -572,7 +588,8 @@ Note: `tryCatchLog` does also allow you to write a memory dump for every catched
 8.  Identify reason for the error
 
     Since the call stack printed by `debugger` contains the source code file name and line number
-    (if you enabled the `keep.source` option) you can narrow down the reason for the error and fix it.
+    (if you enabled the `keep.source` and `keep.source.pkgs` options)
+    you can narrow down the reason for the error and fix it.
 
 
 
