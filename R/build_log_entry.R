@@ -32,7 +32,7 @@
 #' @param omit.call.stack.items  the number of stack trace items to ignore (= last x calls) in
 #'                               the passed \code{call.stack} since they are caused by using \code{tryCatchLog}
 #'
-#' @return An object of class \code{tryCatchLog.log.entry} and \code{\link{data.frame}} with one and the following columns:
+#' @return An object of class \code{tryCatchLog.log.entry} and \code{\link{data.frame}} and the following columns:
 #'         \enumerate{
 #'         \item{timestamp   - creation date and time of the logging entry}
 #'         \item{severity    - the serverity level of the log entry (ERROR, WARN, INFO etc.)}
