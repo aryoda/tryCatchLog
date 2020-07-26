@@ -42,7 +42,7 @@
 #'                             else: CR). If \code{FALSE} R's usual \code{\\n} esacpe character will be inserted
 #'                             and it is left to the client to convert this later into the operation-system-specific
 #'                             characters. This argument is rarely required (except e. g. if you want to
-#'                             write the return value into a database table column).
+#'                             write the return value into a database table column on Windows).
 #'
 #' @return       A ready to use logging output with stack trace
 #'               (as \code{character})
