@@ -91,8 +91,23 @@ install.packages("tryCatchLog")
 ```
 
 
+### Option 2: Install a stable version from github
 
-### Option 1: Install the most recent development version from github
+**This is the recommended installation procedure for using (beta) releases that are not
+yet published at CRAN but already stable enough (not in active development)!**
+
+1. Pick a (beta) release from the [list of Github releases](https://github.com/aryoda/tryCatchLog/tags) (git tags)
+2. Install the version by specifying the tag name, eg.
+
+ ```R
+ # install.packages("devtools")
+ library(devtools)
+ install_github("aryoda/tryCatchLog", ref = "v1.1.7")`
+ ```
+
+
+
+### Option 3: Install the most recent development version from github
 
 **This is the recommended installation procedure for the up-to-date development version!**
 
