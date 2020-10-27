@@ -29,8 +29,7 @@ log2console <- function(severity.level, msg) {
   #  different time zones more easily).
   log.time <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
 
-  # TODO wrong number of arguments (see issue #60)
-  res <- sprintf("%s [%s] %s\n", severity.level, log.time, msg, "\n")
+  res <- sprintf("%s [%s] %s\n", severity.level, log.time, msg)
 
   cat(res)
 
