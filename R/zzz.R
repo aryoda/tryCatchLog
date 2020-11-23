@@ -52,7 +52,7 @@
 #
 # To suppress the startup and all messages from dependent packages use:
 #     suppressMessages(library(tryCatchLog))
-# Source: http://stackoverflow.com/a/8681811/4468078
+# Source: https://stackoverflow.com/a/8681811/4468078
 .onAttach <- function(libname, pkgname) {
   # Disabled Nov. 12, 2017 (silly annoying messages)
   # packageStartupMessage(paste(pkgname, "is an R package to improve error handling compared to the standard tryCatch function."))

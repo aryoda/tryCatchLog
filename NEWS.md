@@ -5,9 +5,10 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
-## Version 1.1.9 (Nov 23, 2020) for CRAN
+## Version 1.2.0 (Nov 23, 2020) for CRAN
 
 * CRAN release version
+* Fix r-devel finding "Found the following (possibly) invalid URLs" caused by http to https redirection
 * Fix bug #60: sprintf warnings in R-devel (CRAN check)
   * https://github.com/aryoda/tryCatchLog/issues/60
 
