@@ -5,6 +5,12 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
+## Version 1.1.9 (Nov 23, 2020) for CRAN
+
+* CRAN release version
+* Fix bug #60: sprintf warnings in R-devel (CRAN check)
+  * https://github.com/aryoda/tryCatchLog/issues/60
+
 ## Version 1.1.8 (April 20, 2020)
 
 * Implemented feature requests #14 and #45: Support logging of all conditions (incl. user-defined conditions).

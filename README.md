@@ -2,7 +2,7 @@
 
 An R package to improve the error handling of the standard `tryCatch` and `try` function
 
-**Current version: 1.1.8 (April 2020).** See the [NEWS](NEWS.md) for the most recent changes.
+**Current version: 1.1.9 (Nov 2020).** See the [NEWS](NEWS.md) for the most recent changes.
 
 
 
@@ -714,4 +714,19 @@ Further links:
   * [License compatibility matrix](https://www.gnu.org/licenses/gpl-faq.html#AllCompatibility)
   
   
+
+## Internal notes
+
+### How to submit a new version to CRAN
+
+
+* Always check the [CRAN policies](https://cran.r-project.org/web/packages/policies.html) first!
+* CI/CD (travis etc. at Github must work without any issue for all R versions, even R-devel!)
+* `R CMD check` must run without any finding (not even a note!)
+* Increase the version number in the `DESCRIPTION` file and document the CRAN release in the `NEWS.md`
+* Build and test on OS X too!
+* Build source package and upload the release candiate (*tar.gz file) at win-builder to check for errors.
+  (see instructions: https://win-builder.r-project.org/)
+* Finally upload the release candiate file to CRAN via their submission page: https://cran.r-project.org/submit.html
+
 
