@@ -9,7 +9,7 @@ output:
 # once the gap is closed in R and knitor.
 # See:
 # https://github.com/yihui/knitr/issues/1540
-# https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17416
+# https://bugs.r-project.org/bugzilla/show_bug.cgi?id=17416
 vignette: >
   %\VignetteEngine{none}
 ---
@@ -319,7 +319,7 @@ See the next chapters for possible work-arounds...
 
 ## Interactive debugging
 
-You can run and debug your R script interactively in the *RGui* or [RStudio](https://www.rstudio.com/products/rstudio/)
+You can run and debug your R script interactively in the *RGui* or [RStudio](https://rstudio.com/products/rstudio/)
 instead of condition handling with `tryCatch`.
 
 For more details on interactive debugging see `?debug`.

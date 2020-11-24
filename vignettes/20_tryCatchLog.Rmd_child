@@ -9,7 +9,7 @@ output:
 # once the gap is closed in R and knitor.
 # See:
 # https://github.com/yihui/knitr/issues/1540
-# https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17416
+# https://bugs.r-project.org/bugzilla/show_bug.cgi?id=17416
 vignette: >
   %\VignetteEngine{none}
 ---
@@ -420,7 +420,7 @@ To show **file names and line numbers** in the stack trace of the log output:
     By default, most packages are built without source reference information.
     Setting the environment variable `R_KEEP_PKG_SOURCE=yes` before installing a source package
     will tell R to keep the source references.
-  
+
     You can also use set `{options(keep.source.pkgs = TRUE)` before you install a package.
 
 

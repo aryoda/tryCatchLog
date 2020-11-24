@@ -9,7 +9,7 @@ output:
 # once the gap is closed in R and knitor.
 # See:
 # https://github.com/yihui/knitr/issues/1540
-# https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17416
+# https://bugs.r-project.org/bugzilla/show_bug.cgi?id=17416
 vignette: >
   %\VignetteEngine{none}
 ---
@@ -19,19 +19,19 @@ vignette: >
 
 Part 1: `tryCatch` in standard R
 
-[Introduction into conditions in standard R](#introduction-into-conditions-in-standard-r)  
-[Throw your own conditions](#throw-your-own-conditions)  
-[Handling conditions in R](#handling-conditions-in-r)  
-[The drawbacks of tryCatch](#the-drawbacks-of-trycatch)  
-[Workaround 1: Interactive debugging](#workaround-1-interactive-debugging)  
-[Workaround 2: withCallingHandlers + tryCatch](#workaround-2-withcallinghandlers-trycatch)  
+[Introduction into conditions in standard R](#introduction-into-conditions-in-standard-r)
+[Throw your own conditions](#throw-your-own-conditions)
+[Handling conditions in R](#handling-conditions-in-r)
+[The drawbacks of tryCatch](#the-drawbacks-of-trycatch)
+[Workaround 1: Interactive debugging](#workaround-1-interactive-debugging)
+[Workaround 2: withCallingHandlers + tryCatch](#workaround-2-withcallinghandlers-trycatch)
 
 Part 2: Package `tryCatchLog`
 
-[Better error handling with the tryCatchLog package](#better-error-handling-with-the-trycatchlog-package)  
-[Post-mortem analysis](#post-mortem-analysis)  
-[tryCatchLog Function Reference](#trycatchlog-function-reference)  
-[tryCatchLog Best Practices](#trycatchlog-best-practices)  
+[Better error handling with the tryCatchLog package](#better-error-handling-with-the-trycatchlog-package)
+[Post-mortem analysis](#post-mortem-analysis)
+[tryCatchLog Function Reference](#trycatchlog-function-reference)
+[tryCatchLog Best Practices](#trycatchlog-best-practices)
 
 [Appendix](#appendix)
 

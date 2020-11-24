@@ -9,19 +9,19 @@ output:
 # once the gap is closed in R and knitor.
 # See:
 # https://github.com/yihui/knitr/issues/1540
-# https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17416
+# https://bugs.r-project.org/bugzilla/show_bug.cgi?id=17416
 vignette: >
   %\VignetteEngine{none}
 ---
 
-  
-    
+
+
 ## Overview
-  
+
 The `tryCatchLog` package provides an advanced `tryCatch` function for the programming language [R](https://www.r-project.org/).
 
 The main advantages of the `tryCatchLog` function over `tryCatch` are:
-  
+
 * **Easy logging** of errors, warnings and messages into a file or console
 * **Complete stack trace with references to the source file names and line numbers**
   to identify the source of errors and warnings
@@ -33,4 +33,4 @@ The main advantages of the `tryCatchLog` function over `tryCatch` are:
   **without stopping the execution** of the evaluated expression
   (unlike `tryCatch` does if you pass a warning handler function)
 
-  
+

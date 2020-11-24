@@ -9,7 +9,7 @@ output:
 # once the R issue is solved and released.
 # See:
 # https://github.com/yihui/knitr/issues/1540
-# https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17416
+# https://bugs.r-project.org/bugzilla/show_bug.cgi?id=17416
 vignette: >
   %\VignetteEngine{none}
 ---
@@ -19,7 +19,7 @@ vignette: >
 
 ## References
 
-Documentation of the `futile.logger` logging framework:  
+Documentation of the `futile.logger` logging framework:
 https://github.com/zatonovo/futile.logger
 
 Download of these slides: https://github.com/aryoda/R_trainings
