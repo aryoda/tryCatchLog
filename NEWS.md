@@ -5,7 +5,7 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
-## Version 1.2.1 (Nov. 24, 2020) for CRAN
+## Version 1.2.1 (Nov. 24, 2020) - published at CRAN (Nov 25, 2020)
 
 * Fix redirected links found by CRAN precheck:
   * Found the following (possibly) invalid URLs:
@@ -54,7 +54,7 @@ https://www.gnu.org/prep/standards/standards.html#Documentation
   
   
 
-## Version 1.1.6 (Nov 6, 2019)
+## Version 1.1.6 (Nov 6, 2019) - published at CRAN (Nov 7, 2019)
 
 * CRAN release version (with fixed broken unit test that caused this
   package to be removed from CRAN three weeks ago)
