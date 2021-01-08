@@ -266,7 +266,7 @@ tryCatchLog <- function(expr,
 
 
       log.msg <-   build.log.output(log.entry,
-                                    include.severity = FALSE,  # fixes #63 (duplicated severity level in log output)
+                                    include.severity           = FALSE,  # fixes #63 (duplicated severity level in log output)
                                     include.full.call.stack    = include.full.call.stack,
                                     include.compact.call.stack = include.compact.call.stack)
 
