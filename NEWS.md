@@ -5,6 +5,10 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
+## Version 1.2.2 (Jan. 8, 2021)
+
+* Fix bug #63: Severity level is contained twice in the log message row
+
 ## Version 1.2.1 (Nov. 24, 2020) - published at CRAN (Nov 25, 2020)
 
 * Fix redirected links found by CRAN precheck:
