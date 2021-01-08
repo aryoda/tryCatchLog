@@ -17,7 +17,7 @@ URL: https://github.com/aryoda/tryCatchLog
 BugReports: https://github.com/aryoda/tryCatchLog/issues
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Suggests:
     futile.logger,
     testthat,
