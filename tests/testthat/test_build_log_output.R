@@ -11,7 +11,7 @@ source("init_unit_test.R")
 
 
 
-options("width" = 129)  # default value in R is 129
+options("width" = 1000)  # default value in R is 129 - changed from 129 to 1000 on May 17, 2021 as workaround for bug #64
 
 
 
