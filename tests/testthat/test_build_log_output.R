@@ -48,12 +48,13 @@ test_that("log output is correct", {
   # expected2 <- paste(readLines("tests/testthat/build_log_output_test_data_2.txt"), collapse = "\n")
   expected2 <- paste(readLines("build_log_output_test_data_2.txt"), collapse = "\n")
   # writeLines(out2, "build_log_output_test_data_2.txt")  # to write the expected result after checking it manually
-
+  print(out2); print(expected2)  # debugging
   expect_equal(out2, expected2, info = "include.full.call.stack = TRUE")
 
 
 
   out3 <- tryCatchLog::build.log.output(log.entry)  # default is include.full.call.stack = TRUE
+  print(out3); print(expected2)  # debugging
   expect_equal(out3, expected2, info = "default value of include.full.call.stack")  # same expected result as before
 
 
