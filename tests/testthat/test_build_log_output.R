@@ -11,7 +11,7 @@ source("init_unit_test.R")
 
 
 
-options("width" = 1000)  # default value in R is 129 - changed from 129 to 1000 on May 17, 2021 as workaround for bug #64
+options("width" = 129)  # default value in R is 129
 
 
 
@@ -45,9 +45,15 @@ test_that("log output is correct", {
 
 
   out2 <- tryCatchLog::build.log.output(log.entry, include.full.call.stack = TRUE)
-  # expected2 <- paste(readLines("tests/testthat/build_log_output_test_data_2.txt"), collapse = "\n")
-  expected2 <- paste(readLines("build_log_output_test_data_2.txt"), collapse = "\n")
-  # writeLines(out2, "build_log_output_test_data_2.txt")  # to write the expected result after checking it manually
+
+  # Are we running an R version > 4.x with the fix to treat trailing newline as zero width (see issue #64)?
+  if (nchar("hello\n", type = "width") == 5) {
+    # writeLines(out2, "build_log_output_test_data_2_since_R_05_2021.txt")  # to write the expected result after checking it manually
+    expected2 <- paste(readLines("build_log_output_test_data_2_since_R_05_2021.txt"), collapse = "\n")
+  } else {   # R versions without the fix (before about May 2021)
+    # writeLines(out2, "build_log_output_test_data_2.txt")  # to write the expected result after checking it manually
+    expected2 <- paste(readLines("build_log_output_test_data_2.txt"), collapse = "\n")
+  }
   expect_equal(out2, expected2, info = "include.full.call.stack = TRUE")
 
 
