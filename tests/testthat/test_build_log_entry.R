@@ -66,9 +66,7 @@ test_that("stack trace is correct", {
 
   expected_FST <- paste(readLines("expected_full_stack_trace.txt"), collapse = "\n")
   # writeLines(log.entry$full.stack.trace, "expected_full_stack_trace.txt")  # to write the expected result after checking it manually
-  print(class(log.entry$full.stack.trace)); print(log.entry$full.stack.trace);
-  print(class(expected_FST)); print(expected_FST)  # debugging
-  expect_equal(log.entry$full.stack.trace, expected_FST, "full stack trace")
+  expect_equal(log.entry$full.stack.trace, expected_FST, info = "full stack trace")
 
 
 
