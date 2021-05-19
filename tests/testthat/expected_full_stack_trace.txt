@@ -22,7 +22,26 @@
     }, warning = function(w) {
         call.stack <- sys.calls()
         log.entry <- build.log.entry(names(futile.logger::WARN), w$message, call.stack, 1)
-        log.msg <- buildLogMessage(w$mes
+        log.msg <- buildLogMessage(w$message, call.stack, 1)
+        append.to.last.tryCatchLog.result(log.entry)
+        futile.logger::flog.warn(log.msg)
+        if (silent.warnings) {
+            invokeRestart("muffleWarning")
+        }
+        else {
+        }
+    }, message = function(m) {
+        call.stack <- sys.calls()
+        log.entry <- build.log.entry(names(futile.logger::INFO), m$message, call.stack, 1)
+        log.msg <- buildLogMessage(m$message, call.stack, 1)
+        append.to.last.tryCatchLog.result(log.entry)
+        futile.logger::flog.info(log.msg)
+        if (silent.messages) {
+            invokeRestart("muffleMessage")
+        }
+        else {
+        }
+    }), ..., finally = finally)
   4 tryCatchList(expr, classes, parentenv, handlers)
   5 tryCatchOne(expr, names, parentenv, handlers[[1]])
   6 doTryCatch(return(expr), name, parentenv, handler)
@@ -46,7 +65,25 @@
         call.stack <- sys.calls()
         log.entry <- build.log.entry(names(futile.logger::WARN), w$message, call.stack, 1)
         log.msg <- buildLogMessage(w$message, call.stack, 1)
-       
+        append.to.last.tryCatchLog.result(log.entry)
+        futile.logger::flog.warn(log.msg)
+        if (silent.warnings) {
+            invokeRestart("muffleWarning")
+        }
+        else {
+        }
+    }, message = function(m) {
+        call.stack <- sys.calls()
+        log.entry <- build.log.entry(names(futile.logger::INFO), m$message, call.stack, 1)
+        log.msg <- buildLogMessage(m$message, call.stack, 1)
+        append.to.last.tryCatchLog.result(log.entry)
+        futile.logger::flog.info(log.msg)
+        if (silent.messages) {
+            invokeRestart("muffleMessage")
+        }
+        else {
+        }
+    })
   8 .handleSimpleError(function (e) 
     {
         call.stack <- sys.calls()

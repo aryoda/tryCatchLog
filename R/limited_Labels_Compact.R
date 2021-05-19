@@ -27,7 +27,7 @@
 #' @param compact  if TRUE only calls that contain a source code reference (attribute "srcref") are returned
 #'                 (plus always the first call); if FALSE all calls will be returned.
 #' @param maxwidth Maximum number of characters per call in the return value (longer strings will be cutted).
-#'                 Must be between 40 and 1000
+#'                 Must be between 40 and 2000 (until version 1.2.2: 1000)
 #'
 #' @return         A list of strings (one for each call).
 #'                 If \code{compact} is \code{TRUE} at the last call is returned even if it does not contain
@@ -75,7 +75,7 @@ limitedLabelsCompact <- function(value, compact = FALSE, maxwidth = getOption("w
   # cut lines that are too long
   if (is.null(maxwidth) || maxwidth < 40L)
     maxwidth <- 40L
-  maxwidth <- min(maxwidth, 1000L)
+  maxwidth <- min(maxwidth, 2000L)  # May 19, 2021: Maxwidth changed from 1000 to 2000 due to unit testing problem (issue #64)
   value <- strtrim(value, maxwidth)
 
   if (compact == TRUE) {

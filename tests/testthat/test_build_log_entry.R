@@ -11,7 +11,7 @@ source("init_unit_test.R")
 
 
 
-options("width" = 1000)  # default is 129
+options("width" = 2000)  # default is 129
 
 
 
@@ -64,14 +64,8 @@ test_that("stack trace is correct", {
 
 
 
-  # Are we running an R version > 4.x with the fix to treat trailing newline as zero width (see issue #64)?
-  if (nchar("hello\n", type = "width") == 5) {
-    # writeLines(log.entry$full.stack.trace, "expected_full_stack_trace_since_R_05_2021.txt.txt")  # to write the expected result after checking it manually
-    expected_FST <- paste(readLines("expected_full_stack_trace_since_R_05_2021.txt.txt"), collapse = "\n")
-  } else {   # R versions without the fix (before about May 2021)
-    # writeLines(log.entry$full.stack.trace, "expected_full_stack_trace.txt")  # to write the expected result after checking it manually
-    expected_FST <- paste(readLines("expected_full_stack_trace.txt"), collapse = "\n")
-  }
+  # writeLines(log.entry$full.stack.trace, "expected_full_stack_trace.txt")  # to write the expected result after checking it manually
+  expected_FST <- paste(readLines("expected_full_stack_trace.txt"), collapse = "\n")
 
   expect_equal(log.entry$full.stack.trace, expected_FST, info = "full stack trace")
 
