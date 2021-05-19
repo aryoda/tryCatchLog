@@ -12,7 +12,7 @@ Full call stack:
   3 tryCatchLog.R#135: tryCatch(withCallingHandlers(expr, error = function(e) {
         call.stack <- sys.calls()
         {
-
+    
   4 tryCatchList(expr, classes, parentenv, handlers)
   5 tryCatchOne(expr, names, parentenv, handlers[[1]])
   6 doTryCatch(return(expr), name, parentenv, handler)
@@ -21,11 +21,12 @@ Full call stack:
         {
             .doTrace(browser())
 
-  8 .handleSimpleError(function (e)
+  8 .handleSimpleError(function (e) 
     {
         call.stack <- sys.calls()
         {
             .doTrace(browser())
-
+         
   9 h(simpleError(msg, call))
+
 
