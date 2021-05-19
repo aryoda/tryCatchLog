@@ -11,7 +11,7 @@ source("init_unit_test.R")
 
 
 
-options("width" = 1000)  # default is 129
+options("width" = 2000)  # default is 129
 
 
 
@@ -64,9 +64,10 @@ test_that("stack trace is correct", {
 
 
 
-  expected_FST <- paste(readLines("expected_full_stack_trace.txt"), collapse = "\n")
   # writeLines(log.entry$full.stack.trace, "expected_full_stack_trace.txt")  # to write the expected result after checking it manually
-  expect_equal(log.entry$full.stack.trace, expected_FST, "full stack trace")
+  expected_FST <- paste(readLines("expected_full_stack_trace.txt"), collapse = "\n")
+
+  expect_equal(log.entry$full.stack.trace, expected_FST, info = "full stack trace")
 
 
 

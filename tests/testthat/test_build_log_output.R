@@ -11,7 +11,7 @@ source("init_unit_test.R")
 
 
 
-options("width" = 129)  # default value in R is 129
+options("width" = 2000)  # default value in R is 129
 
 
 
@@ -45,9 +45,9 @@ test_that("log output is correct", {
 
 
   out2 <- tryCatchLog::build.log.output(log.entry, include.full.call.stack = TRUE)
-  # expected2 <- paste(readLines("tests/testthat/build_log_output_test_data_2.txt"), collapse = "\n")
-  expected2 <- paste(readLines("build_log_output_test_data_2.txt"), collapse = "\n")
+
   # writeLines(out2, "build_log_output_test_data_2.txt")  # to write the expected result after checking it manually
+  expected2 <- paste(readLines("build_log_output_test_data_2.txt"), collapse = "\n")
 
   expect_equal(out2, expected2, info = "include.full.call.stack = TRUE")
 

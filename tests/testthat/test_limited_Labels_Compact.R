@@ -29,9 +29,9 @@ test_that("maxwidth argument ensures width limits", {
 
 
   # maxwidth cutted to 1000 characters
-  call.stack <- call("a.function", paste(rep(string.pattern, 110), collapse = ""))
+  call.stack <- call("a.function", paste(rep(string.pattern, 250), collapse = ""))
   res <- tryCatchLog:::limitedLabelsCompact(call.stack, compact = FALSE, maxwidth = 9999)
 
-  expect_equal(res[2], paste(rep(string.pattern, 100), collapse = ""), info = "maxwidth is cutted after 1000 chars")
+  expect_equal(res[2], paste(rep(string.pattern, 200), collapse = ""), info = "maxwidth is cut after 2000 chars")
 
 })

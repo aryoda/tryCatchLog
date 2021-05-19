@@ -730,3 +730,13 @@ Further links:
 * Finally upload the release candiate file to CRAN via their submission page: https://cran.r-project.org/submit.html
 
 
+### How to build the package using R-devel (development version of R)
+
+To debug problems with the most-recent development version of R you can install R-devel from subversion.
+
+This link provides good instructions on how to do this on Ubuntu Linux with RStudio:
+
+https://www.r-bloggers.com/2015/10/installing-r-devel-on-linux-ubuntu-mint/
+
+(see ~/svn/build-R-devel or into your ~/.profile ;-)
+

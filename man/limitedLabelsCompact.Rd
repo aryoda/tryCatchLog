@@ -17,7 +17,7 @@ limitedLabelsCompact(
 (plus always the first call); if FALSE all calls will be returned.}
 
 \item{maxwidth}{Maximum number of characters per call in the return value (longer strings will be cutted).
-Must be between 40 and 1000}
+Must be between 40 and 2000 (until version 1.2.2: 1000)}
 }
 \value{
 A list of strings (one for each call).
