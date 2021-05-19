@@ -5,7 +5,7 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
-## Version 1.2.3 (May 16, 2021)
+## Version 1.2.3 (May 16, 2021) for CRAN
 
 * Fix bug #64: Unit tests fail on R-devel (test_build_log_entry.R and test_build_log_output).
   Many thanks to Brodie Gaslam to find and fix this bug!
