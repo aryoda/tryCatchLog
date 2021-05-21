@@ -5,7 +5,14 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
-## Version 1.2.3 (May 16, 2021) for CRAN
+## Version 1.2.4 (May 21, 2021) for CRAN
+
+* Fix redirected links found by CRAN precheck:
+  * Found the following (possibly) invalid URLs:
+    URL: https://rstudio.com/products/rstudio/ (moved to https://www.rstudio.com/products/rstudio/)
+    From: inst/doc/tryCatchLog-intro.html
+
+## Version 1.2.3 (May 16, 2021) - submitted at CRAN but rejected
 
 * Fix bug #64: Unit tests fail on R-devel (test_build_log_entry.R and test_build_log_output).
   Many thanks to Brodie Gaslam to find and help fixing this bug!

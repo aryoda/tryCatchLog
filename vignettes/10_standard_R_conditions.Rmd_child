@@ -319,7 +319,7 @@ See the next chapters for possible work-arounds...
 
 ## Interactive debugging
 
-You can run and debug your R script interactively in the *RGui* or [RStudio](https://rstudio.com/products/rstudio/)
+You can run and debug your R script interactively in the *RGui* or [RStudio](https://www.rstudio.com/products/rstudio/)
 instead of condition handling with `tryCatch`.
 
 For more details on interactive debugging see `?debug`.

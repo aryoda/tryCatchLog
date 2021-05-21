@@ -8,6 +8,7 @@ As a workaround I had to
    that has a pattern to match all child file names
    (this file is NOT shown in RStudio since it starts with a dot - any workaround for that?)
 3. added empty dummy files to the "inst/doc" folder for each child Rmd file.
+   Update May 21, 2021: I cannot find an inst folder in git. Is this step deprecated due to the use of .install_extras?
 
 This avoids
 1. failures to build the vignette due to missing child Rmd files
