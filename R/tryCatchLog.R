@@ -66,6 +66,9 @@
 #'                     call stacks the message text will be output without call stacks.
 #'                     The default value can be changed globally by setting the option \code{tryCatchLog.include.compact.call.stack}.
 #'                     The compact call stack can always be found via \code{\link{last.tryCatchLog.result}}.
+#' @param logged.conditions \code{NULL}: Conditions are not logged.\cr
+#'                          \code{vector of strings}: Only conditions whose class name is contained in this vector are logged.\cr
+#'                          \code{NA}: All conditions are logged.
 #' @return                     the value of the expression passed in as parameter "expr"
 #'
 #' @details This function shall overcome some drawbacks of the standard \code{\link{tryCatch}} function.\cr
@@ -183,7 +186,8 @@ tryCatchLog <- function(expr,
                         silent.warnings            = getOption("tryCatchLog.silent.warnings", FALSE),
                         silent.messages            = getOption("tryCatchLog.silent.messages", FALSE),
                         include.full.call.stack    = getOption("tryCatchLog.include.full.call.stack", TRUE),
-                        include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack", TRUE)
+                        include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack", TRUE),
+                        logged.conditions          = getOption("tryCatchLog.logged.conditions", NULL)
 ) {
 
   reset.last.tryCatchLog.result()   # TODO If an internal error is thrown in the code above the last result will be kept. Fix this?
@@ -218,13 +222,21 @@ tryCatchLog <- function(expr,
     call.stack     <- sys.calls()          # "sys.calls" within "withCallingHandlers" is like a traceback!
     dump.file.name <- ""
 
-    # stack.trace <<- call.stack     # helper code for updating the expected result of the "test_build_log_entry" unit test
 
+    # stack.trace <<- call.stack     # helper code for updating the expected result of the "test_build_log_entry" unit test
     severity <-       if (inherits(c, "error"))     "ERROR"
                  else if (inherits(c, "warning"))   "WARN"
                  else if (inherits(c, "message"))   "INFO"
                  else if (inherits(c, "interrupt")) "INFO"
-                 else if (inherits(c, "condition")) "INFO"
+                 else if (inherits(c, "condition")) {
+                   # if logged.conditions is NULL (default), do not log conditions
+                   if (is.null(logged.conditions))     return()
+                   # if logged.conditions is NA, log all conditions
+                   else if ((length(logged.conditions) == 1) && is.na(logged.conditions))   "INFO"
+                   # if logged.conditions is a vector of strings, log only conditions which have their class in the vector
+                   else if (inherits(c, logged.conditions))   "INFO"
+                   else if (!inherits(c, logged.conditions))   return()
+                 }
                  else stop(sprintf("Unsupported condition class %s!", class(c)))
 
 
