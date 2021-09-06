@@ -5,6 +5,11 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
+## Version 1.2.5 (Sept. 2021 work in progress)
+
+* Implement feature request #62 (optional logging of conditions).
+  Many thanks to Valerian Wrobel for this contribution!
+
 ## Version 1.2.4 (May 21, 2021) for CRAN
 
 * Fix redirected links found by CRAN precheck:
