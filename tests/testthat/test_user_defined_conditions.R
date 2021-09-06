@@ -17,6 +17,7 @@ source("disable_logging_output.R")
 
 
 # Creating user-defined conditions is currently only an internal feature of tryCatchLog...
+# Do not use rlang or another package for this to minimize the depedencies!
 udc1 <- tryCatchLog:::condition("my_condition_class", "message1")
 udc2 <- tryCatchLog:::condition("my_other_condition_class")
 
@@ -28,24 +29,26 @@ test_that("user-defined conditions are logged", {
   # NULL
 
   # Once all established handlers for the condition have been tried, signalCondition returns NULL
+  # Make sure this semantics has not changed in R!
   expect_null(signalCondition(udc1))
 
-  expect_silent(tryCatchLog(signalCondition(udc1))) # user-defined conditions do not pop-up anywhere
+  expect_silent(tryCatchLog(signalCondition(udc1))) # user-defined conditions do not pop-up anywhere (no console output in R by default)
 
   last.result <- last.tryCatchLog.result()
 
-  expect_equal(NROW(last.result), 1)
-  expect_equal(last.result$msg.text, "message1")
-  expect_equal(last.result$severity, "INFO")
+  # 06.09.2021 Feature #62: Do not log user-defined conditions anymore (was too chatty)
+  expect_equal(NROW(last.result), 0)
+  # expect_equal(last.result$msg.text, "message1")
+  # expect_equal(last.result$severity, "INFO")
 
 
   expect_silent(tryCatchLog(signalCondition(udc2))) # condition with empty message
 
   last.result <- last.tryCatchLog.result()
 
-  expect_equal(NROW(last.result), 1)
-  expect_equal(last.result$msg.text, "")
-  expect_equal(last.result$severity, "INFO")
+  expect_equal(NROW(last.result), 0)
+  # expect_equal(last.result$msg.text, "")
+  # expect_equal(last.result$severity, "INFO")
 
 })
 
@@ -58,9 +61,9 @@ test_that("user-defined conditions are catched", {
 
   last.result <- last.tryCatchLog.result()
 
-  expect_equal(NROW(last.result), 1)
-  expect_equal(last.result$msg.text, "message1")
-  expect_equal(last.result$severity, "INFO")
+  expect_equal(NROW(last.result), 0)
+  # expect_equal(last.result$msg.text, "message1")
+  # expect_equal(last.result$severity, "INFO")
 
   expect_equal(class(catched), c("my_condition_class", "condition"))
 
@@ -74,9 +77,9 @@ test_that("silent.messages do not suppress user-defined conditions", {
 
   last.result <- last.tryCatchLog.result()
 
-  expect_equal(NROW(last.result), 1)
-  expect_equal(last.result$msg.text, "message1")
-  expect_equal(last.result$severity, "INFO")
+  expect_equal(NROW(last.result), 0)
+  # expect_equal(last.result$msg.text, "message1")
+  # expect_equal(last.result$severity, "INFO")
 
 })
 
@@ -90,9 +93,9 @@ test_that("user-defined conditions work within stacked tryCatchLog expressions",
 
   last.result <- last.tryCatchLog.result()
 
-  expect_equal(NROW(last.result), 1)
-  expect_equal(last.result$msg.text, "message1")
-  expect_equal(last.result$severity, "INFO")
+  expect_equal(NROW(last.result), 0)
+  # expect_equal(last.result$msg.text, "message1")
+  # expect_equal(last.result$severity, "INFO")
 
   expect_equal(class(catched), c("my_condition_class", "condition"))
 
@@ -104,9 +107,9 @@ test_that("user-defined conditions work within stacked tryCatchLog expressions",
 
   last.result <- last.tryCatchLog.result()
 
-  expect_equal(NROW(last.result), 1)
-  expect_equal(last.result$msg.text, "message1")
-  expect_equal(last.result$severity, "INFO")
+  expect_equal(NROW(last.result), 0)
+  # expect_equal(last.result$msg.text, "message1")
+  # expect_equal(last.result$severity, "INFO")
 
   expect_equal(class(catched), c("my_condition_class", "condition"))
 
@@ -121,9 +124,9 @@ test_that("user-defined conditions work within stacked tryCatchLog expressions",
 
   last.result <- last.tryCatchLog.result()
 
-  expect_equal(NROW(last.result), 1)
-  expect_equal(last.result$msg.text, "message1")
-  expect_equal(last.result$severity, "INFO")
+  expect_equal(NROW(last.result), 0)
+  # expect_equal(last.result$msg.text, "message1")
+  # expect_equal(last.result$severity, "INFO")
 
   expect_equal(class(catched_inner), c("my_condition_class", "condition"))
   expect_true(is.na(catched_outer))  # inner handler consumed the condition so it does not bubble up
@@ -135,9 +138,9 @@ test_that("user-defined conditions work within stacked tryCatchLog expressions",
 
   last.result <- last.tryCatchLog.result()
 
-  expect_equal(NROW(last.result), 1)
-  expect_equal(last.result$msg.text, "message1")
-  expect_equal(last.result$severity, "INFO")
+  expect_equal(NROW(last.result), 0)
+  # expect_equal(last.result$msg.text, "message1")
+  # expect_equal(last.result$severity, "INFO")
 
   expect_equal(class(catched), c("my_condition_class", "condition"))
 
