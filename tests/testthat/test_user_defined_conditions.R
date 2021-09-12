@@ -22,8 +22,7 @@ udc1 <- tryCatchLog:::condition("my_condition_class", "message1")
 udc2 <- tryCatchLog:::condition("my_other_condition_class")
 
 
-
-test_that("user-defined conditions are logged", {
+test_that("Correct return value if a custom condition is thrown but not logged", {
 
   # > tryCatch(signalCondition(udc1))
   # NULL
@@ -31,6 +30,17 @@ test_that("user-defined conditions are logged", {
   # Once all established handlers for the condition have been tried, signalCondition returns NULL
   # Make sure this semantics has not changed in R!
   expect_null(signalCondition(udc1))
+
+  expect_true(tryCatchLog( {
+    signalCondition(udc1)
+    TRUE
+  }))
+
+})
+
+
+test_that("user-defined conditions are not logged by default", {
+
 
   expect_silent(tryCatchLog(signalCondition(udc1))) # user-defined conditions do not pop-up anywhere (no console output in R by default)
 
@@ -54,7 +64,7 @@ test_that("user-defined conditions are logged", {
 
 
 
-test_that("user-defined conditions are catched", {
+test_that("user-defined conditions are catched but not logged by default", {
 
   catched <- NA
   tryCatchLog(signalCondition(udc1), condition = function(c) catched <<- c)
@@ -66,20 +76,6 @@ test_that("user-defined conditions are catched", {
   # expect_equal(last.result$severity, "INFO")
 
   expect_equal(class(catched), c("my_condition_class", "condition"))
-
-})
-
-
-
-test_that("silent.messages do not suppress user-defined conditions", {
-
-  tryCatchLog(signalCondition(udc1), silent.messages = TRUE)
-
-  last.result <- last.tryCatchLog.result()
-
-  expect_equal(NROW(last.result), 0)
-  # expect_equal(last.result$msg.text, "message1")
-  # expect_equal(last.result$severity, "INFO")
 
 })
 
@@ -145,10 +141,3 @@ test_that("user-defined conditions work within stacked tryCatchLog expressions",
   expect_equal(class(catched), c("my_condition_class", "condition"))
 
 })
-
-
-# withCallingHandlers(stop("my error"), error = function(e) print("error handler"), condition = function(c) print("condition handler"), include.full.call.stack = F)
-# tryCatch(stop("my error"), error = function(e) print("error handler"), condition = function(c) print("condition handler"), include.full.call.stack = F)
-# tryCatch(stop("my error"), condition = function(c) print("condition handler"), error = function(e) print("error handler"), include.full.call.stack = F)
-# tryCatch(warning("my error"), error = function(e) print("error handler"), condition = function(c) print("condition handler"), include.full.call.stack = F)
-# tryCatchLog(stop("my error"), error = function(e) print("error handler"), condition = function(c) print("condition handler"), include.full.call.stack = F)

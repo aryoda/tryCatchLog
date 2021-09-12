@@ -211,6 +211,19 @@ tryCatchLog <- function(expr,
   # closure ---------------------------------------------------------------------------------------------------------
   cond.handler <- function(c) {
 
+    # Suppress logging of a (non-standard/custom) condition?
+    # NOTE: The inheritance is checked similar to the "severity" below but intentional to separate orthogonal logic
+    if (inherits(c, "condition") && !inherits(c, c("error", "warning", "message", "interrupt"))) {
+      # if logged.conditions is NULL (default), do not log conditions
+      # if logged.conditions is a vector of strings, log only conditions which have their class in the vector
+      # if logged.conditions is NA, log all conditions
+      if (is.null(logged.conditions)
+          || (is.character(logged.conditions) && !inherits(c, logged.conditions)))
+        return()  # HACK (return not at end of function) to skip the following logging code
+    }
+
+
+
     log.message    <- c$message            # TODO: Should we use conditionMessage instead?
 
     if (is.null(log.message)) {
@@ -223,20 +236,21 @@ tryCatchLog <- function(expr,
     dump.file.name <- ""
 
 
+
     # stack.trace <<- call.stack     # helper code for updating the expected result of the "test_build_log_entry" unit test
     severity <-       if (inherits(c, "error"))     "ERROR"
                  else if (inherits(c, "warning"))   "WARN"
                  else if (inherits(c, "message"))   "INFO"
                  else if (inherits(c, "interrupt")) "INFO"
-                 else if (inherits(c, "condition")) {
-                   # if logged.conditions is NULL (default), do not log conditions
-                   if (is.null(logged.conditions))     return()
-                   # if logged.conditions is NA, log all conditions
-                   else if ((length(logged.conditions) == 1) && is.na(logged.conditions))   "INFO"
-                   # if logged.conditions is a vector of strings, log only conditions which have their class in the vector
-                   else if (inherits(c, logged.conditions))   "INFO"
-                   else if (!inherits(c, logged.conditions))   return()
-                 }
+                 else if (inherits(c, "condition")) "INFO"  # TODO I would introduce a new logging level "DEBUG" or "VERBOSE" for this!
+                 #   # if logged.conditions is NULL (default), do not log conditions
+                 #   if (is.null(logged.conditions))     return()
+                 #   # if logged.conditions is NA, log all conditions
+                 #   else if ((length(logged.conditions) == 1) && is.na(logged.conditions))   "INFO"
+                 #   # if logged.conditions is a vector of strings, log only conditions which have their class in the vector
+                 #   else if (inherits(c, logged.conditions))   "INFO"
+                 #   else if (!inherits(c, logged.conditions))   return()
+                 # }
                  else stop(sprintf("Unsupported condition class %s!", class(c)))
 
 
