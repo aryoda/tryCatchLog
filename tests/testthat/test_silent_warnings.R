@@ -1,6 +1,7 @@
 # Tests are run within the folder "tryCatchLog/tests/testthat".
 # Clean it up at the beginning of a test!
 
+library(tryCatchLog)
 library(testthat)
 
 
@@ -36,7 +37,7 @@ test_that("Globally disabled silent warnings throw a warning if parameter says t
 
 
 
-test_that("enabled silent warnings throw a warning", {
+test_that("enabled silent.warnings do not throw a warning", {
   expect_silent(tryCatchLog(log(-1), silent.warnings = TRUE))
   expect_silent(tryLog(log(-1), silent.warnings = TRUE))
 })
