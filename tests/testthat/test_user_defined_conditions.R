@@ -22,6 +22,7 @@ udc1 <- tryCatchLog:::condition("my_condition_class", "message1")
 udc2 <- tryCatchLog:::condition("my_other_condition_class")
 
 
+
 test_that("Correct return value if a custom condition is thrown but not logged", {
 
   # > tryCatch(signalCondition(udc1))

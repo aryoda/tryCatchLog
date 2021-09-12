@@ -6,8 +6,6 @@ library(testthat)
 
 
 
-# Silent warnings -------------------------------------------------------------------------------------------------
-
 context("test_logging_of_conditions.R")
 
 
@@ -41,6 +39,22 @@ test_that("Correct return value if a custom condition is thrown and logged", {
     signalCondition(udc1)
     TRUE
   }, logged.conditions = "my_condition_class"))
+
+})
+
+
+
+test_that("Missing conditon message works", {
+
+  catched <- NA
+  tryCatchLog(signalCondition(tryCatchLog:::condition("class1", message = NULL)), condition = function(c) catched <<- c, logged.conditions = NA)
+
+  expect_null(catched$message, "")
+
+  last.result <- last.tryCatchLog.result()
+
+  expect_equal(NROW(last.result), 1)
+  expect_equal(last.result$msg.text, "")
 
 })
 
