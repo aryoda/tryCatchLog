@@ -63,10 +63,20 @@ limitedLabelsCompact <- function(value, compact = FALSE, maxwidth = getOption("w
     else ""
   })
 
-  # create a list of only first line of code for each call stack item
-  if (compact == TRUE)
-    value <- lapply(as.character(value), function(x) strsplit(x, "\n")[[1]][1])
+  # # create a list of only first line of code for each call stack item
+  # if (compact == TRUE)
+  #   value <- lapply(as.character(value), function(x) strsplit(x, "\n")[[1]][1])
 
+  # New implementation fixes bug #68 (performance impact with sparse matrix)
+  if (compact == TRUE)
+    max.rows <- 1 else
+      max.rows <- 30    # nobody wants to see more than 30 rows for each call in the call stack ;-)
+
+    value <- lapply(value, function(x) {
+      if (is.language(x))
+        paste(deparse(x, width.cutoff = 500, nlines = max.rows), collapse = "\n") else
+          as.character(x)
+    })
 
   # combine source references with the call stack and ident multi-line code
   value <- gsub("\n", "\n    ", as.character(value))
