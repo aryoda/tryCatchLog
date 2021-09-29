@@ -86,6 +86,9 @@ Condition handlers work as in base R's \code{\link{tryCatch}}.
 Conditions are also logged including the function call stack
 with file names and line numbers (if available).
 
+By defaultee the maximum number of source code rows that are printed per call in the full stack trace
+is 10. You can change this via the option \code{tryCatchLog.max.lines.per.call} (see example).
+
 This function shall overcome some drawbacks of the standard \code{\link{tryCatch}} function.\cr
          For more details see \url{https://github.com/aryoda/tryCatchLog}.
 
@@ -175,6 +178,8 @@ tryLog(log(-1), execution.context.msg = Sys.getpid())
 # set and unset an option
 options("tryCatchLog.write.error.dump.folder" = "my_log")
 options("tryCatchLog.write.error.dump.folder" = NULL)
+
+options(tryCatchLog.max.lines.per.call = 30)
 
 \dontrun{
 # Use case for "execution.context.msg" argument: Loops and parallel execution

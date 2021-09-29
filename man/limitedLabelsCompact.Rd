@@ -26,11 +26,14 @@ A list of strings (one for each call).
 }
 \description{
 Converts a call stack into a list of printable strings ("labels") with a limited length per call.
-                If source code references are available they are also added in the form
-                \<file name\>#\<line number\>: executed R expression (call)
+                If source code references are available they are also printed in the stack trace using this notation:
+                \code{<file name>#<line number>: executed R expression (call)}
 }
 \details{
-R does track source code references only if you set the option "keep.source" to TRUE via
+By defaultee the maximum number of source code rows that are printed per call in the full stack trace
+is 10. You can change this via the option \code{tryCatchLog.max.lines.per.call} (see example).
+
+       R does track source code references only if you set the option "keep.source" to TRUE via
                 \code{options(keep.source = TRUE)}. Without this option this function cannot enrich source code references.
                 If you use \command{Rscript} to start a non-interactive R script as batch job you
                 have to set this option since it is FALSE by default. You can add this option to your
@@ -44,6 +47,7 @@ R does track source code references only if you set the option "keep.source" to 
                 \url{https://journal.r-project.org/archive/2010-2/RJournal_2010-2_Murdoch.pdf}
 }
 \examples{
+options(tryCatchLog.max.lines.per.call = 30)
 limitedLabelsCompact(sys.calls(), TRUE)
 }
 \seealso{

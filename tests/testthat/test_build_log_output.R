@@ -46,8 +46,8 @@ test_that("log output is correct", {
 
   out2 <- tryCatchLog::build.log.output(log.entry, include.full.call.stack = TRUE)
 
-  # writeLines(out2, "build_log_output_test_data_2.txt")  # to write the expected result after checking it manually
-  expected2 <- paste(readLines("build_log_output_test_data_2.txt"), collapse = "\n")
+  # writeLines(out2, "expected_log_output.txt")  # to write the expected result after checking it manually
+  expected2 <- paste(readLines("expected_log_output.txt"), collapse = "\n")
 
   expect_equal(out2, expected2, info = "include.full.call.stack = TRUE")
 
