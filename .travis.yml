@@ -1,4 +1,4 @@
-# http://docs.travis-ci.com/user/languages/r/
+# https://docs.travis-ci.com/user/languages/r/
 language: r
 cache: packages
 # dist: trusty
