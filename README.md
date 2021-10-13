@@ -4,11 +4,9 @@ An R package to improve the error handling of the standard `tryCatch` and `try` 
 
 **Current version:** See the [NEWS](NEWS.md) for the most recent changes.
 
-https://api.travis-ci.com/aryoda/tryCatchLog.svg?branch=master&status=unknown
-
 [![Build Status](https://app.travis-ci.com/aryoda/tryCatchLog.svg?branch=master)](https://app.travis-ci.com/aryoda/tryCatchLog)
-[![codecoverage statistics](https://codecov.io/gh/aryoda/tryCatchLog/branch/master/graph/badge.svg)](https://codecov.io/gh/aryoda/tryCatchLog)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/aryoda/tryCatchLog?branch=master&svg=true)](https://ci.appveyor.com/project/aryoda/tryCatchLog)
+[![codecoverage statistics](https://codecov.io/gh/aryoda/tryCatchLog/branch/master/graph/badge.svg)](https://codecov.io/gh/aryoda/tryCatchLog)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version-ago/tryCatchLog)](https://cran.r-project.org/package=tryCatchLog)
 [![CRAN total downloads](http://cranlogs.r-pkg.org/badges/grand-total/tryCatchLog)](https://cran.r-project.org/package=tryCatchLog)
 
