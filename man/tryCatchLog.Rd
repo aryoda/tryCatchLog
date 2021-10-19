@@ -15,7 +15,8 @@ tryCatchLog(
   silent.messages = getOption("tryCatchLog.silent.messages", FALSE),
   include.full.call.stack = getOption("tryCatchLog.include.full.call.stack", TRUE),
   include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack",
-    TRUE)
+    TRUE),
+  logged.conditions = getOption("tryCatchLog.logged.conditions", NULL)
 )
 }
 \arguments{
@@ -65,6 +66,10 @@ be included in the log output? Note: If you ommit both the full and compact
 call stacks the message text will be output without call stacks.
 The default value can be changed globally by setting the option \code{tryCatchLog.include.compact.call.stack}.
 The compact call stack can always be found via \code{\link{last.tryCatchLog.result}}.}
+
+\item{logged.conditions}{\code{NULL}: Conditions are not logged.\cr
+\code{vector of strings}: Only conditions whose class name is contained in this vector are logged.\cr
+\code{NA}: All conditions are logged.}
 }
 \value{
 the value of the expression passed in as parameter "expr"
@@ -80,6 +85,9 @@ Condition handlers work as in base R's \code{\link{tryCatch}}.
 
 Conditions are also logged including the function call stack
 with file names and line numbers (if available).
+
+By defaultee the maximum number of source code rows that are printed per call in the full stack trace
+is 10. You can change this via the option \code{tryCatchLog.max.lines.per.call} (see example).
 
 This function shall overcome some drawbacks of the standard \code{\link{tryCatch}} function.\cr
          For more details see \url{https://github.com/aryoda/tryCatchLog}.
@@ -170,6 +178,8 @@ tryLog(log(-1), execution.context.msg = Sys.getpid())
 # set and unset an option
 options("tryCatchLog.write.error.dump.folder" = "my_log")
 options("tryCatchLog.write.error.dump.folder" = NULL)
+
+options(tryCatchLog.max.lines.per.call = 30)
 
 \dontrun{
 # Use case for "execution.context.msg" argument: Loops and parallel execution

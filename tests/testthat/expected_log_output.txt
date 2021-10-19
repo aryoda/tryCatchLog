@@ -1,3 +1,11 @@
+[ERROR] msg
+
+Compact call stack:
+  1 tryLog(log("abc"))
+  2 tryLog.R#49: tryCatchLog(expr = expr, dump.errors.to.file = dump.errors.to.file, error = function(e) {
+  3 tryCatchLog.R#135: tryCatch(withCallingHandlers(expr, error = function(e) {
+
+Full call stack:
   1 tryLog(log("abc"))
   2 tryLog.R#49: tryCatchLog(expr = expr, dump.errors.to.file = dump.errors.to.file, error = function(e) {
         msg <- conditionMessage(e)
@@ -37,3 +45,5 @@
             dump.file.name <- format(Sys.time(), format = "dump_%Y%m%d_%H%M%S")
             utils::dump.frames()
   9 h(simpleError(msg, call))
+
+

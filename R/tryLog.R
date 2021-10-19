@@ -49,6 +49,7 @@ tryLog <- function(expr,
                    silent.messages            = getOption("tryCatchLog.silent.messages", FALSE),
                    include.full.call.stack    = getOption("tryCatchLog.include.full.call.stack", TRUE),
                    include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack", TRUE),
+                   logged.conditions          = getOption("tryCatchLog.logged.conditions", NULL),
                    execution.context.msg      = ""
 ) {
 
@@ -63,5 +64,6 @@ tryLog <- function(expr,
               silent.warnings            = silent.warnings,
               silent.messages            = silent.messages,
               include.full.call.stack    = include.full.call.stack,
-              include.compact.call.stack = include.compact.call.stack)
+              include.compact.call.stack = include.compact.call.stack,
+              logged.conditions = logged.conditions)
 }
