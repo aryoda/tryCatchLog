@@ -30,7 +30,7 @@ Converts a call stack into a list of printable strings ("labels") with a limited
                 \code{<file name>#<line number>: executed R expression (call)}
 }
 \details{
-By defaultee the maximum number of source code rows that are printed per call in the full stack trace
+By default the maximum number of source code rows that are printed per call in the full stack trace
 is 10. You can change this via the option \code{tryCatchLog.max.lines.per.call} (see example).
 
        R does track source code references only if you set the option "keep.source" to TRUE via

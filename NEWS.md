@@ -8,7 +8,7 @@ https://www.gnu.org/prep/standards/standards.html#Documentation
 ## Version 1.3.0 (Sept 30, 2021)
 
 * Fix critical bug #68: Bad condition logging performance with bug data sizes
-  https://github.com/aryoda/tryCatchLog/issues/68
+  (https://github.com/aryoda/tryCatchLog/issues/68)
 * Limit the maximum number of source code rows printed in the full call stack per call to 10
   (was unlimited before which cause bug #68 if large data in arguments was printed too)
 * Add option `tryCatchLog.max.lines.per.call` to change the maximum number of source code rows
@@ -16,7 +16,10 @@ https://www.gnu.org/prep/standards/standards.html#Documentation
 
 ## Version 1.2.5 (Sept 06, 2021)
 
-* Implement feature request #62 (optional logging of conditions).
+* Implement feature request #62: Optional logging of conditions via the new `logged.conditions` argument
+  (https://github.com/aryoda/tryCatchLog/issues/62). Conditions are now no longer logged by default
+  to avoid flooding the log output.
+  
   Many thanks to Valerian Wrobel for this contribution!
 
 ## Version 1.2.4 (May 21, 2021) for CRAN

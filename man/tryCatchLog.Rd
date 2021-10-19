@@ -86,7 +86,7 @@ Condition handlers work as in base R's \code{\link{tryCatch}}.
 Conditions are also logged including the function call stack
 with file names and line numbers (if available).
 
-By defaultee the maximum number of source code rows that are printed per call in the full stack trace
+By default the maximum number of source code rows that are printed per call in the full stack trace
 is 10. You can change this via the option \code{tryCatchLog.max.lines.per.call} (see example).
 
 This function shall overcome some drawbacks of the standard \code{\link{tryCatch}} function.\cr
