@@ -741,13 +741,28 @@ https://www.r-bloggers.com/2015/10/installing-r-devel-on-linux-ubuntu-mint/
 
 (see ~/svn/build-R-devel or into your ~/.profile ;-)
 
-### How to build the package using R-devel (development version of R)
 
-To debug problems with the most-recent development version of R you can install R-devel from subversion.
+### Working with Git and Github (esp. merging of feature branches and conflict handling)
 
-This link provides good instructions on how to do this on Ubuntu Linux with RStudio:
+http://r-pkgs.had.co.nz/git.html
 
-https://www.r-bloggers.com/2015/10/installing-r-devel-on-linux-ubuntu-mint/
+Add a local branch to the remote (github) repo:
 
-(see ~/svn/build-R-devel or into your ~/.profile ;-)
+```
+git checkout <branch-name>
+git push --set-upstream origin <branch-name>
+```
+
+Merge a (feature or bugfix) branch back into the master, then delete the branch:
+
+```
+git checkout master
+git merge --no-ff <branch-name>
+git branch -d <branch-name>
+git push origin master
+```
+
+
+
+
 
