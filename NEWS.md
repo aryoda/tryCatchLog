@@ -12,12 +12,14 @@ https://www.gnu.org/prep/standards/standards.html#Documentation
     URL: https://rstudio.com/products/rstudio/ (moved to https://www.rstudio.com/products/rstudio/)
     From: inst/doc/tryCatchLog-intro.html
 
+
 ## Version 1.2.3 (May 16, 2021) - submitted at CRAN but rejected
 
 * Fix bug #64: Unit tests fail on R-devel (test_build_log_entry.R and test_build_log_output).
   Many thanks to Brodie Gaslam to find and help fixing this bug!
 * Extend the maximum value of the `maxwidth argument of limitedLabels() from 1000 to 2000.
   This was required for a decent fix of bug #64.
+
 
 ## Version 1.2.2 (Jan. 8, 2021)
 
