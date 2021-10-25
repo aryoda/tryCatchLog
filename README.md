@@ -726,6 +726,7 @@ Further links:
 * Build source package and upload the release candiate (*tar.gz file) at win-builder to check for errors.
   (see instructions: https://win-builder.r-project.org/). There is an [upload page](https://win-builder.r-project.org/upload.aspx) for R-release, R-devel and R-oldrelease.
 * Finally upload the release candiate file to CRAN via their submission page: https://cran.r-project.org/submit.html
+  and check your email and spam folder for the CRAN email with the confirmation link.
 * Re-submission is done in the same way as submission, using the ‘Optional comment’ field on the web form to explain how the feedback on previous submission(s) has been addressed.
 * Updates to previously-published packages must have an increased version.
  Increasing the version number at each submission reduces confusion so is preferred even when a previous submission was not accepted. 

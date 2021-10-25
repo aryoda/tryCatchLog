@@ -5,6 +5,14 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
+## Version 1.3.1 (Oct 24, 2021) for CRAN
+
+* Fix CRAN check note for `inst/doc/tryCatchLog-intro.html` reported by win-builder on R-devel:
+  Found the following (possibly) invalid URLs:
+  URL: http://www.biostat.jhsph.edu/~rpeng/docs/R-debug-tools.pdf
+  (moved to https://www.biostat.jhsph.edu/~rpeng/docs/R-debug-tools.pdf)
+  
+
 ## Version 1.3.0 (Sept 30, 2021)
 
 * Fix critical bug #68: Bad condition logging performance with bug data sizes
