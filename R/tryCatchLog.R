@@ -185,7 +185,7 @@
 tryCatchLog <- function(expr,
                         ...,
                         execution.context.msg      = "",
-                        finally = NULL,
+                        finally                    = NULL,
                         write.error.dump.file      = getOption("tryCatchLog.write.error.dump.file", FALSE),
                         write.error.dump.folder    = getOption("tryCatchLog.write.error.dump.folder", "."),
                         silent.warnings            = getOption("tryCatchLog.silent.warnings", FALSE),

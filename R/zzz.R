@@ -107,6 +107,9 @@
     tryCatchLog.write.error.folder    = ".",
     tryCatchLog.silent.warnings       = FALSE,
     tryCatchLog.silent.messages       = FALSE
+    # TODO There are more options from tryCatchLog() which are missing here. Shall we deprecate this code (I guess is is not required)?
+    #      Secretly setting options in a package is bad practice IMHO and should better be made explicit (like it is)
+    #      by using a default value in the function signature (see tryCatchLog()).
   )
 
   to.set <- !(names(default.options) %in% names(active.options))  # TRUE for each option name that is not set
@@ -134,3 +137,6 @@
 
   invisible()
 }
+
+
+
