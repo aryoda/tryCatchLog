@@ -42,7 +42,7 @@
 
 
 # Package-global variables are stored in a package-internal environment.
-# This is a work-around to keep a package-internal state between differnet
+# This is a work-around to keep a package-internal state between different
 # calls of package functions.
 .tryCatchLog.env <- new.env(parent = emptyenv())   # hidden variable (from whom?)
 
