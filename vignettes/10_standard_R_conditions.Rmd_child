@@ -237,7 +237,7 @@ tryCatch(f(), warning = function(w) { write.to.log(w) })
 print("Done")
 ```
 
-**Observe:** *Hello world* is never printed just because we catched a warning!
+**Observe:** *Hello world* is never printed just because we caught a warning!
 
 **If you catch a condition with `tryCatch` (even just a warning or message) then R**
 
@@ -400,7 +400,7 @@ full call stack with the `printStackTrace` method)!**
 
 The requirements for better condition handling in R are:
 
-- Get the full call stack for all catched conditions
+- Get the full call stack for all caught conditions
 - Resume execution after handling warnings and messages
 - Catch errors and continue the execution after the handler function
 

@@ -26,18 +26,18 @@ normally the full call stack can be omitted by passing \code{FALSE}.}
 
 \item{include.compact.call.stack}{Flag of type \code{\link{logical}}:
 Shall the compact call stack (including only calls with source code references)
-be included in the log output? Note: If you ommit both the full and compact
+be included in the log output? Note: If you omit both the full and compact
 call stacks the message text will be output without call stacks.}
 
 \item{include.severity}{\code{logical} switch if the severity level (e. g. ERROR) shall be
 included in the output}
 
-\item{include.timestamp}{\code{logical} switch if the timestamp of the catched condition shall be
+\item{include.timestamp}{\code{logical} switch if the timestamp of the caught condition shall be
 included in the output}
 
 \item{use.platform.newline}{\code{logical}: If \code{TRUE} the line breaks ("newline") will be
-inserted according to the current operationg system (Windows: CR+LF,
-else: CR). If \code{FALSE} R's usual \code{\\n} esacpe character will be inserted
+inserted according to the current operation system (Windows: CR+LF,
+else: CR). If \code{FALSE} R's usual \code{\\n} escape character will be inserted
 and it is left to the client to convert this later into the operation-system-specific
 characters. This argument is rarely required (except e. g. if you want to
 write the return value into a database table column on Windows).}

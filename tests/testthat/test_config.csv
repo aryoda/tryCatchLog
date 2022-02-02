@@ -1,0 +1,6 @@
+"cond.class";"silent";"do.not.log";"log.as.severity";"include.full.call.stack";"include.compact.call.stack"
+"error";FALSE;FALSE;"ERROR";TRUE;TRUE
+"warning";FALSE;FALSE;"WARN";TRUE;TRUE
+"message";FALSE;FALSE;"INFO";FALSE;TRUE
+"condition";TRUE;TRUE;"DEBUG";FALSE;TRUE
+"interrupt";FALSE;FALSE;"FATAL";TRUE;TRUE

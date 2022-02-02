@@ -20,11 +20,11 @@ tryLog(
 \arguments{
 \item{expr}{R expression to be evaluated}
 
-\item{write.error.dump.file}{\code{TRUE}: Saves a dump of the workspace and the call stack named
+\item{write.error.dump.file}{\code{TRUE}: Saves a dump of the work space and the call stack named
 \code{dump_<YYYYMMDD>_at_<HHMMSS.sss>_PID_<process id>.rda}.
 This dump file name pattern shall ensure unique file names in parallel processing scenarios.}
 
-\item{write.error.dump.folder}{\code{path}: Saves the dump of the workspace in a specific folder instead of the working directory}
+\item{write.error.dump.folder}{\code{path}: Saves the dump of the work space in a specific folder instead of the working directory}
 
 \item{silent.warnings}{\code{TRUE}: Warnings are logged only, but not propagated to the caller.\cr
 \code{FALSE}: Warnings are logged and treated according to the global
@@ -42,7 +42,7 @@ The full call stack can always be found via \code{\link{last.tryCatchLog.result}
 
 \item{include.compact.call.stack}{Flag of type \code{\link{logical}}:
 Shall the compact call stack (including only calls with source code references)
-be included in the log output? Note: If you ommit both the full and compact
+be included in the log output? Note: If you omit both the full and compact
 call stacks the message text will be output without call stacks.
 The default value can be changed globally by setting the option \code{tryCatchLog.include.compact.call.stack}.
 The compact call stack can always be found via \code{\link{last.tryCatchLog.result}}.}
@@ -52,7 +52,7 @@ The compact call stack can always be found via \code{\link{last.tryCatchLog.resu
 \code{NA}: All conditions are logged.}
 
 \item{execution.context.msg}{a text identifier (eg. the PID or a variable value) that will be added to msg.text
-for catched conditions. This makes it easier to identify the runtime state that caused
+for caught conditions. This makes it easier to identify the runtime state that caused
 a condition esp. in parallel execution scenarios.
 The value must be of length 1 and will be coerced to character.
 Expressions are not allowed.

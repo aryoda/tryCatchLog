@@ -22,7 +22,7 @@ build.log.entry(
 \item{msg.text}{Logging message (e. g. error message)}
 
 \item{execution.context.msg}{a text identifier (eg. the PID or a variable value) that will be appended to msg.text
-for catched conditions. Must be a character or an error is thrown.}
+for caught conditions. Must be a character or an error is thrown.}
 
 \item{call.stack}{a call stack created by \code{\link{sys.calls}}}
 

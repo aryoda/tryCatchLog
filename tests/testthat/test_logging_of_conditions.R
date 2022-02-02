@@ -46,10 +46,10 @@ test_that("Correct return value if a custom condition is thrown and logged", {
 
 test_that("Missing conditon message works", {
 
-  catched <- NA
-  tryCatchLog(signalCondition(tryCatchLog:::condition("class1", message = NULL)), condition = function(c) catched <<- c, logged.conditions = NA)
+  caught <- NA
+  tryCatchLog(signalCondition(tryCatchLog:::condition("class1", message = NULL)), condition = function(c) caught <<- c, logged.conditions = NA)
 
-  expect_null(catched$message, "")
+  expect_null(caught$message, "")
 
   last.result <- last.tryCatchLog.result()
 
@@ -113,10 +113,10 @@ test_that("tryCatchLog is silent when a condition which class is NOT in logged.c
 
 
 
-test_that("logged user-defined conditions are catched and logged correctly", {
+test_that("logged user-defined conditions are caught and logged correctly", {
 
-  catched <- NA
-  tryCatchLog(signalCondition(udc1), condition = function(c) catched <<- c, logged.conditions = NA)
+  caught <- NA
+  tryCatchLog(signalCondition(udc1), condition = function(c) caught <<- c, logged.conditions = NA)
 
   last.result <- last.tryCatchLog.result()
 
@@ -124,7 +124,7 @@ test_that("logged user-defined conditions are catched and logged correctly", {
   expect_equal(last.result$msg.text, "message1")
   expect_equal(last.result$severity, "INFO")
 
-  expect_equal(class(catched), c("my_condition_class", "condition"))
+  expect_equal(class(caught), c("my_condition_class", "condition"))
 
 })
 
@@ -147,8 +147,8 @@ test_that("silent.messages do not suppress user-defined conditions", {
 test_that("user-defined conditions work within stacked tryCatchLog expressions with enabled logging", {
 
   # outer handler
-  catched <- NA
-  expect_silent(tryCatchLog(tryCatchLog(signalCondition(udc1)), condition = function(c) catched <<- c, logged.conditions = NA))
+  caught <- NA
+  expect_silent(tryCatchLog(tryCatchLog(signalCondition(udc1)), condition = function(c) caught <<- c, logged.conditions = NA))
 
   last.result <- last.tryCatchLog.result()
 
@@ -156,13 +156,13 @@ test_that("user-defined conditions work within stacked tryCatchLog expressions w
   expect_equal(last.result$msg.text, "message1")
   expect_equal(last.result$severity, "INFO")
 
-  expect_equal(class(catched), c("my_condition_class", "condition"))
+  expect_equal(class(caught), c("my_condition_class", "condition"))
 
 
 
   # inner handler
-  catched <- NA
-  expect_silent(tryCatchLog(tryCatchLog(signalCondition(udc1), condition = function(c) catched <<- c, logged.conditions = NA), logged.conditions = NA))
+  caught <- NA
+  expect_silent(tryCatchLog(tryCatchLog(signalCondition(udc1), condition = function(c) caught <<- c, logged.conditions = NA), logged.conditions = NA))
 
   last.result <- last.tryCatchLog.result()
 
@@ -170,16 +170,16 @@ test_that("user-defined conditions work within stacked tryCatchLog expressions w
   expect_equal(last.result$msg.text, "message1")
   expect_equal(last.result$severity, "INFO")
 
-  expect_equal(class(catched), c("my_condition_class", "condition"))
+  expect_equal(class(caught), c("my_condition_class", "condition"))
 
 
 
   # inner and outer handler
-  catched_inner <- NA
-  catched_outer <- NA
+  caught_inner <- NA
+  caught_outer <- NA
   expect_silent(tryCatchLog(
-    tryCatchLog(signalCondition(udc1), condition = function(c) catched_inner <<- c, logged.conditions = NA)
-    , condition = function(c) catched_outer <<- c, logged.conditions = NA))
+    tryCatchLog(signalCondition(udc1), condition = function(c) caught_inner <<- c, logged.conditions = NA)
+    , condition = function(c) caught_outer <<- c, logged.conditions = NA))
 
   last.result <- last.tryCatchLog.result()
 
@@ -187,8 +187,8 @@ test_that("user-defined conditions work within stacked tryCatchLog expressions w
   expect_equal(last.result$msg.text, "message1")
   expect_equal(last.result$severity, "INFO")
 
-  expect_equal(class(catched_inner), c("my_condition_class", "condition"))
-  expect_true(is.na(catched_outer))  # inner handler consumed the condition so it does not bubble up
+  expect_equal(class(caught_inner), c("my_condition_class", "condition"))
+  expect_true(is.na(caught_outer))  # inner handler consumed the condition so it does not bubble up
 
 
 
@@ -201,6 +201,6 @@ test_that("user-defined conditions work within stacked tryCatchLog expressions w
   expect_equal(last.result$msg.text, "message1")
   expect_equal(last.result$severity, "INFO")
 
-  expect_equal(class(catched), c("my_condition_class", "condition"))
+  expect_equal(class(caught), c("my_condition_class", "condition"))
 
 })

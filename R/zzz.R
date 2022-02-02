@@ -41,9 +41,13 @@
 # For details see: http://r-pkgs.had.co.nz/r.html
 
 
-# Package-global variables are stored in a package-internal environment.
+# PACKAGE CONSTANTS ARE DEFINED IN THE FILE constants.R !!!
+
+
+
+# Package-global (mutable) variables are stored in a package-internal environment.
 # This is a work-around to keep a package-internal state between different
-# calls of package functions.
+# calls of package functions since package variables itself cannot be changed after setting them.
 .tryCatchLog.env <- new.env(parent = emptyenv())   # hidden variable (from whom?)
 
 

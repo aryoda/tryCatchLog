@@ -25,7 +25,7 @@
 #' @param severity        severity level of the log entry ((ERROR, WARN, INFO etc.)
 #' @param msg.text        Logging message (e. g. error message)
 #' @param execution.context.msg a text identifier (eg. the PID or a variable value) that will be appended to msg.text
-#'                              for catched conditions. Must be a character or an error is thrown.
+#'                              for caught conditions. Must be a character or an error is thrown.
 #' @param call.stack      a call stack created by \code{\link{sys.calls}}
 #' @param dump.file.name  name of the created dump file (leave empty if the \code{\link{tryCatchLog}}
 #'                        argument \code{write.error.dump.file} is \code{FALSE})

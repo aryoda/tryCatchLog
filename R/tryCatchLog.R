@@ -41,17 +41,17 @@
 #'                              All condition handlers are passed to \code{\link{tryCatch}} as is
 #'                              (no filtering, wrapping or changing of semantics).
 #' @param execution.context.msg a text identifier (eg. the PID or a variable value) that will be added to msg.text
-#'                              for catched conditions. This makes it easier to identify the runtime state that caused
+#'                              for caught conditions. This makes it easier to identify the runtime state that caused
 #'                              a condition esp. in parallel execution scenarios.
 #'                              The value must be of length 1 and will be coerced to character.
 #'                              Expressions are not allowed.
 #'                              The added output has the form: \code{{execution.context.msg: your_value}}
 #' @param finally               expression to be evaluated at the end (after executing the expressiond
 #'                              and calling the matching handler).
-#' @param write.error.dump.file \code{TRUE}: Saves a dump of the workspace and the call stack named
+#' @param write.error.dump.file \code{TRUE}: Saves a dump of the work space and the call stack named
 #'                              \code{dump_<YYYYMMDD>_at_<HHMMSS.sss>_PID_<process id>.rda}.
 #'                              This dump file name pattern shall ensure unique file names in parallel processing scenarios.
-#' @param write.error.dump.folder    \code{path}: Saves the dump of the workspace in a specific folder instead of the working directory
+#' @param write.error.dump.folder    \code{path}: Saves the dump of the work space in a specific folder instead of the working directory
 #' @param silent.warnings       \code{TRUE}: Warnings are logged only, but not propagated to the caller.\cr
 #'                              \code{FALSE}: Warnings are logged and treated according to the global
 #'                              setting in \code{\link{getOption}("warn")}. See also \code{\link{warning}}.
@@ -65,14 +65,14 @@
 #'                     The full call stack can always be found via \code{\link{last.tryCatchLog.result}}.
 #' @param include.compact.call.stack Flag of type \code{\link{logical}}:
 #'                     Shall the compact call stack (including only calls with source code references)
-#'                     be included in the log output? Note: If you ommit both the full and compact
+#'                     be included in the log output? Note: If you omit both the full and compact
 #'                     call stacks the message text will be output without call stacks.
 #'                     The default value can be changed globally by setting the option \code{tryCatchLog.include.compact.call.stack}.
 #'                     The compact call stack can always be found via \code{\link{last.tryCatchLog.result}}.
 #' @param logged.conditions \code{NULL}: Conditions are not logged.\cr
 #'                          \code{vector of strings}: Only conditions whose class name is contained in this vector are logged.\cr
 #'                          \code{NA}: All conditions are logged.
-#' @return                     the value of the expression passed in as parameter "expr"
+#' @return             the value of the expression passed in as parameter \code{expr}
 #'
 #' @details This function shall overcome some drawbacks of the standard \code{\link{tryCatch}} function.\cr
 #'          For more details see \url{https://github.com/aryoda/tryCatchLog}.
