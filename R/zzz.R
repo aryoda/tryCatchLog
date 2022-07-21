@@ -75,6 +75,8 @@
   # Indicate which logging functions to use
   if (.tryCatchLog.env$found.futile.logger == TRUE) {             # is.package.available("futile.logger")) {
     packageStartupMessage("Using futile.logger for logging...")
+  }else if (.tryCatchLog.env$found.lgr == TRUE) {             # is.package.available("futile.logger")) {
+    packageStartupMessage("Using lgr for logging...")
   } else {
     packageStartupMessage("futile.logger not found. Using tryCatchLog-internal functions for logging...")
   }
@@ -121,13 +123,27 @@
 
 
   # Decide which logging functions to use
+  
   if (is.package.available("futile.logger")) {
     # packageStartupMessage("Using futile.logger for logging...")  # be silent in .onLoad (best practice)
     set.logging.functions(futile.logger::flog.error, futile.logger::flog.warn, futile.logger::flog.info)
+    .tryCatchLog.env$found.lgr <- FALSE
     .tryCatchLog.env$found.futile.logger <- TRUE
+  }else if (is.package.available("lgr")) {
+    if( ! exists("lg", envir = parent.env(environment()))){
+      assign(
+        "lg",
+        lgr::get_logger(name = "tryCatchLog"),
+        envir = parent.env(environment())
+      )
+    }
+    set.logging.functions(lg$error, lg$warn, lg$info)
+    .tryCatchLog.env$found.lgr <- TRUE
+    .tryCatchLog.env$found.futile.logger <- FALSE
   } else {
     # packageStartupMessage("futile.logger not found. Using tryCatchLog-internal functions for logging...")  # be silent in .onLoad (best practice)
     set.logging.functions()    # Default: Activate the package-internal minimal logging functions
+    .tryCatchLog.env$found.lgr <- FALSE
     .tryCatchLog.env$found.futile.logger <- FALSE
   }
 

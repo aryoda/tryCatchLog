@@ -77,6 +77,18 @@ test_that("futile.logger is used if it is installed", {
 
 })
 
+test_that("lgr is used if it is installed", {
+
+  skip_if_not_installed("lgr")
+
+#  with_mock(
+#    `tryCatchLog:::is.package.available` = function(pkg.name) return(TRUE),
+    # expect_silent(tryCatchLog:::.onAttach(".", "tryCatchLog"))
+    expect_message(tryCatchLog:::.onAttach(".", "tryCatchLog"), "Using lgr for logging")
+#  )
+
+})
+
 
 
 test_that("non-existing options are initialized when package is loaded", {
