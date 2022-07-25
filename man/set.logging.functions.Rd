@@ -7,7 +7,8 @@
 set.logging.functions(
   error.log.func = function(msg) tryCatchLog:::log2console("ERROR", msg),
   warn.log.func = function(msg) tryCatchLog:::log2console("WARN", msg),
-  info.log.func = function(msg) tryCatchLog:::log2console("INFO", msg)
+  info.log.func = function(msg) tryCatchLog:::log2console("INFO", msg),
+  logger.package.name = "tryCatchLog"
 )
 }
 \arguments{
@@ -16,6 +17,10 @@ set.logging.functions(
 \item{warn.log.func}{The logging function for warning}
 
 \item{info.log.func}{The error function for messages}
+
+\item{logger.package.name}{The logging package name of the functions (just internally used to print the name).
+For self-made logging functions (not part of a package) should use "custom functions"
+but can use any other name (it has no functionality).}
 }
 \value{
 Nothing
