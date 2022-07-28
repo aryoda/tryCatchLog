@@ -133,13 +133,17 @@ devtools::install_github("aryoda/tryCatchLog", build_vignettes = TRUE)
 
 It optionally (= if installed) uses the package
 [`futile.logger`](https://cran.r-project.org/web/packages/futile.logger/index.html)
-to write logging messages in a nice and structured format to a file or console.
+or [`lgr`](https://github.com/s-fleck/lgr)
+to write logging messages in a nice and structured format.
 
 You can find the source code of `futile.logger` here: https://github.com/zatonovo/futile.logger
 
-Note: To use your own logging functionality you just have to register your logging functions
-via `set.logging.functions()`. If the package `futile.logger` is installed it will be used automatically as default, otherwise a very basic internal logging function `log2console()` is used (that does not support any convenience functionality like setting the verbosity level but minimizes the dependencies from any other logging framework).
+**Note:** To use your own logging functionality you just have to register your logging functions
+via `set.logging.functions()` which uses by default the very basic internal logging function `log2console()`
+(that does not support any convenience functionality like setting the verbosity level but minimizes the dependencies from any other logging framework).
 
+For a list of supported logging packages see [feature request #42 (add convenience functions to activate other logging packages)](https://github.com/aryoda/tryCatchLog/issues/42).
+Since version 1.3.2 there is a new function `set.logging.package()` for that.
 
 
 ## Usage
@@ -763,7 +767,22 @@ git branch -d <branch-name>
 git push origin master
 ```
 
+Pull request: How to create a new branch, apply changes and merge back into master:
 
+```
+# See the "command line instructions" link in every pull request...
+# Eg.:
 
+# Step 1: From your project repository, check out a new branch and test the changes.
+
+git checkout -b <my_new_branch_name>
+git pull git@github.com:<pull request user name>/tryCatchLog.git <remote branch name>
+
+# Step 2: Merge the changes and update on GitHub.
+
+git checkout master
+git merge --no-ff <my_new_branch_name>
+git push origin master
+```
 
 
