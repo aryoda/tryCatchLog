@@ -1,11 +1,12 @@
 Package: tryCatchLog
 Title: Advanced 'tryCatch()' and 'try()' Functions
-Version: 1.3.1
+Version: 1.3.2
 Authors@R: c(
-  person("Juergen", "Altfeld", email = "jaltfeld@altfeld-im.de", role = c("aut", "cre", "cph")),
-  person("Charles", "Epaillard", email = "charles.epaillard@gmail.com", role = "ctb"),
-  person("Brandon", "Bertelsen", email = "brandon@bertelsen.ca", role = "ctb"),
-  person("Valerian", "Wrobel", email = "valerian.wrobel@gmail.com", role = "ctb")
+  person("Juergen",  "Altfeld",   email = "jaltfeld@altfeld-im.de", role = c("aut", "cre", "cph")),
+  person("Charles",  "Epaillard", email = "charles.epaillard@gmail.com", role = "ctb"),
+  person("Brandon",  "Bertelsen", email = "brandon@bertelsen.ca", role = "ctb"),
+  person("Valerian", "Wrobel",    email = "valerian.wrobel@gmail.com", role = "ctb"),
+  person("Duccio",   "Aiazzi",    email = "aiazziduccio@gmail.com", role = "ctb")
   )
 Description: Advanced tryCatch() and try() functions for better error handling
              (logging, stack trace with source code references and support for post-mortem analysis via dump files).
@@ -20,6 +21,7 @@ Encoding: UTF-8
 RoxygenNote: 7.1.1
 Suggests:
     futile.logger,
+    lgr,
     testthat,
     knitr,
     rmarkdown,

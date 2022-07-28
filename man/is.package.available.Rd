@@ -10,7 +10,7 @@ is.package.available(package.name)
 \item{package.name}{Name of the package (as string)}
 }
 \value{
-\code{TRUE} if the packages is installed, otherwise \code{FALSE}
+\code{TRUE} if the packages is installed, otherwise \code{FALSE} (invisible)
 
 http://r-pkgs.had.co.nz/description.html
 }

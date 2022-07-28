@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 # ^NEWS\..*
 ^generate_roxygen_doc_without_a_package.R
+^code_coverage_of_unit_tests.R
 ^.*\.log$
 R/dump\.frames\.dev\.R
 ^\.travis\.yml$

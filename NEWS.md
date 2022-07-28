@@ -5,6 +5,19 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
+## Version 1.3.2 (July 25, 2022)
+
+* Implement feature request #74: Add support for `lgr` logging package.
+  Thanks to github user "duccioa" for the pull request (https://github.com/aryoda/tryCatchLog/pull/73)!
+* Add function `set.logging.package()` as preparation of feature request #42
+  (add convenience functions to activate other major logging packages).
+  Currently only `futile.logger`, `lgr` and `tryCatchLog` are supported as logging package.
+* Add option `tryCatchLog.preferred.logging.package` to configure which logging package
+  shall be used when the `tryCatchLog` package is loaded
+* Add optional argument `logger.package.name` to `set.logging.functions()` to allow
+  internal status printing of the active logging package (or custom functions)
+
+
 ## Version 1.3.1 (Oct 24, 2021) for CRAN
 
 * Fix CRAN check note for `inst/doc/tryCatchLog-intro.html` reported by win-builder on R-devel:

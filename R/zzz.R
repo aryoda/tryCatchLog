@@ -54,30 +54,17 @@
 #     suppressMessages(library(tryCatchLog))
 # Source: https://stackoverflow.com/a/8681811/4468078
 .onAttach <- function(libname, pkgname) {
-  # Disabled Nov. 12, 2017 (silly annoying messages)
-  # packageStartupMessage(paste(pkgname, "is an R package to improve error handling compared to the standard tryCatch function."))
-  # packageStartupMessage("To get an overview over the package enter: help(package = 'tryCatchLog')")
-  # packageStartupMessage(paste("Library path (libname):", libname))
 
-  # .tryCatchLog.env$newline <- determine.platform.NewLine()
-  #
-  #
-  #
-  # # Decide which logging functions to use
-  # if (is.package.available("futile.logger")) {
+  # # Indicate which logging package is used
+  # if (.tryCatchLog.env$found.futile.logger == TRUE) {             # is.package.available("futile.logger")) {
   #   packageStartupMessage("Using futile.logger for logging...")
-  #   set.logging.functions(futile.logger::flog.error, futile.logger::flog.warn, futile.logger::flog.info)
+  # } else if (.tryCatchLog.env$found.lgr == TRUE) {             # is.package.available("futile.logger")) {
+  #   packageStartupMessage("Using lgr for logging...")
   # } else {
   #   packageStartupMessage("futile.logger not found. Using tryCatchLog-internal functions for logging...")
-  #   set.logging.functions()    # Default: Activate the package-internal minimal logging functions
   # }
 
-  # Indicate which logging functions to use
-  if (.tryCatchLog.env$found.futile.logger == TRUE) {             # is.package.available("futile.logger")) {
-    packageStartupMessage("Using futile.logger for logging...")
-  } else {
-    packageStartupMessage("futile.logger not found. Using tryCatchLog-internal functions for logging...")
-  }
+  packageStartupMessage("Using ", .tryCatchLog.env$active.logging.package, " for logging...")
 
 }
 
@@ -120,16 +107,9 @@
 
 
 
-  # Decide which logging functions to use
-  if (is.package.available("futile.logger")) {
-    # packageStartupMessage("Using futile.logger for logging...")  # be silent in .onLoad (best practice)
-    set.logging.functions(futile.logger::flog.error, futile.logger::flog.warn, futile.logger::flog.info)
-    .tryCatchLog.env$found.futile.logger <- TRUE
-  } else {
-    # packageStartupMessage("futile.logger not found. Using tryCatchLog-internal functions for logging...")  # be silent in .onLoad (best practice)
-    set.logging.functions()    # Default: Activate the package-internal minimal logging functions
-    .tryCatchLog.env$found.futile.logger <- FALSE
-  }
+  # Decide which logging package to use (and enables it)
+  set.logging.package()
+
 
 
   invisible()

@@ -31,15 +31,20 @@
 #' The package-internal default logging functions are only a minimal implementation
 #' and are not meant to replace a decent logging framework.
 #'
-#' @param error.log.func  The logging function for errors
-#' @param warn.log.func   The logging function for warning
-#' @param info.log.func   The error function for messages
+#' To activate another logging package that is supported by \code{tryCatchLog} use \code{\link{set.logging.package}}.
+#'
+#' @param error.log.func      The logging function for errors
+#' @param warn.log.func       The logging function for warning
+#' @param info.log.func       The error function for messages
+#' @param logger.package.name The logging package name of the functions (just internally used to print the name).
+#'                            For self-made logging functions (not part of a package) should use "custom functions"
+#'                            but can use any other name (it has no functionality).
 #'
 #' @return     Nothing
+#' @export
 #'
 #' @seealso \code{\link{tryCatchLog}}
-#'
-#' @export
+#'          \code{\link{set.logging.package}}
 #'
 #' @examples
 #' # To disable any logging you could use "empty" functions
@@ -50,6 +55,7 @@
 set.logging.functions <- function(error.log.func   = function(msg) tryCatchLog:::log2console("ERROR", msg)
                                   , warn.log.func  = function(msg) tryCatchLog:::log2console("WARN",  msg)
                                   , info.log.func  = function(msg) tryCatchLog:::log2console("INFO",  msg)
+                                  , logger.package.name = "tryCatchLog"
 ) {
 
   stopifnot(is.function(error.log.func))
@@ -62,6 +68,10 @@ set.logging.functions <- function(error.log.func   = function(msg) tryCatchLog::
   .tryCatchLog.env$error.log.func <- error.log.func
   .tryCatchLog.env$warn.log.func  <- warn.log.func
   .tryCatchLog.env$info.log.func  <- info.log.func
+
+
+
+  .tryCatchLog.env$active.logging.package <- logger.package.name
 
   invisible()
 }

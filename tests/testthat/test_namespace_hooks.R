@@ -40,8 +40,8 @@ test_that("internal package state is initialized", {
                      tryCatchLog:::.onLoad(".", "tryCatchLog")
                      tryCatchLog:::.onAttach(".", "tryCatchLog")
                    },
-                   "futile.logger not found. Using tryCatchLog-internal functions for logging",
-                   info = "with no installed logging package the package-internal logging functions must be used")
+                   "Using tryCatchLog for logging",
+                   info = "with no installed logging package the package-internal logging functions of tryCatchLog must be used")
   )
 
 
@@ -69,14 +69,41 @@ test_that("futile.logger is used if it is installed", {
 
   skip_if_not_installed("futile.logger")
 
-#  with_mock(
-#    `tryCatchLog:::is.package.available` = function(pkg.name) return(TRUE),
-    # expect_silent(tryCatchLog:::.onAttach(".", "tryCatchLog"))
+  with_mock(
+    `tryCatchLog:::is.package.available` = function(pkg.name) return(pkg.name == "futile.logger"),
+    options(tryCatchLog.preferred.logging.package = NULL),  # to iterate over all supported packages and check which one is available
+    tryCatchLog:::.onLoad(".", "tryCatchLog"),
     expect_message(tryCatchLog:::.onAttach(".", "tryCatchLog"), "Using futile.logger for logging")
-#  )
+  )
 
 })
 
+test_that("lgr is used if it is installed", {
+
+  skip_if_not_installed("lgr")
+
+  with_mock(
+    `tryCatchLog:::is.package.available` = function(pkg.name) return(pkg.name == "lgr"),
+    options(tryCatchLog.preferred.logging.package = NULL),  # to iterate over all supported packages and check which one is available
+    tryCatchLog:::.onLoad(".", "tryCatchLog"),
+    expect_message(tryCatchLog:::.onAttach(".", "tryCatchLog"), "Using lgr for logging")
+    # . env = "tryCatchLog"
+  )
+
+})
+
+
+test_that("internal logging functions are used", {
+
+  with_mock(
+    `tryCatchLog:::is.package.available` = function(pkg.name) return(FALSE),
+    options(tryCatchLog.preferred.logging.package = NULL),  # to iterate over all supported packages and check which one is available
+    tryCatchLog:::.onLoad(".", "tryCatchLog"),
+    expect_message(tryCatchLog:::.onAttach(".", "tryCatchLog"), "Using tryCatchLog for logging")
+    # . env = "tryCatchLog"
+  )
+
+})
 
 
 test_that("non-existing options are initialized when package is loaded", {
