@@ -31,6 +31,8 @@
 #' The package-internal default logging functions are only a minimal implementation
 #' and are not meant to replace a decent logging framework.
 #'
+#' To activate another logging package that is supported by \code{tryCatchLog} use \code{\link{set.logging.package}}.
+#'
 #' @param error.log.func      The logging function for errors
 #' @param warn.log.func       The logging function for warning
 #' @param info.log.func       The error function for messages
@@ -39,10 +41,10 @@
 #'                            but can use any other name (it has no functionality).
 #'
 #' @return     Nothing
+#' @export
 #'
 #' @seealso \code{\link{tryCatchLog}}
-#'
-#' @export
+#'          \code{\link{set.logging.package}}
 #'
 #' @examples
 #' # To disable any logging you could use "empty" functions

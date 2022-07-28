@@ -38,6 +38,8 @@ which allows to set the logging threshold (e. g. futile.logger's \code{\link[fut
 
 The package-internal default logging functions are only a minimal implementation
 and are not meant to replace a decent logging framework.
+
+To activate another logging package that is supported by \code{tryCatchLog} use \code{\link{set.logging.package}}.
 }
 \examples{
 # To disable any logging you could use "empty" functions
@@ -48,4 +50,5 @@ set.logging.functions( error.log.func = function(msg) invisible(),
 }
 \seealso{
 \code{\link{tryCatchLog}}
+         \code{\link{set.logging.package}}
 }

@@ -1,3 +1,22 @@
+# ***************************************************************************
+# Copyright (C) 2016 Juergen Altfeld (R@altfeld-im.de)
+# ---------------------------------------------------------------------------
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# ***************************************************************************
+
+
+
 #' Enables one of the supported logging package used by tryCatchLog to write log output
 #'
 #' If this optional argument is omitted, either the package name
@@ -20,6 +39,8 @@
 #'
 #' @return The name of the enabled logging framework
 #' @export
+#'
+#' @seealso \code{\link{set.logging.functions}}
 #'
 #' @examples
 #' tryCatchLog:::set.logging.package("futile.logger")

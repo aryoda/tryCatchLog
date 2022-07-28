@@ -46,3 +46,6 @@ tryCatchLog:::set.logging.package()
 options(tryCatchLog.preferred.logging.package = "futile.logger")
 tryCatchLog:::set.logging.package()
 }
+\seealso{
+\code{\link{set.logging.functions}}
+}
