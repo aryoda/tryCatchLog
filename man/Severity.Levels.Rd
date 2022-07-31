@@ -32,7 +32,7 @@ The levels have an implicit order (by severity) from the most to the least sever
 }
 }
 \note{
-In contrast to log4j log levels the log lovels of this package do just use names
+In contrast to log4j log levels the log levels of this package do just use names
       but no internal integer log value to order the log levels by severity
       since filtering the log output by severity is the responsibility of the used logging framework
       (not the \code{tryCatchLog} package).

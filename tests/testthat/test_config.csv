@@ -1,6 +1,6 @@
-"cond.class";"silent";"do.not.log";"log.as.severity";"include.full.call.stack";"include.compact.call.stack"
-"error";FALSE;FALSE;"ERROR";TRUE;TRUE
-"warning";FALSE;FALSE;"WARN";TRUE;TRUE
-"message";FALSE;FALSE;"INFO";FALSE;TRUE
-"condition";TRUE;TRUE;"DEBUG";FALSE;TRUE
-"interrupt";FALSE;FALSE;"FATAL";TRUE;TRUE
+"cond.class";"silent";"write.to.log";"log.as.severity";"include.full.call.stack";"include.compact.call.stack"
+"error";FALSE;TRUE;"ERROR";TRUE;TRUE
+"warning";FALSE;TRUE;"WARN";TRUE;TRUE
+"message";FALSE;TRUE;"INFO";FALSE;TRUE
+"condition";TRUE;FALSE;"DEBUG";FALSE;TRUE
+"interrupt";FALSE;TRUE;"FATAL";TRUE;TRUE

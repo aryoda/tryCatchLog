@@ -12,3 +12,8 @@ options("tryCatchLog.silent.warnings"           = FALSE)
 options("tryCatchLog.silent.messages"           = FALSE)
 
 options("tryCatchLog.preferred.logging.package" = "tryCatchLog")
+
+options("tryCatchLog.global.config"             = NULL)
+
+# Copy&Paste template for own tests:
+# options("tryCatchLog.global.config" = create.config())

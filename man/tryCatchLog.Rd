@@ -2,7 +2,7 @@
 % Please edit documentation in R/tryCatchLog.R
 \name{tryCatchLog}
 \alias{tryCatchLog}
-\title{Try an expression with condition logging and error handling}
+\title{Try to evaluate an expression with condition logging and error handling}
 \usage{
 tryCatchLog(
   expr,
@@ -16,7 +16,8 @@ tryCatchLog(
   include.full.call.stack = getOption("tryCatchLog.include.full.call.stack", TRUE),
   include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack",
     TRUE),
-  logged.conditions = getOption("tryCatchLog.logged.conditions", NULL)
+  logged.conditions = getOption("tryCatchLog.logged.conditions", NULL),
+  config = getOption("tryCatchLog.global.config", NULL)
 )
 }
 \arguments{
@@ -67,16 +68,18 @@ call stacks the message text will be output without call stacks.
 The default value can be changed globally by setting the option \code{tryCatchLog.include.compact.call.stack}.
 The compact call stack can always be found via \code{\link{last.tryCatchLog.result}}.}
 
-\item{logged.conditions}{\code{NULL}: Conditions are not logged.\cr
-\code{vector of strings}: Only conditions whose class name is contained in this vector are logged.\cr
-\code{NA}: All conditions are logged.}
+\item{logged.conditions}{Controls the log output behavior of non-standard conditions (= conditions that inherit from
+the \code{condition} class, but not from \code{error}, \code{warning}, \code{message} or \code{interrupt} class):
+\code{NULL}: Non-standard conditions are not logged.\cr
+\code{vector of strings}: Only non-standard conditions whose class name is contained in this vector are logged.\cr
+\code{NA}: All non-standard conditions are logged.}
 }
 \value{
 the value of the expression passed in as parameter \code{expr}
 }
 \description{
 This function evaluates an expression passed in the \code{expr} parameter,
-logs all conditions and executes the condition handlers passed in \code{...} (if any).
+logs all specified conditions and executes the condition handlers passed in \code{...} (if any).
 }
 \details{
 The \code{finally} expression is then always evaluated at the end.

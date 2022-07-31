@@ -1,3 +1,22 @@
+# ***************************************************************************
+# Copyright (C) 2016 Juergen Altfeld (R@altfeld-im.de)
+# ---------------------------------------------------------------------------
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# ***************************************************************************
+
+
+
 #' Log (severity) levels
 #'
 #' These logging levels are supported to characterize the severity of an event in the log output.
@@ -19,7 +38,7 @@
 #'   \item \code{}
 #' }
 #'
-#' @note In contrast to log4j log levels the log lovels of this package do just use names
+#' @note In contrast to log4j log levels the log levels of this package do just use names
 #'       but no internal integer log value to order the log levels by severity
 #'       since filtering the log output by severity is the responsibility of the used logging framework
 #'       (not the \code{tryCatchLog} package).

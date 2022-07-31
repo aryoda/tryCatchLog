@@ -17,10 +17,10 @@
 
 
 
-#' Try an expression with condition logging and error handling
+#' Try to evaluate an expression with condition logging and error handling
 #'
 #' This function evaluates an expression passed in the \code{expr} parameter,
-#' logs all conditions and executes the condition handlers passed in \code{...} (if any).
+#' logs all specified conditions and executes the condition handlers passed in \code{...} (if any).
 #'
 #' The \code{finally} expression is then always evaluated at the end.
 #'
@@ -69,9 +69,11 @@
 #'                     call stacks the message text will be output without call stacks.
 #'                     The default value can be changed globally by setting the option \code{tryCatchLog.include.compact.call.stack}.
 #'                     The compact call stack can always be found via \code{\link{last.tryCatchLog.result}}.
-#' @param logged.conditions \code{NULL}: Conditions are not logged.\cr
-#'                          \code{vector of strings}: Only conditions whose class name is contained in this vector are logged.\cr
-#'                          \code{NA}: All conditions are logged.
+#' @param logged.conditions Controls the log output behavior of non-standard conditions (= conditions that inherit from
+#'                          the \code{condition} class, but not from \code{error}, \code{warning}, \code{message} or \code{interrupt} class):
+#'                          \code{NULL}: Non-standard conditions are not logged.\cr
+#'                          \code{vector of strings}: Only non-standard conditions whose class name is contained in this vector are logged.\cr
+#'                          \code{NA}: All non-standard conditions are logged.
 #' @return             the value of the expression passed in as parameter \code{expr}
 #'
 #' @details This function shall overcome some drawbacks of the standard \code{\link{tryCatch}} function.\cr
@@ -192,7 +194,8 @@ tryCatchLog <- function(expr,
                         silent.messages            = getOption("tryCatchLog.silent.messages", FALSE),
                         include.full.call.stack    = getOption("tryCatchLog.include.full.call.stack", TRUE),
                         include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack", TRUE),
-                        logged.conditions          = getOption("tryCatchLog.logged.conditions", NULL)
+                        logged.conditions          = getOption("tryCatchLog.logged.conditions", NULL),
+                        config                     = getOption("tryCatchLog.global.config", NULL)
 ) {
 
   reset.last.tryCatchLog.result()   # TODO If an internal error is thrown in the code above the last result will be kept. Fix this?
@@ -216,6 +219,66 @@ tryCatchLog <- function(expr,
   # closure ---------------------------------------------------------------------------------------------------------
   cond.handler <- function(c) {
 
+    write.to.log      <- TRUE
+    log.as.severity   <- NA     # If not NA: Use this severity level in the log output (can only be set by a config!)
+
+    is.valid.config   <- is.config(config)  # minimal validation (so the variable is a misnomer ;-)
+
+    # 29.07.2022 The new configuration feature (FR https://github.com/aryoda/tryCatchLog/issues/71)
+    #            is injected here and overwrites (takes precedence over) the corresponding arguments (passed directly
+    #            or via their default value from an option).
+    #            Backward compatibility:
+    #            - If you don not use configurations the semantics works like before
+    #            - If you do use configurations it takes precedence over all actual arguments
+    #              since the configuration allows finer-coarsed control.
+    #              The actual arguments are only applied if there is no matching condition class row in the config!
+    #              -> Using a configuration for existing code with precedence of the actual arguments
+    #                cannot work since the are not really optional (due to the default values)
+    #                and would therefore ALWAYS cause win (the configuration would always be ignored!).
+    #            - If a config is passed user-defined conditions are always logged
+    #              (the logged.conditions arg is ignored)
+    # Design decisions:
+    #            1. Extend the existing API with a config option instead of adding a new one to allow a soft migration
+    #               of existing client code to configuration-based code.
+    #               This supports a slow migration by deprecating the arguments of the "old" API one day (if required at all!).
+    #            2. Invalid configurations are ignored and logged with a warning and execute as if no config was passed (safe fall-back)
+    #            3. The configuration row for the most specific condition class wins (will be applied)
+    if (is.valid.config$status == TRUE) {
+      # TODO: When and where to do intensive validation of the config? It is performance critical and shall be done only once
+      #       even in case of multiple handled conditions in one function call...
+      config.row <- NULL
+
+      for (i in seq_along(config$cond.class)) {
+        # TODO What happens in case of a config with zero rows?
+        if (inherits(c, config$cond.class[i])) {
+          # Note: In case of duplicated cond.class names in the config the first one wins
+          # even though the config validation should uncover this problem (defensive programming ;-)
+          config.row <- config[i, ]
+          break
+        }
+      }
+
+      # ===== THIS IS THE CORE LOGIC HOW CONFIGURATIONS WORK: ===============================
+      # Apply found config (if any) by overwriting the function arguments
+      # with the configured settings (and remember: only in case the catched condition is in the configuration!)
+      if (!is.null(config.row)) {
+        silent.warnings            <- config.row$silent
+        silent.messages            <- config.row$silent
+        include.full.call.stack    <- config.row$include.full.call.stack
+        include.compact.call.stack <- config.row$include.compact.call.stack
+        write.to.log               <- config.row$write.to.log
+        log.as.severity            <- config.row$log.as.severity
+        # HACK (use side effect): A catched condition found in the config must process it as configured
+        logged.conditions          <- NA
+      }
+
+      # TODO What happens if no matching config row was found? Which settings do apply then?
+      #      Currently it looks like the standard argument values are used then! Is this OK?
+
+    } # end of: if (is.data.frame(config))
+
+
+
     # Suppress logging of a (non-standard/custom) condition?
     # NOTE: The inheritance is checked similar to the "severity" below but intentional to separate orthogonal logic
     if (inherits(c, "condition") && !inherits(c, c("error", "warning", "message", "interrupt"))) {
@@ -224,103 +287,112 @@ tryCatchLog <- function(expr,
       # if logged.conditions is NA, log all conditions
       if (is.null(logged.conditions)
           || (is.character(logged.conditions) && !inherits(c, logged.conditions)))
-        return()  # HACK (return not at end of function) to skip the following logging code
+        # return()         # HACK (return not at end of function) to skip the following logging code
+        write.to.log <- FALSE
     }
 
 
 
-    log.message    <- c$message            # TODO: Should we use conditionMessage instead?
 
-    if (is.null(log.message)) {
-      if (inherits(c, "interrupt")) log.message <- "User-requested interrupt"
-      else                          log.message <- ""
-    }
+    if (write.to.log == TRUE) {
 
-    timestamp      <- Sys.time()
-    call.stack     <- sys.calls()          # "sys.calls" within "withCallingHandlers" is like a traceback!
-    dump.file.name <- ""
+      log.message    <- c$message            # TODO: Should we use conditionMessage instead?
 
-
-
-    # stack.trace <<- call.stack     # helper code for updating the expected result of the "test_build_log_entry" unit test
-    severity <-       if (inherits(c, "error"))     "ERROR"
-                 else if (inherits(c, "warning"))   "WARN"
-                 else if (inherits(c, "message"))   "INFO"
-                 else if (inherits(c, "interrupt")) "INFO"
-                 else if (inherits(c, "condition")) "INFO"  # TODO I would introduce a new logging level "DEBUG" or "VERBOSE" for this!
-                 #   # if logged.conditions is NULL (default), do not log conditions
-                 #   if (is.null(logged.conditions))     return()
-                 #   # if logged.conditions is NA, log all conditions
-                 #   else if ((length(logged.conditions) == 1) && is.na(logged.conditions))   "INFO"
-                 #   # if logged.conditions is a vector of strings, log only conditions which have their class in the vector
-                 #   else if (inherits(c, logged.conditions))   "INFO"
-                 #   else if (!inherits(c, logged.conditions))   return()
-                 # }
-                 else stop(sprintf("Unsupported condition class %s!", class(c)))
-
-
-
-    log.entry <- build.log.entry(timestamp, severity, log.message, execution.context.msg, call.stack, dump.file.name, omit.call.stack.items = 1)
-
-
-
-    # Design decision: To identify duplicated log entries (due to stacked/nested tryCatchLog expressions)
-    #                  the message and full stack trace are compared.
-    #                  Another solution would have been to "tag" each already logged condition eg.
-    #                  by adding an attribute but this would mean to change the condition object!
-    # if (!is.already.logged(log.message, call.stack)) {
-    if (!is.duplicated.log.entry(log.entry)) {
-
-      # Save dump to allow post mortem debugging?
-      if (write.error.dump.file == TRUE & severity == "ERROR") {
-
-        # See"?dump.frames" on how to load and debug the dump in a later interactive R session!
-        # See https://stackoverflow.com/questions/40421552/r-how-make-dump-frames-include-all-variables-for-later-post-mortem-debugging/40431711#40431711
-        # why you should avoid dump.frames(to.file = TRUE)...
-        # https://bugs.r-project.org/bugzilla/show_bug.cgi?id=17116
-        # An enhanced version of "dump.frames" was released in spring 2017 but does still not fulfill the requirements of tryCatchLog:
-        # dump.frames(dumpto = dump.file.name, to.file = TRUE, include.GlobalEnv = TRUE)  # test it yourself!
-        # See ?strptime for the available formatting codes...
-        #
-        # Creates a (hopefully) unique dump file name even in case of multiple parallel processes
-        # or multiple sequential errors in the same R process.
-        # Fixes issue #39 by appending fractional seconds (milliseconds) and the process id (PID)
-        # https://github.com/aryoda/tryCatchLog/issues/39
-        # Example dump file name: dump_2019-03-13_at_15-39-33.086_PID_15270.rda
-        dump.file.name  <- paste0(format(timestamp, format = "dump_%Y-%m-%d_at_%H-%M-%OS3"), "_PID_", Sys.getpid(), ".rda")  # %OS3 (= seconds incl. milliseconds)
-        dir.create(path = write.error.dump.folder, recursive = T, showWarnings = F)
-        utils::dump.frames()
-        save.image(file = file.path(write.error.dump.folder, dump.file.name))  # an existing file would be overwritten silently :-()
-        log.entry$dump.file.name <- dump.file.name
+      if (is.null(log.message)) {
+        if (inherits(c, "interrupt")) log.message <- "User-requested interrupt"
+        else                          log.message <- ""
       }
 
+      timestamp      <- Sys.time()
+      call.stack     <- sys.calls()          # "sys.calls" within "withCallingHandlers" is like a traceback!
+      dump.file.name <- ""
 
 
-      log.msg <-   build.log.output(log.entry,
-                                    include.severity           = FALSE,  # fixes #63 (duplicated severity level in log output)
-                                    include.full.call.stack    = include.full.call.stack,
-                                    include.compact.call.stack = include.compact.call.stack)
 
-      switch(severity,
-             ERROR = .tryCatchLog.env$error.log.func(log.msg),  # e. g. futile.logger::flog.error(log.msg),
-             WARN  = .tryCatchLog.env$warn.log.func(log.msg),   # e. g. futile.logger::flog.warn(log.msg),
-             INFO  = .tryCatchLog.env$info.log.func(log.msg)    # e. g. futile.logger::flog.info(log.msg)
-      )
+      # stack.trace <<- call.stack     # helper code for updating the expected result of the "test_build_log_entry" unit test
+      severity <-       if (!is.na(log.as.severity))  log.as.severity         # use severity injected from the config
+                   else if (inherits(c, "error"))     "ERROR"
+                   else if (inherits(c, "warning"))   "WARN"
+                   else if (inherits(c, "message"))   "INFO"
+                   else if (inherits(c, "interrupt")) "INFO"
+                   else if (inherits(c, "condition")) "INFO"  # TODO I would introduce a new logging level "DEBUG" or "VERBOSE" for this!
+                   #   # if logged.conditions is NULL (default), do not log conditions
+                   #   if (is.null(logged.conditions))     return()
+                   #   # if logged.conditions is NA, log all conditions
+                   #   else if ((length(logged.conditions) == 1) && is.na(logged.conditions))   "INFO"
+                   #   # if logged.conditions is a vector of strings, log only conditions which have their class in the vector
+                   #   else if (inherits(c, logged.conditions))   "INFO"
+                   #   else if (!inherits(c, logged.conditions))   return()
+                   # }
+                   else stop(sprintf("Unsupported condition class %s!", class(c)))  # TODO Shall tryCatchLog() really fail "just because of this? Fall back to INFO instead?
 
-      append.to.last.tryCatchLog.result(log.entry)
 
-    }  # end of "is duplicated log entry"
+
+      log.entry <- build.log.entry(timestamp, severity, log.message, execution.context.msg, call.stack, dump.file.name, omit.call.stack.items = 1)
+
+
+
+      # Design decision: To identify duplicated log entries (due to stacked/nested tryCatchLog expressions)
+      #                  the message and full stack trace are compared.
+      #                  Another solution would have been to "tag" each already logged condition eg.
+      #                  by adding an attribute but this would mean to change the condition object!
+      # if (!is.already.logged(log.message, call.stack)) {
+      if (!is.duplicated.log.entry(log.entry)) {
+
+        # Save dump to allow post mortem debugging?
+        if (write.error.dump.file == TRUE & severity == "ERROR") {
+
+          # See"?dump.frames" on how to load and debug the dump in a later interactive R session!
+          # See https://stackoverflow.com/questions/40421552/r-how-make-dump-frames-include-all-variables-for-later-post-mortem-debugging/40431711#40431711
+          # why you should avoid dump.frames(to.file = TRUE)...
+          # https://bugs.r-project.org/bugzilla/show_bug.cgi?id=17116
+          # An enhanced version of "dump.frames" was released in spring 2017 but does still not fulfill the requirements of tryCatchLog:
+          # dump.frames(dumpto = dump.file.name, to.file = TRUE, include.GlobalEnv = TRUE)  # test it yourself!
+          # See ?strptime for the available formatting codes...
+          #
+          # Creates a (hopefully) unique dump file name even in case of multiple parallel processes
+          # or multiple sequential errors in the same R process.
+          # Fixes issue #39 by appending fractional seconds (milliseconds) and the process id (PID)
+          # https://github.com/aryoda/tryCatchLog/issues/39
+          # Example dump file name: dump_2019-03-13_at_15-39-33.086_PID_15270.rda
+          dump.file.name  <- paste0(format(timestamp, format = "dump_%Y-%m-%d_at_%H-%M-%OS3"), "_PID_", Sys.getpid(), ".rda")  # %OS3 (= seconds incl. milliseconds)
+          dir.create(path = write.error.dump.folder, recursive = T, showWarnings = F)
+          utils::dump.frames()
+          save.image(file = file.path(write.error.dump.folder, dump.file.name))  # an existing file would be overwritten silently :-()
+          log.entry$dump.file.name <- dump.file.name
+        }
+
+
+
+        log.msg <-   build.log.output(log.entry,
+                                      include.severity           = FALSE,  # fixes #63 (duplicated severity level in log output)
+                                      include.full.call.stack    = include.full.call.stack,
+                                      include.compact.call.stack = include.compact.call.stack)
+
+        switch(severity,
+               ERROR = .tryCatchLog.env$error.log.func(log.msg),  # e. g. futile.logger::flog.error(log.msg),
+               WARN  = .tryCatchLog.env$warn.log.func(log.msg),   # e. g. futile.logger::flog.warn(log.msg),
+               INFO  = .tryCatchLog.env$info.log.func(log.msg)    # e. g. futile.logger::flog.info(log.msg)
+               # In the case of no match, if there is an unnamed element of ... its value is returned.
+               # NULL, invisibly (whenever no element is selected).
+               # TODO: Dangerous: If "severity is not in this list" there is no "else" part as safe fall-back!):
+               #       Maybe this was done to achieve 100 % code coverage in the unit tests? ;-)
+        )
+
+        append.to.last.tryCatchLog.result(log.entry)
+
+      }  # end of "is duplicated log entry"
+
+    } # end of: if (write.to.log = TRUE)
 
 
 
     # in any case (duplicated condition or not)...
 
-
-
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # Having handled a condition (calling a handler function) in "withCallingHandlers" does NOT stop it
     # from propagating to other handlers up the call stack ("bubble up").
-    # This requires to call a "restart" (e. g. a predefined "muffle" [suppress] restart function).
+    # This requires to call a "muffle restart" (e. g. a predefined "muffle" [suppress] restart function).
     #
     # To "muffle" a condition within a handler established via "withCallingHandlers" means to
     # explicity saying that the handler has handled the condition.
@@ -330,24 +402,18 @@ tryCatchLog <- function(expr,
     #       Verify this (this would mean user-defined conditions would always propagate!)!
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
-
     # Suppresses the warning (logs it only)?
-    if (silent.warnings & severity == "WARN") {
-      # flog.info("invoked restart")
+    if (silent.warnings & (inherits(c, "warning"))) {
       invokeRestart("muffleWarning")           # the warning will NOT bubble up ("propagate") now!
-    } else {
-      # The warning bubbles up and the execution resumes only if no warning handler is established
-      # higher in the call stack via try or tryCatch
     }
 
 
 
     if (silent.messages & inherits(c, "message")) {   # interrupt and user-defined conditions may not be suppressed!
       invokeRestart("muffleMessage")                  # the message will not bubble up ("propagate") now  but will only be logged
-    } else {
-      # Just to make it clear here: The message bubbles up now
     }
+
+
 
   } # end of closure function "cond.handler"
 

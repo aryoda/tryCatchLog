@@ -14,7 +14,8 @@ tryLog(
   include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack",
     TRUE),
   logged.conditions = getOption("tryCatchLog.logged.conditions", NULL),
-  execution.context.msg = ""
+  execution.context.msg = "",
+  config = getOption("tryCatchLog.global.config", NULL)
 )
 }
 \arguments{
@@ -47,9 +48,11 @@ call stacks the message text will be output without call stacks.
 The default value can be changed globally by setting the option \code{tryCatchLog.include.compact.call.stack}.
 The compact call stack can always be found via \code{\link{last.tryCatchLog.result}}.}
 
-\item{logged.conditions}{\code{NULL}: Conditions are not logged.\cr
-\code{vector of strings}: Only conditions whose class name is contained in this vector are logged.\cr
-\code{NA}: All conditions are logged.}
+\item{logged.conditions}{Controls the log output behavior of non-standard conditions (= conditions that inherit from
+the \code{condition} class, but not from \code{error}, \code{warning}, \code{message} or \code{interrupt} class):
+\code{NULL}: Non-standard conditions are not logged.\cr
+\code{vector of strings}: Only non-standard conditions whose class name is contained in this vector are logged.\cr
+\code{NA}: All non-standard conditions are logged.}
 
 \item{execution.context.msg}{a text identifier (eg. the PID or a variable value) that will be added to msg.text
 for caught conditions. This makes it easier to identify the runtime state that caused

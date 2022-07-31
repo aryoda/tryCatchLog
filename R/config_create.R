@@ -1,6 +1,7 @@
 # Private constants ---------------------------------------------------------------------
 
-# Marker class name constant to recognize instances of config.create() as valid config
+# Marker class name constant to recognize instances of config.create() as valid config.
+# The class name is an internal "global" constant.
 .CONFIG.CLASS.NAME <- "tryCatchLog.config"
 
 
@@ -22,9 +23,25 @@
 #' The default values create a simple configuration that can be used as example
 #' or to be extended (eg. by saving it as CSV file that can be edited then).
 #'
+#' TODO Clarify who wins in case of conflicts: The function call argument or the configuration?
+#' TODO Explain what happens if a condition inherits from multiple configuration row classes (who wins?)!
+#'      -> if a condition inherits from multiple classes the class attribute looks like this:
+#'           > x <- simpleWarning("a")
+#'           > class(x)
+#'           [1] "simpleWarning" "warning"       "condition"
+#'         so processing the class vector from left to right to find the first matching row for this class
+#'         is the correct way to apply the most specific configuration.
+#'
 #' @param cond.class                 The class name of the condition as character (eg. "error")
-#' @param silent                     \code{\link{logical}}: \code{TRUE} = do not propagated to other registered handlers (= "muffle" in R speak). May stil be logged
-#' @param do.not.log                 \code{\link{logical}}: \code{TRUE} = the caught condition is not logged (not passed to the logger)
+#' @param silent                     \code{\link{logical}}: \code{TRUE} = do not propagate the condition to other registered handlers (= "muffle" in R speak).
+#'                                                          Global settings like \code{\link{getOption}("warn")} are still affecting the further propagation
+#'                                                          (see \code{\link{warning}}).
+#'                                                          It will be logged by calling the according logging function if \code{write.to.log} is \code{TRUE}.
+#'                                                          The logging framework may still decide to suppress the log output eg. by severity level filtering.
+#'                                   Note that some condition classes cannot be muffled (no support for that in base R), eg. \code{error}
+#'                                   and this setting will be ignored then.
+#' @param write.to.log               \code{\link{logical}}: \code{TRUE} = Call the logging functon for the caught condition)
+#' TODO: Document behaviour if tryCatchLog() is called with logged.conditions = c("myCondition") etc... Who wins?
 #' @param log.as.severity            Severity level for the \code{cond.class} (use the constants from \code{\link{Severity.Levels}} or the equivalent character strings)
 #' @param include.full.call.stack    Flag of type \code{\link{logical}}:
 #'                                   Shall the full call stack be included in the log output? Since the full
@@ -50,8 +67,8 @@
 #' print(tryCatchLog::Severity.Levels$INFO)
 #'
 config.create <- function(  cond.class                  = c("error", "warning", "message", "condition", "interrupt")
-                          , silent                      = c(FALSE, FALSE, FALSE, TRUE, FALSE)
-                          , do.not.log                  = c(FALSE, FALSE, FALSE, TRUE, FALSE)
+                          , silent                      = c(FALSE, FALSE, FALSE, TRUE,  FALSE)
+                          , write.to.log                = c(TRUE,  TRUE,  TRUE,  FALSE, TRUE)
                           , log.as.severity             = c(tryCatchLog::Severity.Levels$ERROR,
                                                             tryCatchLog::Severity.Levels$WARN,
                                                             tryCatchLog::Severity.Levels$INFO,
@@ -64,22 +81,31 @@ config.create <- function(  cond.class                  = c("error", "warning", 
 
   # TODO Check preconditions (length and data type, unique cond.class names...)
 
+
+
   config <- data.frame(cond.class                 = cond.class,
                        silent                     = silent, # = muffled = logged only (but not propagated to other registered handlers)!
                        # see rlang::cnd_muffle()
-                       do.not.log                 = do.not.log,
+                       write.to.log               = write.to.log,
                        log.as.severity            = log.as.severity, # these values may be logging-framework-specific (= not good since changing the logging framework requires config changes). Better approach, eg. mapping?
                        include.full.call.stack    = include.full.call.stack,
                        include.compact.call.stack = include.compact.call.stack
-                       # , rethrow.as = NA              # reserved for future extension: Rethrow the condition as another condition class
+                       # -----------------------------------------------------------------------------------------------------
+                       # , rethrow.as = NA              # TODO "reserved" for future extension: Rethrow the condition as another condition class
+                       # , number.of.retires = 0        # TODO "reserved" for future extensions: Number of retries to execute an expression before the condition is really "processed"
+                       #
+                       # data.frame() arguments go here ----------------------------------------------------------------------
                        , row.names = NULL
                        , check.rows = TRUE
                        , stringsAsFactors = FALSE
   )
 
-  # add a class marker to recognize it easier in other functions as valid config
-  # TODO The class name should be an internal "global" constant
+  # add a class marker to recognize it easier as valid config in other functions
   class(config) <- append(.CONFIG.CLASS.NAME, class(config))
+
+
+
+  stopifnot(config.validate(config)$status == TRUE)  # if this happens you have found an internal error ;-)
 
   return (config)
 

@@ -44,7 +44,7 @@ test_that("Correct return value if a custom condition is thrown and logged", {
 
 
 
-test_that("Missing conditon message works", {
+test_that("Missing condition message works", {
 
   caught <- NA
   tryCatchLog(signalCondition(tryCatchLog:::condition("class1", message = NULL)), condition = function(c) caught <<- c, logged.conditions = NA)

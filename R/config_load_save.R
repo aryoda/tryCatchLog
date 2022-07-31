@@ -17,8 +17,9 @@
 #' config.save(config.create())
 config.save <- function(config, file.name = "tryCatchLog_config.csv") {
 
-  # TODO check preconditions, eg.:
-  stopifnot(inherits(config, .CONFIG.CLASS.NAME))
+  stopifnot(config.validate(config)$status == TRUE)
+
+
 
   utils::write.csv2(config, file.name, row.names = FALSE)
 
@@ -45,10 +46,14 @@ config.load <- function(file.name = "tryCatchLog_config.csv") {
   config <- utils::read.csv2(file.name, stringsAsFactors = FALSE)
 
   # TODO validate config (maybe reuse precond checks from config.create)
+  #      I would also add a "do.fast.validation.only" argument for a quick partial check from within
+  #      tryCatchLog() where runtime is critical...
 
   # add a class marker to recognize it easier in other functions as valid config
   # TODO The class name should be an internal "global" constant
   class(config) <- append(.CONFIG.CLASS.NAME, class(config))
+
+  stopifnot(config.validate(config)$status == TRUE)
 
   return (config)
 
