@@ -133,7 +133,6 @@ test_that("contains only included call stacks", {
 
 
 config <- config.create()
-config[4, ]$log.as.severity <- Severity.Levels$INFO   # HACK The original value "DEBUG" must work one day !!!
 config[4, ]$write.to.log <- TRUE
 
 my.cond <- tryCatchLog:::condition("myClass", "custom condition")
@@ -141,13 +140,13 @@ my.cond <- tryCatchLog:::condition("myClass", "custom condition")
 test_that("tryCatchLog logs a custom condition (= inheritance works)", {
   expect_condition(tryCatchLog(signalCondition(my.cond), config = config))
   expect_equal(NROW(last.tryCatchLog.result()), 1)
-  expect_equal(last.tryCatchLog.result()[1,]$severity, "INFO")
+  expect_equal(last.tryCatchLog.result()[1,]$severity, "DEBUG")
 })
 
 test_that("tryCatchLog logs a custom condition (= inheritance works) even if logged.conditions says NO", {
   expect_condition(tryCatchLog(signalCondition(my.cond), logged.conditions = NULL, config = config))
   expect_equal(NROW(last.tryCatchLog.result()), 1)
-  expect_equal(last.tryCatchLog.result()[1,]$severity, "INFO")
+  expect_equal(last.tryCatchLog.result()[1,]$severity, "DEBUG")
 })
 
 
@@ -177,6 +176,21 @@ test_that("missing condition class in config uses arguments instead", {
 
 
 
+config <- config.create()
+config$cond.class    <- "message"
+config$silent        <- TRUE
+config$write.to.log  <- TRUE
+config[1, ]$silent   <- FALSE
+
+test_that("duplicated condition class entry in config uses the first entry as fall-back", {
+  # config.validate() does recognize duplicated condition class names but a "clever user" may
+  # manipulate this without validation
+  expect_message(tryCatchLog(message("beep"), config = config), "beep", fixed = TRUE)
+  expect_equal(NROW(last.tryCatchLog.result()), 1)
+  expect_match(last.tryCatchLog.result()$msg.text, "beep", fixed = TRUE)
+})
+
+
 test_that("NULL as config is ignored (uses standard arguments)", {
   expect_warning(tryCatchLog(log(-1), config = NULL))
   expect_equal(NROW(last.tryCatchLog.result()), 1)
@@ -187,22 +201,35 @@ test_that("NA as config is ignored (uses standard arguments)", {
   expect_equal(NROW(last.tryCatchLog.result()), 1)
 })
 
-test_that("error in case of invalid config", {
+test_that("invalid config throws a warning (but only if a condition was caught)", {
 
-  skip("TODO implement underlying logic") # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  expect_silent(tryCatchLog(1 + 1, config = data.frame(col1="wrong format")))
 
-  expect_warning(tryCatchLog(log(-1), config = data.frame(col1="wrong format")), "invalid config", fixed = TRUE)
+  expect_warning(tryCatchLog(log(-1), config = data.frame(col1="wrong format")), "config is invalid", fixed = TRUE)
+  expect_equal(NROW(last.tryCatchLog.result()), 1)
+
+  expect_warning(tryCatchLog(log(-1), silent.warnings = TRUE, config = data.frame(col1="wrong format")), "config is invalid", fixed = TRUE)
+  expect_equal(NROW(last.tryCatchLog.result()), 1)
+
+})
+
+
+config <- config.create()
+config[1, ]$silent = TRUE # silent error ;-)
+
+test_that("a condition configured as silent but that cannot be silenced produces a log output", {
+  expect_error(
+    expect_output(tryCatchLog(stop("silent error"), config = config),
+                  "Caught condition configured as silent but does not inherit from c('warning', 'message')", fixed = TRUE)
+  )
   expect_equal(NROW(last.tryCatchLog.result()), 1)
 })
 
 
 
-# Tests with existing option instead of passing as config argument...
-
-
+# ===== Tests with existing option instead of passing as config argument... ===================
 
 config <- config.create()
-config[4, ]$log.as.severity <- Severity.Levels$INFO   # HACK The original value "DEBUG" must work one day !!!
 config[4, ]$write.to.log <- TRUE
 
 options("tryCatchLog.global.config" = NULL)
@@ -218,7 +245,7 @@ test_that("tryCatchLog applies a config from the options", {
   options("tryCatchLog.global.config" = config)
   expect_condition(tryCatchLog(signalCondition(my.cond)))
   expect_equal(NROW(last.tryCatchLog.result()), 1)
-  expect_equal(last.tryCatchLog.result()[1,]$severity, "INFO")
+  expect_equal(last.tryCatchLog.result()[1,]$severity, "DEBUG")
 })
 
 options("tryCatchLog.global.config" = NULL)

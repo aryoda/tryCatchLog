@@ -34,27 +34,27 @@ test_that("interrupt conditions are logged", {
 
   expect_equal(NROW(last.result), 1)
   expect_equal(last.result$msg.text, "User-requested interrupt")   # this message was injected by tryCatchLog
-  expect_equal(last.result$severity, "INFO")
+  expect_equal(last.result$severity, "FATAL")
 
 
 
-  catched.i <- NA
-  tryCatchLog(signalCondition(ic), interrupt = function(i) catched.i <<- i)
+  caught.i <- NA
+  tryCatchLog(signalCondition(ic), interrupt = function(i) caught.i <<- i)
 
   last.result <- last.tryCatchLog.result()
 
   expect_equal(NROW(last.result), 1)
   expect_equal(last.result$msg.text, "User-requested interrupt")
-  expect_equal(last.result$severity, "INFO")
+  expect_equal(last.result$severity, "FATAL")
 
-  expect_equal(class(catched.i), c("interrupt", "condition"))
+  expect_equal(class(caught.i), c("interrupt", "condition"))
 
 
 
   # Check for unwanted side effects
 
-  catched.i <- NA
-  expect_error(tryCatchLog(stop("an error"), interrupt = function(i) catched.i <<- i))
+  caught.i <- NA
+  expect_error(tryCatchLog(stop("an error"), interrupt = function(i) caught.i <<- i))
 
   last.result <- last.tryCatchLog.result()
 
@@ -70,7 +70,7 @@ test_that("interrupt conditions are logged", {
 
   expect_equal(NROW(last.result), 1)
   expect_equal(last.result$msg.text, "User-requested interrupt")
-  expect_equal(last.result$severity, "INFO")
+  expect_equal(last.result$severity, "FATAL")
 
 })
 
@@ -84,7 +84,7 @@ test_that("silent.messages do not suppress interrupt conditions", {
 
   expect_equal(NROW(last.result), 1)
   expect_equal(last.result$msg.text, "User-requested interrupt")
-  expect_equal(last.result$severity, "INFO")
+  expect_equal(last.result$severity, "FATAL")
 
 
 })

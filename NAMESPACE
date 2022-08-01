@@ -2,6 +2,7 @@
 
 export(Severity.Levels)
 export(build.log.output)
+export(config.add.row)
 export(config.create)
 export(config.load)
 export(config.save)

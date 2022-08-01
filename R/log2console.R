@@ -39,12 +39,12 @@ log2console <- function(severity.level, msg) {
 
 
   stopifnot(!is.null(severity.level))
-  stopifnot(severity.level %in% c("ERROR", "WARN", "INFO"))
+  stopifnot(severity.level %in% Severity.Levels)
   stopifnot(is.character(msg))
 
   # Design decision:
   # This simple logging function uses the local time
-  # (not UTC which would allow to combine different log output with
+  # (not UTC which would allow to combine different log outputs with
   #  different time zones more easily).
   log.time <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
 

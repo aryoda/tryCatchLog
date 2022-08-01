@@ -6,7 +6,7 @@
 \usage{
 set.logging.package(
   logging.package.name = getOption("tryCatchLog.preferred.logging.package",
-    c("futile.logger", "lgr", "tryCatchLog"))
+    c("futile.logger", "lgr", "logger", "logging", "tryCatchLog"))
 )
 }
 \arguments{

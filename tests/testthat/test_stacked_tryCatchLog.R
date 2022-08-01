@@ -99,7 +99,7 @@ test_that("exactly one error, warning and message occurs", {
 
 
 
-test_that("a catched warning does not bubble up after handling", {
+test_that("a caught warning does not bubble up after handling", {
 
   expect_output(tryCatchLog(tryCatchLog(tryCatchLog(warning("throw.my.warning")),
                                         warning = function(w) print(w$message)))
@@ -114,7 +114,7 @@ test_that("a catched warning does not bubble up after handling", {
 
 
 
-test_that("a catched message does not bubble up after handling", {
+test_that("a caught message does not bubble up after handling", {
 
   expect_output(tryCatchLog(tryCatchLog(tryCatchLog(message("throw.my.message")),
                                         message = function(m) print(m$message)))
@@ -129,7 +129,7 @@ test_that("a catched message does not bubble up after handling", {
 
 
 
-test_that("a catched error does not bubble up after handling", {
+test_that("a caught error does not bubble up after handling", {
 
   expect_output(tryCatchLog(tryCatchLog(tryCatchLog(stop("throw.my.error")),
                                         error = function(e) print(e$message)))

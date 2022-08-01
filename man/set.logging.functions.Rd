@@ -5,18 +5,27 @@
 \title{Sets the logging functions that shall be used by \code{tryCatchLog} for the different severity levels}
 \usage{
 set.logging.functions(
-  error.log.func = function(msg) tryCatchLog:::log2console("ERROR", msg),
-  warn.log.func = function(msg) tryCatchLog:::log2console("WARN", msg),
-  info.log.func = function(msg) tryCatchLog:::log2console("INFO", msg),
+  error.log.func = function(msg) tryCatchLog:::log2console(Severity.Levels$ERROR, msg),
+  warn.log.func = function(msg) tryCatchLog:::log2console(Severity.Levels$WARN, msg),
+  info.log.func = function(msg) tryCatchLog:::log2console(Severity.Levels$INFO, msg),
+  debug.log.func = function(msg) tryCatchLog:::log2console(Severity.Levels$DEBUG, msg),
+  trace.log.func = function(msg) tryCatchLog:::log2console(Severity.Levels$TRACE, msg),
+  fatal.log.func = function(msg) tryCatchLog:::log2console(Severity.Levels$FATAL, msg),
   logger.package.name = "tryCatchLog"
 )
 }
 \arguments{
-\item{error.log.func}{The logging function for errors}
+\item{error.log.func}{The logging function for ERROR severity level}
 
-\item{warn.log.func}{The logging function for warning}
+\item{warn.log.func}{The logging function for WARN severity level}
 
-\item{info.log.func}{The error function for messages}
+\item{info.log.func}{The logging function for INFO severity level}
+
+\item{debug.log.func}{The logging function for DEBUG severity level}
+
+\item{trace.log.func}{The logging function for TRACE severity level}
+
+\item{fatal.log.func}{The logging function for FATAL severity level}
 
 \item{logger.package.name}{The logging package name of the functions (just internally used to print the name).
 For self-made logging functions (not part of a package) should use "custom functions"
@@ -40,6 +49,8 @@ The package-internal default logging functions are only a minimal implementation
 and are not meant to replace a decent logging framework.
 
 To activate another logging package that is supported by \code{tryCatchLog} use \code{\link{set.logging.package}}.
+
+For a documenation of the different logging severity levels see \code{\link{Severity.Levels}}.
 }
 \examples{
 # To disable any logging you could use "empty" functions

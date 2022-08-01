@@ -26,20 +26,17 @@ config.create(
 Note that some condition classes cannot be muffled (no support for that in base R), eg. \code{error}
 and this setting will be ignored then.}
 
-\item{write.to.log}{\code{\link{logical}}: \code{TRUE} = Call the logging functon for the caught condition)
-TODO: Document behaviour if tryCatchLog() is called with logged.conditions = c("myCondition") etc... Who wins?}
+\item{write.to.log}{\code{\link{logical}}: \code{TRUE} = Call the logging function for the caught condition}
 
 \item{log.as.severity}{Severity level for the \code{cond.class} (use the constants from \code{\link{Severity.Levels}} or the equivalent character strings)}
 
-\item{include.full.call.stack}{Flag of type \code{\link{logical}}:
-Shall the full call stack be included in the log output? Since the full
+\item{include.full.call.stack}{\code{\link{logical}}: Shall the full call stack be included in the log output? Since the full
 call stack may be very long and the compact call stack has enough details
 normally the full call stack can be omitted by passing \code{FALSE}.
 The default value can be changed globally by setting the option \code{tryCatchLog.include.full.call.stack}.
 The full call stack can always be found via \code{\link{last.tryCatchLog.result}}.}
 
-\item{include.compact.call.stack}{Flag of type \code{\link{logical}}:
-Shall the compact call stack (including only calls with source code references)
+\item{include.compact.call.stack}{\code{\link{logical}}: Shall the compact call stack (including only calls with source code references)
 be included in the log output? Note: If you omit both the full and compact
 call stacks the message text will be output without call stacks.
 The default value can be changed globally by setting the option \code{tryCatchLog.include.compact.call.stack}.
@@ -63,8 +60,9 @@ Each row of the configuration specifies the behavior for one condition class
 The default values create a simple configuration that can be used as example
 or to be extended (eg. by saving it as CSV file that can be edited then).
 
-TODO Clarify who wins in case of conflicts: The function call argument or the configuration?
-TODO Explain what happens if a condition inherits from multiple configuration row classes (who wins?)!
+TODO Document behaviour if tryCatchLog() is called with logged.conditions = c("myCondition") etc... Who wins?
+TODO Document who wins in case of conflicts: The function call argument or the configuration?
+TODO Document what happens if a condition inherits from multiple configuration row classes (who wins?)!
      -> if a condition inherits from multiple classes the class attribute looks like this:
           > x <- simpleWarning("a")
           > class(x)

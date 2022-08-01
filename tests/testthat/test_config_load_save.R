@@ -36,7 +36,7 @@ test_that("config can be saved and loaded again", {
 
   expect_silent(loaded.config <- config.load(config.file.name))
 
-  expect_s3_class(loaded.config, tryCatchLog:::.CONFIG.CLASS.NAME)
+  expect_s3_class(loaded.config, .CONFIG.CLASS.NAME)
 
   expected_names <- c("cond.class", "silent", "write.to.log", "log.as.severity", "include.full.call.stack", "include.compact.call.stack")
   expect_equal(names(loaded.config), expected_names)

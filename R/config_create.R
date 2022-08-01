@@ -23,8 +23,9 @@
 #' The default values create a simple configuration that can be used as example
 #' or to be extended (eg. by saving it as CSV file that can be edited then).
 #'
-#' TODO Clarify who wins in case of conflicts: The function call argument or the configuration?
-#' TODO Explain what happens if a condition inherits from multiple configuration row classes (who wins?)!
+#' TODO Document behaviour if tryCatchLog() is called with logged.conditions = c("myCondition") etc... Who wins?
+#' TODO Document who wins in case of conflicts: The function call argument or the configuration?
+#' TODO Document what happens if a condition inherits from multiple configuration row classes (who wins?)!
 #'      -> if a condition inherits from multiple classes the class attribute looks like this:
 #'           > x <- simpleWarning("a")
 #'           > class(x)
@@ -40,17 +41,14 @@
 #'                                                          The logging framework may still decide to suppress the log output eg. by severity level filtering.
 #'                                   Note that some condition classes cannot be muffled (no support for that in base R), eg. \code{error}
 #'                                   and this setting will be ignored then.
-#' @param write.to.log               \code{\link{logical}}: \code{TRUE} = Call the logging functon for the caught condition)
-#' TODO: Document behaviour if tryCatchLog() is called with logged.conditions = c("myCondition") etc... Who wins?
+#' @param write.to.log               \code{\link{logical}}: \code{TRUE} = Call the logging function for the caught condition
 #' @param log.as.severity            Severity level for the \code{cond.class} (use the constants from \code{\link{Severity.Levels}} or the equivalent character strings)
-#' @param include.full.call.stack    Flag of type \code{\link{logical}}:
-#'                                   Shall the full call stack be included in the log output? Since the full
+#' @param include.full.call.stack    \code{\link{logical}}: Shall the full call stack be included in the log output? Since the full
 #'                                   call stack may be very long and the compact call stack has enough details
 #'                                   normally the full call stack can be omitted by passing \code{FALSE}.
 #'                                   The default value can be changed globally by setting the option \code{tryCatchLog.include.full.call.stack}.
 #'                                   The full call stack can always be found via \code{\link{last.tryCatchLog.result}}.
-#' @param include.compact.call.stack Flag of type \code{\link{logical}}:
-#'                                   Shall the compact call stack (including only calls with source code references)
+#' @param include.compact.call.stack \code{\link{logical}}: Shall the compact call stack (including only calls with source code references)
 #'                                   be included in the log output? Note: If you omit both the full and compact
 #'                                   call stacks the message text will be output without call stacks.
 #'                                   The default value can be changed globally by setting the option \code{tryCatchLog.include.compact.call.stack}.
@@ -79,20 +77,20 @@ config.create <- function(  cond.class                  = c("error", "warning", 
 {
 
 
-  # TODO Check preconditions (length and data type, unique cond.class names...)
+  # No preconditions check (like length and data type) required - config.validate() does this later!
 
 
 
-  config <- data.frame(cond.class                 = cond.class,
+  config <- data.frame(# data.frame columns go here --------------------------------------------------------------------------
+                       cond.class                 = cond.class,
                        silent                     = silent, # = muffled = logged only (but not propagated to other registered handlers)!
-                       # see rlang::cnd_muffle()
                        write.to.log               = write.to.log,
                        log.as.severity            = log.as.severity, # these values may be logging-framework-specific (= not good since changing the logging framework requires config changes). Better approach, eg. mapping?
                        include.full.call.stack    = include.full.call.stack,
                        include.compact.call.stack = include.compact.call.stack
                        # -----------------------------------------------------------------------------------------------------
-                       # , rethrow.as = NA              # TODO "reserved" for future extension: Rethrow the condition as another condition class
-                       # , number.of.retires = 0        # TODO "reserved" for future extensions: Number of retries to execute an expression before the condition is really "processed"
+                       # , rethrow.as = NA        # possible future extension: Rethrow the condition as another condition class (issue #30)
+                       # , number.of.retries = 0  # possible future extension: Number of retries to execute an expression before the condition is really "processed" (issue #9)
                        #
                        # data.frame() arguments go here ----------------------------------------------------------------------
                        , row.names = NULL
@@ -105,7 +103,7 @@ config.create <- function(  cond.class                  = c("error", "warning", 
 
 
 
-  stopifnot(config.validate(config)$status == TRUE)  # if this happens you have found an internal error ;-)
+  config.validate(config, throw.error.with.findings = TRUE)  # if this happens you have found an internal error ;-)
 
   return (config)
 

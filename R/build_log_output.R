@@ -65,8 +65,6 @@ build.log.output <- function(log.results,
                              include.timestamp          = FALSE,
                              use.platform.newline       = FALSE) {
 
-  # TODO Add arguments for incl.timestamp + incl.severity later (redundant output if a logging framework is used!)
-
   stopifnot("data.frame" %in% class(log.results))
 
 

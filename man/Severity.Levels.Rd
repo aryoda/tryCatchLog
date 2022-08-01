@@ -3,7 +3,7 @@
 \docType{data}
 \name{Severity.Levels}
 \alias{Severity.Levels}
-\title{Log (severity) levels}
+\title{List of severity levels for logging output}
 \format{
 An object of class \code{list} of length 6.
 }
@@ -11,7 +11,7 @@ An object of class \code{list} of length 6.
 Severity.Levels
 }
 \description{
-These logging levels are supported to characterize the severity of an event in the log output.
+Defines the levels that are supported to characterize the severity of an event in the log output.
 }
 \details{
 The levels comply with the standard Apache log4j log level names (except \code{ALL} to log all events
@@ -28,14 +28,13 @@ The levels have an implicit order (by severity) from the most to the least sever
   \item \code{INFO}  Indicates an event for informational purposes
   \item \code{DEBUG} A debugging event
   \item \code{TRACE} A fine-grained debug message to capture the execution flow through the application
-  \item \code{}
 }
 }
 \note{
 In contrast to log4j log levels the log levels of this package do just use names
-      but no internal integer log value to order the log levels by severity
+      but NO internal integer log value to order the log levels by severity
       since filtering the log output by severity is the responsibility of the used logging framework
-      (not the \code{tryCatchLog} package).
+      (not the \code{tryCatchLog} package) so we don't need it here.
 }
 \references{
 \url{https://logging.apache.org/log4j/2.0/log4j-api/apidocs/org/apache/logging/log4j/Level.html},

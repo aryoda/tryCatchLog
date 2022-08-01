@@ -22,6 +22,8 @@ RoxygenNote: 7.1.1
 Suggests:
     futile.logger,
     lgr,
+    logger,
+    logging,
     testthat,
     knitr,
     rmarkdown,

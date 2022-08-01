@@ -18,7 +18,7 @@ source("disable_logging_output.R")
 
 
 
-# TODO
+# TODO Implement more unit tests
 test_that("config.create without arguments creates a basic config", {
 
   expect_silent(config <- config.create())

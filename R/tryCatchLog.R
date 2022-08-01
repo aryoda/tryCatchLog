@@ -198,7 +198,7 @@ tryCatchLog <- function(expr,
                         config                     = getOption("tryCatchLog.global.config", NULL)
 ) {
 
-  reset.last.tryCatchLog.result()   # TODO If an internal error is thrown in the code above the last result will be kept. Fix this?
+  reset.last.tryCatchLog.result()
 
 
   # Validate user input
@@ -222,7 +222,13 @@ tryCatchLog <- function(expr,
     write.to.log      <- TRUE
     log.as.severity   <- NA     # If not NA: Use this severity level in the log output (can only be set by a config!)
 
-    is.valid.config   <- is.config(config)  # minimal validation (so the variable is a misnomer ;-)
+    config.check.result   <- is.config(config)  # minimal validation (so the variable is a misnomer ;-)
+
+    # If a real config was passed but has issues: Report them!
+    if (config.check.result$status == FALSE && !is.null(config) && !is.na(config)) {
+      warning(paste0("tryCatchLog: The passed config is invalid and will be ignored!\n", config.check.result$findings))
+      config <- NULL
+    }
 
     # 29.07.2022 The new configuration feature (FR https://github.com/aryoda/tryCatchLog/issues/71)
     #            is injected here and overwrites (takes precedence over) the corresponding arguments (passed directly
@@ -243,16 +249,15 @@ tryCatchLog <- function(expr,
     #               This supports a slow migration by deprecating the arguments of the "old" API one day (if required at all!).
     #            2. Invalid configurations are ignored and logged with a warning and execute as if no config was passed (safe fall-back)
     #            3. The configuration row for the most specific condition class wins (will be applied)
-    if (is.valid.config$status == TRUE) {
+    if (config.check.result$status == TRUE) {
       # TODO: When and where to do intensive validation of the config? It is performance critical and shall be done only once
       #       even in case of multiple handled conditions in one function call...
       config.row <- NULL
 
       for (i in seq_along(config$cond.class)) {
-        # TODO What happens in case of a config with zero rows?
         if (inherits(c, config$cond.class[i])) {
-          # Note: In case of duplicated cond.class names in the config the first one wins
-          # even though the config validation should uncover this problem (defensive programming ;-)
+          # Note: In case of duplicated cond.class names in the config the first one wins (defensive programming ;-)
+          # even though the config validation should uncover this problem earlier!
           config.row <- config[i, ]
           break
         }
@@ -260,7 +265,7 @@ tryCatchLog <- function(expr,
 
       # ===== THIS IS THE CORE LOGIC HOW CONFIGURATIONS WORK: ===============================
       # Apply found config (if any) by overwriting the function arguments
-      # with the configured settings (and remember: only in case the catched condition is in the configuration!)
+      # with the configured settings (and remember: only in case the caught condition is in the configuration!)
       if (!is.null(config.row)) {
         silent.warnings            <- config.row$silent
         silent.messages            <- config.row$silent
@@ -268,12 +273,20 @@ tryCatchLog <- function(expr,
         include.compact.call.stack <- config.row$include.compact.call.stack
         write.to.log               <- config.row$write.to.log
         log.as.severity            <- config.row$log.as.severity
-        # HACK (use side effect): A catched condition found in the config must process it as configured
+        # HACK (use side effect): A caught condition found in the config must process it as configured
         logged.conditions          <- NA
       }
 
-      # TODO What happens if no matching config row was found? Which settings do apply then?
-      #      Currently it looks like the standard argument values are used then! Is this OK?
+      # TODO Document silencing warning in function header and vignette
+      # Design decision:
+      # Do not throw a condition if the condition class does not allow to be "silent" but log this only
+      if (config.row$silent == TRUE && !inherits(c, c("warning", "message"))) {
+        tryCatchLog:::.tryCatchLog.env$warn.log.func(paste("tryCatchLog: Caught condition configured as silent but does not inherit from c('warning', 'message') but",
+                                                     paste(class(c), collapse = ",")))
+      }
+
+            # TODO Document what happens if no matching config row was found. Which settings do apply then?
+      #      The standard argument values are used then!
 
     } # end of: if (is.data.frame(config))
 
@@ -307,15 +320,15 @@ tryCatchLog <- function(expr,
       call.stack     <- sys.calls()          # "sys.calls" within "withCallingHandlers" is like a traceback!
       dump.file.name <- ""
 
-
+# TODO USE severity level constants instead of hard-coded strings now!
 
       # stack.trace <<- call.stack     # helper code for updating the expected result of the "test_build_log_entry" unit test
       severity <-       if (!is.na(log.as.severity))  log.as.severity         # use severity injected from the config
-                   else if (inherits(c, "error"))     "ERROR"
-                   else if (inherits(c, "warning"))   "WARN"
-                   else if (inherits(c, "message"))   "INFO"
-                   else if (inherits(c, "interrupt")) "INFO"
-                   else if (inherits(c, "condition")) "INFO"  # TODO I would introduce a new logging level "DEBUG" or "VERBOSE" for this!
+                   else if (inherits(c, "error"))     Severity.Levels$ERROR
+                   else if (inherits(c, "warning"))   Severity.Levels$WARN
+                   else if (inherits(c, "message"))   Severity.Levels$INFO
+                   else if (inherits(c, "interrupt")) Severity.Levels$FATAL
+                   else if (inherits(c, "condition")) Severity.Levels$INFO
                    #   # if logged.conditions is NULL (default), do not log conditions
                    #   if (is.null(logged.conditions))     return()
                    #   # if logged.conditions is NA, log all conditions
@@ -370,9 +383,12 @@ tryCatchLog <- function(expr,
                                       include.compact.call.stack = include.compact.call.stack)
 
         switch(severity,
-               ERROR = .tryCatchLog.env$error.log.func(log.msg),  # e. g. futile.logger::flog.error(log.msg),
-               WARN  = .tryCatchLog.env$warn.log.func(log.msg),   # e. g. futile.logger::flog.warn(log.msg),
-               INFO  = .tryCatchLog.env$info.log.func(log.msg)    # e. g. futile.logger::flog.info(log.msg)
+               ERROR = .tryCatchLog.env$error.log.func(log.msg),
+               WARN  = .tryCatchLog.env$warn.log.func(log.msg),
+               INFO  = .tryCatchLog.env$info.log.func(log.msg),
+               DEBUG = .tryCatchLog.env$debug.log.func(log.msg),
+               TRACE = .tryCatchLog.env$trace.log.func(log.msg),
+               FATAL = .tryCatchLog.env$fatal.log.func(log.msg)
                # In the case of no match, if there is an unnamed element of ... its value is returned.
                # NULL, invisibly (whenever no element is selected).
                # TODO: Dangerous: If "severity is not in this list" there is no "else" part as safe fall-back!):

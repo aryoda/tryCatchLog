@@ -54,11 +54,13 @@
 #' # takes the logging package fromt the configured option (if installed, else tryCatchLog)
 #' options(tryCatchLog.preferred.logging.package = "futile.logger")
 #' tryCatchLog:::set.logging.package()
-set.logging.package <- function(logging.package.name = getOption("tryCatchLog.preferred.logging.package", c("futile.logger", "lgr", "tryCatchLog"))) {
+set.logging.package <- function(logging.package.name = getOption("tryCatchLog.preferred.logging.package", c("futile.logger", "lgr", "logger", "logging", "tryCatchLog"))) {
 
   # Decide which logging functions to use
 
-  match.arg(logging.package.name, several.ok = TRUE)  # verify that only names from the default values vector are passed
+  match.arg(  logging.package.name
+            , choices =c("futile.logger", "lgr", "logger", "logging", "tryCatchLog")
+            , several.ok = TRUE)  # verify that only names from the default values vector are passed
 
 
 
@@ -84,10 +86,18 @@ set.logging.package <- function(logging.package.name = getOption("tryCatchLog.pr
   # Development note: New logging frameworks need to be added only here and to the default values vector of the first argument)
 
   if (.tryCatchLog.env$active.logging.package == "futile.logger") {
+    #
     # packageStartupMessage("Using futile.logger for logging...")  # be silent in .onLoad (best practice)
-    set.logging.functions(futile.logger::flog.error, futile.logger::flog.warn, futile.logger::flog.info, .tryCatchLog.env$active.logging.package)
+    set.logging.functions(futile.logger::flog.error,
+                          futile.logger::flog.warn,
+                          futile.logger::flog.info,
+                          futile.logger::flog.debug,
+                          futile.logger::flog.trace,
+                          futile.logger::flog.fatal,
+                          .tryCatchLog.env$active.logging.package)
 
   } else if (.tryCatchLog.env$active.logging.package == "lgr") {
+    # https://github.com/s-fleck/lgr
     # if( ! exists("lg", envir = parent.env(environment()))){
     #   assign(
     #     "lg",
@@ -98,9 +108,36 @@ set.logging.package <- function(logging.package.name = getOption("tryCatchLog.pr
     # Design decision:
     # Use the default root logger (not a tryCatchLog-specific instance since the logged conditions concern the caller!)
     lgr <- lgr::lgr
-    set.logging.functions(lgr$error, lgr$warn, lgr$info, .tryCatchLog.env$active.logging.package)
+    set.logging.functions(lgr$error,
+                          lgr$warn,
+                          lgr$info,
+                          lgr$debug,
+                          lgr$trace,
+                          lgr$fatal,
+                          .tryCatchLog.env$active.logging.package)
+
+  } else if (.tryCatchLog.env$active.logging.package == "logger") {
+    # https://github.com/daroczig/logger
+    set.logging.functions(logger::log_error,
+                          logger::log_warn,
+                          logger::log_info,
+                          logger::log_debug,
+                          logger::log_trace,
+                          logger::log_fatal,
+                          .tryCatchLog.env$active.logging.package)
+
+  } else if (.tryCatchLog.env$active.logging.package == "logging") {
+    # https://github.com/WLOGSolutions/r-logging
+    set.logging.functions(logging::logerror,
+                          logging::logwarn,
+                          logging::loginfo,
+                          logging::logdebug,
+                          logging::logdebug,  # there is no public TRACE function for this (although there is TRACE log level in "loglevels"!)
+                          logging::logerror,  # there is no public FATAL function for this (although there is FATAL log level in "loglevels"!)
+                          .tryCatchLog.env$active.logging.package)
 
   } else {
+    # tryCatchLog default logger
     # packageStartupMessage("futile.logger not found. Using tryCatchLog-internal functions for logging...")  # be silent in .onLoad (best practice)
     set.logging.functions()    # Default: Activate the package-internal minimal logging functions
   } # if

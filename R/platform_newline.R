@@ -23,6 +23,15 @@
 #'
 #' The newline character(s) are determined once at package loading time.
 #'
+#' You normally don't need to care about this since "\\n" in strings works
+#' on every platform (operating system) because it is converted automatically
+#' when printed, saved in or loaded from a file.
+#'
+#' A typical use case is a unit test that compares an actual file
+#' (eg. with "\\r\\n" on Windows) to an expected file that was eg. created on Linux
+#' with "\\n" platform newline and you do byte compare of the files
+#' (which will fail unless to "undo" the platform newline differences).
+#'
 #' @return the new line character(s) for the current operating system
 #'
 #' @export

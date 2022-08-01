@@ -33,9 +33,14 @@
 #'
 #' To activate another logging package that is supported by \code{tryCatchLog} use \code{\link{set.logging.package}}.
 #'
-#' @param error.log.func      The logging function for errors
-#' @param warn.log.func       The logging function for warning
-#' @param info.log.func       The error function for messages
+#' For a documenation of the different logging severity levels see \code{\link{Severity.Levels}}.
+#'
+#' @param error.log.func      The logging function for ERROR severity level
+#' @param warn.log.func       The logging function for WARN severity level
+#' @param info.log.func       The logging function for INFO severity level
+#' @param debug.log.func      The logging function for DEBUG severity level
+#' @param trace.log.func      The logging function for TRACE severity level
+#' @param fatal.log.func      The logging function for FATAL severity level
 #' @param logger.package.name The logging package name of the functions (just internally used to print the name).
 #'                            For self-made logging functions (not part of a package) should use "custom functions"
 #'                            but can use any other name (it has no functionality).
@@ -52,22 +57,30 @@
 #'                        warn.log.func  = function(msg) invisible(),
 #'                        info.log.func  = function(msg) invisible())
 #'
-set.logging.functions <- function(error.log.func   = function(msg) tryCatchLog:::log2console("ERROR", msg)
-                                  , warn.log.func  = function(msg) tryCatchLog:::log2console("WARN",  msg)
-                                  , info.log.func  = function(msg) tryCatchLog:::log2console("INFO",  msg)
+set.logging.functions <- function(  error.log.func = function(msg) tryCatchLog:::log2console(Severity.Levels$ERROR,  msg)
+                                  , warn.log.func  = function(msg) tryCatchLog:::log2console(Severity.Levels$WARN,   msg)
+                                  , info.log.func  = function(msg) tryCatchLog:::log2console(Severity.Levels$INFO,   msg)
+                                  , debug.log.func = function(msg) tryCatchLog:::log2console(Severity.Levels$DEBUG,  msg)
+                                  , trace.log.func = function(msg) tryCatchLog:::log2console(Severity.Levels$TRACE,  msg)
+                                  , fatal.log.func = function(msg) tryCatchLog:::log2console(Severity.Levels$FATAL,  msg)
                                   , logger.package.name = "tryCatchLog"
 ) {
 
   stopifnot(is.function(error.log.func))
   stopifnot(is.function(warn.log.func))
   stopifnot(is.function(info.log.func))
-
+  stopifnot(is.function(debug.log.func))
+  stopifnot(is.function(trace.log.func))
+  stopifnot(is.function(fatal.log.func))
 
 
   # remember the active logging functions in the package-internal environment
   .tryCatchLog.env$error.log.func <- error.log.func
   .tryCatchLog.env$warn.log.func  <- warn.log.func
   .tryCatchLog.env$info.log.func  <- info.log.func
+  .tryCatchLog.env$debug.log.func <- debug.log.func
+  .tryCatchLog.env$trace.log.func <- trace.log.func
+  .tryCatchLog.env$fatal.log.func <- fatal.log.func
 
 
 
