@@ -58,7 +58,10 @@ set.logging.package <- function(logging.package.name = getOption("tryCatchLog.pr
 
   # Decide which logging functions to use
 
-  match.arg(logging.package.name, several.ok = TRUE)  # verify that only names from the default values vector are passed
+  match.arg(  logging.package.name
+              , choices    = c("futile.logger", "lgr", "tryCatchLog")  # WORK-AROUND to prevent that set option reduces choices
+              , several.ok = TRUE)  # verify that only names from the default values vector are passed
+
 
 
 
