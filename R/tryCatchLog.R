@@ -250,7 +250,7 @@ tryCatchLog <- function(expr,
     #            2. Invalid configurations are ignored and logged with a warning and execute as if no config was passed (safe fall-back)
     #            3. The configuration row for the most specific condition class wins (will be applied)
     if (config.check.result$status == TRUE) {
-      # TODO: When and where to do intensive validation of the config? It is performance critical and shall be done only once
+      # TODO Document When and where intensive validation of the config is done? It is performance critical and shall be done only once
       #       even in case of multiple handled conditions in one function call...
       config.row <- NULL
 
@@ -285,7 +285,7 @@ tryCatchLog <- function(expr,
                                                      paste(class(c), collapse = ",")))
       }
 
-            # TODO Document what happens if no matching config row was found. Which settings do apply then?
+      # TODO Document what happens if no matching config row was found. Which settings do apply then?
       #      The standard argument values are used then!
 
     } # end of: if (is.data.frame(config))
@@ -300,7 +300,7 @@ tryCatchLog <- function(expr,
       # if logged.conditions is NA, log all conditions
       if (is.null(logged.conditions)
           || (is.character(logged.conditions) && !inherits(c, logged.conditions)))
-        # return()         # HACK (return not at end of function) to skip the following logging code
+
         write.to.log <- FALSE
     }
 
@@ -309,7 +309,7 @@ tryCatchLog <- function(expr,
 
     if (write.to.log == TRUE) {
 
-      log.message    <- c$message            # TODO: Should we use conditionMessage instead?
+      log.message    <- c$message
 
       if (is.null(log.message)) {
         if (inherits(c, "interrupt")) log.message <- "User-requested interrupt"
@@ -319,8 +319,6 @@ tryCatchLog <- function(expr,
       timestamp      <- Sys.time()
       call.stack     <- sys.calls()          # "sys.calls" within "withCallingHandlers" is like a traceback!
       dump.file.name <- ""
-
-# TODO USE severity level constants instead of hard-coded strings now!
 
       # stack.trace <<- call.stack     # helper code for updating the expected result of the "test_build_log_entry" unit test
       severity <-       if (!is.na(log.as.severity))  log.as.severity         # use severity injected from the config
@@ -332,12 +330,12 @@ tryCatchLog <- function(expr,
                    #   # if logged.conditions is NULL (default), do not log conditions
                    #   if (is.null(logged.conditions))     return()
                    #   # if logged.conditions is NA, log all conditions
-                   #   else if ((length(logged.conditions) == 1) && is.na(logged.conditions))   "INFO"
+                   #   else if ((length(logged.conditions) == 1) && is.na(logged.conditions))   Severity.Levels$INFO
                    #   # if logged.conditions is a vector of strings, log only conditions which have their class in the vector
-                   #   else if (inherits(c, logged.conditions))   "INFO"
+                   #   else if (inherits(c, logged.conditions))   "Severity.Levels$INFO
                    #   else if (!inherits(c, logged.conditions))   return()
                    # }
-                   else stop(sprintf("Unsupported condition class %s!", class(c)))  # TODO Shall tryCatchLog() really fail "just because of this? Fall back to INFO instead?
+                   else stop(sprintf("Unsupported condition class %s!", class(c)))  # This error should never happen (internal error?)
 
 
 
@@ -391,8 +389,8 @@ tryCatchLog <- function(expr,
                FATAL = .tryCatchLog.env$fatal.log.func(log.msg)
                # In the case of no match, if there is an unnamed element of ... its value is returned.
                # NULL, invisibly (whenever no element is selected).
-               # TODO: Dangerous: If "severity is not in this list" there is no "else" part as safe fall-back!):
-               #       Maybe this was done to achieve 100 % code coverage in the unit tests? ;-)
+               # Dangerous: If "severity is not in this list" there is no "else" part as safe fall-back - even though this should never happen!
+               # Maybe this was done to achieve 100 % code coverage in the unit tests? ;-)
         )
 
         append.to.last.tryCatchLog.result(log.entry)
@@ -414,8 +412,8 @@ tryCatchLog <- function(expr,
     # explicity saying that the handler has handled the condition.
     # This stops the condition from propagating to other matching handlers.
     #
-    # TODO: Conditions signaled with base::signalCondition() cannot be muffled.
-    #       Verify this (this would mean user-defined conditions would always propagate!)!
+    # Conditions signaled with base::signalCondition() cannot be muffled.
+    # So user-defined conditions will always propagate!
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     # Suppresses the warning (logs it only)?
