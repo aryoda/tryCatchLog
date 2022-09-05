@@ -21,7 +21,7 @@ options("width" = 129)  # default value in R is 129
 # suppress logging of errors and warnings to avoid overly output
 # source("disable_logging_output.R")
 # enable tryCatchLog's default logging to the console so that expect_output() works
-set.logging.functions()    # Default: Activate the package-internal minimal logging functions
+tryCatchLog::set.logging.functions()    # Default: Activate the package-internal minimal logging functions
 
 
 test_that("call stack 'include*' args works", {

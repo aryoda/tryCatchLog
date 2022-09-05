@@ -3,7 +3,7 @@ is.config <- function(config) {
   res <- list(status = TRUE, findings = "")
 
   # Design decision:
-  # Should we allow NULL as valid configuration (= no configuration)?
+  # Should we allow NULL (or NA) as valid configuration (= no configuration)?
   # Eg. in config.add.row this would allow to start a new configuration by adding a row to NULL as config
   # (but why then do not directly call config.create() instead?
   # -> No, this is counter-intuitive
@@ -31,7 +31,13 @@ config.validate <- function(config, throw.error.with.findings = TRUE) {
   # res <- list(status = TRUE, findings = "")
   res <- is.config(config)
 
-  if (res$status == FALSE) return(res)  # pre-conditions for further validations failed
+  if (res$status == FALSE) {
+    if (throw.error.with.findings == TRUE) {
+      stop(paste("Invalid tryCatchLog configuration:\n", res$findings))
+    } else {
+      return(res)  # pre-conditions for further validations failed
+    }
+  }
 
 
 

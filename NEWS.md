@@ -5,6 +5,54 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
+## Version 2.0.0 (Sept 03, 2022)
+
+A new major version of `tryCatchLog` 2.x was due
+by supporting more logging frameworks (introduced in the non-CRAN-release
+1.3.2) and by adding a configuration table feature
+with a completely backward-compatible API (function signatures):
+
+`tryLog()` and `tryCatchLog()` do now **support a configuration table
+for many settings** via the new argument `config`.
+  
+Advantages:
+
+* **Finer logging verbosity: Can now be set different per condition class**
+  (instead of the same for all condition classes).
+  See `config.create()`.
+* Reduces the number of actual arguments in the function calls
+* Centralizes the global default settings into one configuration table option
+  (instead of many different options)
+* A configuration table can be loaded from a file the changes the settings
+  without changing existing R source code (see `config.load()` and `config.save()`)
+* No migration for existing R code required (since the new API of `tryCatchLog` 2.x
+  is fully backwards compatible to existing source code that uses `tryCatchLog` 1.x).
+    
+For details how to use the new configuration table feature see the vignette
+and help documentation for `tryCatchLog()`.
+
+Example configuration table:
+
+```
+  cond.class silent write.to.log log.as.severity include.full.call.stack include.compact.call.stack
+1      error  FALSE         TRUE           ERROR                    TRUE                       TRUE
+2    warning  FALSE         TRUE            WARN                    TRUE                       TRUE
+3    message  FALSE         TRUE            INFO                   FALSE                       TRUE
+4  condition   TRUE        FALSE           DEBUG                   FALSE                       TRUE
+5  interrupt  FALSE         TRUE           FATAL                    TRUE                       TRUE
+```
+
+**Many thanks to Nicolas Dickinson** for initiating this new feature
+and contributing with his invaluable proposals and discussions in the [feature request #71](https://github.com/aryoda/tryCatchLog/issues/71).
+
+**Other changes:**
+
+* Fix API inconsistency: `set.logging.functions()` used `tryCatchLog:::log2console()`
+  as default value. Default values of public (exported) functions shall also be
+  exported (even though it works in R).
+  `log2console()` is now exported and the default value fixed.
+
+
 ## Version 1.3.2 (July 25, 2022)
 
 * Implement feature request #74: Add support for `lgr` logging package.
@@ -13,7 +61,13 @@ https://www.gnu.org/prep/standards/standards.html#Documentation
   (add convenience functions to activate other major logging packages).
   Currently only `futile.logger`, `lgr` and `tryCatchLog` are supported as logging package.
 * Add option `tryCatchLog.preferred.logging.package` to configure which logging package
-  shall be used when the `tryCatchLog` package is loaded
+  shall be used when the `tryCatchLog` package is loaded.
+  You can specify a vector of (supported) logging package names which are probed in this order
+  when the `tryCatchLog` package is loaded and the first one that is installed
+  will be activated for logging. Default order is `c("futile.logger", "lgr", "tryCatchLog")`.
+* Support for all major logging levels now (DEBUG, TRACE, FATAL added
+  to the previously existing ERROR, WARN and INFO - see variable `tryCatchLog::Severity.Levels`
+  and new arguments in `set.logging.functions()`)
 * Add optional argument `logger.package.name` to `set.logging.functions()` to allow
   internal status printing of the active logging package (or custom functions)
 

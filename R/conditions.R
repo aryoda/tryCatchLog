@@ -1,6 +1,12 @@
+# These functions are mainly used for unit tests (to create custom conditions)
+# so they are private (not exported)!
+
+
+
  # Create a custom condition
 # Taken from Hadley Wickham: http://adv-r.had.co.nz/beyond-exception-handling.html
-# It looks like a slidely improved version of "simpleCondition()" (with the call always injected + the option for more elements).
+# It looks like a slightly improved version of "simpleCondition()"
+# (with the call always injected + the option for more elements).
 #
 # DON'T CHANGE THE SEMANTICS OF THIS FUNCTION - IT IS USED IN UNIT TESTS !!!
 #
@@ -26,11 +32,11 @@ condition <- function(class, message = "", ...) {
 # class = used for sub classing errors for more exact error handling
 #         (the "error" class is always added).
 #         Use "NULL" if you don't want to sub class the error
-error <- function(class = NULL, message = "", ...) {
-
-  return (condition(c(class, "error"), message, ...))
-
-}
+# error <- function(class = NULL, message = "", ...) {
+#
+#   return (condition(c(class, "error"), message, ...))
+#
+# }
 
 
 # Internal dev documentation about the class hierarchy of different standard conditions:

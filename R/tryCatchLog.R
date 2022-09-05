@@ -74,6 +74,25 @@
 #'                          \code{NULL}: Non-standard conditions are not logged.\cr
 #'                          \code{vector of strings}: Only non-standard conditions whose class name is contained in this vector are logged.\cr
 #'                          \code{NA}: All non-standard conditions are logged.
+#'                          If a configuration table is passed user-defined conditions are always logged
+#'                          (the \code{logged.conditions} argument is ignored).
+#' @param config A configuration table to specify the logging settings per condition class
+#'               (created with \code{\link{config.create}} or loaded from a file with \code{\link{config.load}}).
+#'               If you pass a configuration table it takes precedence over the same actual arguments
+#'               of the function call since the configuration table allows finer-coarsed control
+#'               (per condition instead of the same of all conditions).
+#'               The actual arguments are only used if the caught condition class is not contained
+#'               in the configuration table.
+#'               If a configuration table is passed user-defined conditions are always logged
+#'               (the \code{logged.conditions} argument is ignored).
+#'               You can set the option \code{tryCatchLog.global.config} to a configuration
+#'               table (eg. loaded from a file) to (re)configure the logging settings
+#'               of existing \code{tryCatchLog} and \code{tryLog} calls without
+#'               changing the code (because the config takes precedence over existing actual arguments!).
+#'               \strong{Note regarding class "inheritence"}: If a caught condition has multiple \code{class} values
+#'               the values are searched in the config in this order and the first matching config row
+#'               will be used for this condition.
+#'
 #' @return             the value of the expression passed in as parameter \code{expr}
 #'
 #' @details This function shall overcome some drawbacks of the standard \code{\link{tryCatch}} function.\cr
@@ -182,7 +201,19 @@
 #' res <- foreach(i = 1:12) %dopar% {
 #'          tryCatchLog(log(10 - i), execution.context.msg = i)
 #' }
+#'
+#' # Configuration table examples:
+#' config <- config.create()  # creates a simple standard configuration
+#' # or load a config with eg.: config.load("config.txt")
+#' options("tryCatchLog.global.config" = config)
+#' tryCatchLog(stop("I am an error"))
+#' tryCatchLog(message("I am a message"))
+#'
+#' # Logs messages with TRACE severity level without any stack trace:
+#' myconfig <- config.create("message", FALSE, TRUE, "TRACE", FALSE, FALSE)
+#' tryCatchLog(message("I am a message"), config = myconfig)
 #' }
+#'
 #' @export
 tryCatchLog <- function(expr,
                         ...,
@@ -239,9 +270,10 @@ tryCatchLog <- function(expr,
     #              since the configuration allows finer-coarsed control.
     #              The actual arguments are only applied if there is no matching condition class row in the config!
     #              -> Using a configuration for existing code with precedence of the actual arguments
-    #                cannot work since the are not really optional (due to the default values)
-    #                and would therefore ALWAYS cause win (the configuration would always be ignored!).
-    #            - If a config is passed user-defined conditions are always logged
+    #                cannot work since actual args are not really optional (due to the default values)
+    #                and would therefore ALWAYS win (the configuration would always be ignored!).
+    #            - If a config is passed user-defined conditions are always logged since they may
+    #              be contained in the config and must be logged accordingly
     #              (the logged.conditions arg is ignored)
     # Design decisions:
     #            1. Extend the existing API with a config option instead of adding a new one to allow a soft migration
@@ -249,6 +281,8 @@ tryCatchLog <- function(expr,
     #               This supports a slow migration by deprecating the arguments of the "old" API one day (if required at all!).
     #            2. Invalid configurations are ignored and logged with a warning and execute as if no config was passed (safe fall-back)
     #            3. The configuration row for the most specific condition class wins (will be applied)
+    #               if a caught condition has multiple class values (= the first class value from left to right
+    #               that is found in the config determines the applied config).
     if (config.check.result$status == TRUE) {
       # TODO Document When and where intensive validation of the config is done? It is performance critical and shall be done only once
       #       even in case of multiple handled conditions in one function call...
@@ -281,12 +315,13 @@ tryCatchLog <- function(expr,
       # Design decision:
       # Do not throw a condition if the condition class does not allow to be "silent" but log this only
       if (config.row$silent == TRUE && !inherits(c, c("warning", "message"))) {
-        tryCatchLog:::.tryCatchLog.env$warn.log.func(paste("tryCatchLog: Caught condition configured as silent but does not inherit from c('warning', 'message') but",
+        # 05.09.2021: "tryCatchLog:::" prefix removed to avoid R CMD check note:
+        # "There are ::: calls to the package's namespace in its code. A package almost never needs to use ::: for its own objects:"
+        .tryCatchLog.env$warn.log.func(paste("tryCatchLog: Caught condition configured as silent but does not inherit from c('warning', 'message') but",
                                                      paste(class(c), collapse = ",")))
       }
 
-      # TODO Document what happens if no matching config row was found. Which settings do apply then?
-      #      The standard argument values are used then!
+      # Note: If no matching config row was found the standard argument values are used then!
 
     } # end of: if (is.data.frame(config))
 
@@ -335,6 +370,9 @@ tryCatchLog <- function(expr,
                    #   else if (inherits(c, logged.conditions))   "Severity.Levels$INFO
                    #   else if (!inherits(c, logged.conditions))   return()
                    # }
+                   #
+                   # FATAL is not used by any condition so far (except if configured via the "config" arg)
+                   #
                    else stop(sprintf("Unsupported condition class %s!", class(c)))  # This error should never happen (internal error?)
 
 

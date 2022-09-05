@@ -2,11 +2,24 @@ library(testthat)
 library(tryCatchLog)
 
 
-context("test_load_package.R")
+context("test_xxx_load_package.R")
 
 
 
 source("init_unit_test.R")
+
+
+# =========================================================================
+# Important:
+#
+# Since this and all following unit test files (files are executed by
+# testthat in alphabetical order) do detach the tryCatchLog package
+# the internal state may be corrupted for unit test files after detaching
+# (eg. settings via "set.logging.functions()").
+#
+# As work-around all unit test with "detach("package:tryCatchLog")
+# must have a file name to order them at the end.
+# =========================================================================
 
 
 

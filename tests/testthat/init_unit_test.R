@@ -1,4 +1,4 @@
-# Contains reusable initialisations for unit tests
+# Contains reusable initialization for unit tests
 #
 # Usage:
 #   source("init_unit_test.R")

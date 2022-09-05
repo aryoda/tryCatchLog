@@ -25,7 +25,7 @@ startsWith <- function(x, prefix)
 test_that("log2console() works", {
 
   expect_output(
-      log <- tryCatchLog:::log2console("ERROR", "my personal error")
+      log <- tryCatchLog::log2console("ERROR", "my personal error")
     , "ERROR .[[:digit:]: -]{15,22}. my personal error"
   )
   # to debug the matching result of the regular expression use this code:
@@ -41,31 +41,31 @@ test_that("log2console() works", {
 
 
   expect_output(
-    log <- tryCatchLog:::log2console("INFO", NA_character_)
+    log <- tryCatchLog::log2console("INFO", NA_character_)
   )
   expect_true(endsWith(log, "] \n"), label = "NA is printed as empty string")
 
   expect_output(
-    log <- tryCatchLog:::log2console("INFO", NA)
+    log <- tryCatchLog::log2console("INFO", NA)
   )
   expect_true(endsWith(log, "] \n"), label = "NA is printed as empty string")
 
   expect_output(
-    log <- tryCatchLog:::log2console("INFO", "")
+    log <- tryCatchLog::log2console("INFO", "")
   )
   expect_true(endsWith(log, "] \n"), label = "empty string is supported")
 
 
   expect_output(
-    expect_true(startsWith(tryCatchLog:::log2console("INFO", ""),  "INFO"),  info = "severity level INFO works")
+    expect_true(startsWith(tryCatchLog::log2console("INFO", ""),  "INFO"),  info = "severity level INFO works")
   )
 
   expect_output(
-    expect_true(startsWith(tryCatchLog:::log2console("WARN", ""),  "WARN"),  info = "severity level WARN works")
+    expect_true(startsWith(tryCatchLog::log2console("WARN", ""),  "WARN"),  info = "severity level WARN works")
   )
 
   expect_output(
-    expect_true(startsWith(tryCatchLog:::log2console("ERROR", ""), "ERROR"), info = "severity level ERROR works")
+    expect_true(startsWith(tryCatchLog::log2console("ERROR", ""), "ERROR"), info = "severity level ERROR works")
   )
 
 })
@@ -74,10 +74,10 @@ test_that("log2console() works", {
 
 test_that("wrong arguments are recognized by log2console()", {
 
-  expect_error(tryCatchLog:::log2console(10, "msg"), "severity.level")
-  expect_error(tryCatchLog:::log2console(NA, "msg"), "severity.level")
-  expect_error(tryCatchLog:::log2console(NULL, "msg"), "is.null")
+  expect_error(tryCatchLog::log2console(10, "msg"), "severity.level")
+  expect_error(tryCatchLog::log2console(NA, "msg"), "severity.level")
+  expect_error(tryCatchLog::log2console(NULL, "msg"), "is.null")
 
-  expect_error(tryCatchLog:::log2console("INFO", 10), "is.character")
+  expect_error(tryCatchLog::log2console("INFO", 10), "is.character")
 
 })

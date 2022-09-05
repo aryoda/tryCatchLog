@@ -249,3 +249,20 @@ test_that("tryCatchLog applies a config from the options", {
 })
 
 options("tryCatchLog.global.config" = NULL)
+
+
+
+# Test for TRACE logging level (for 100 % code coverage ;-) ---------------
+
+set.logging.functions()
+
+config <- config.create("message", TRUE, TRUE, Severity.Levels$TRACE, FALSE, FALSE)
+
+test_that("Severity Level TRACE works", {
+  expect_output(tryCatchLog(message("trace me please"), config = config)
+  , regexp = "^TRACE.*trace me please"
+  )
+
+})
+
+

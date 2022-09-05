@@ -27,10 +27,10 @@
 #'
 #' @return                The log message as it was printed to the console.
 #'                        \code{NA} is printed as empty string.
-#'
 #' @examples
 #' tryCatchLog:::log2console("WARN", "this is my last warning")
 #'
+#' @export
 log2console <- function(severity.level, msg) {
 
   if (is.na(msg))

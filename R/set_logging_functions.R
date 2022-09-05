@@ -33,7 +33,7 @@
 #'
 #' To activate another logging package that is supported by \code{tryCatchLog} use \code{\link{set.logging.package}}.
 #'
-#' For a documenation of the different logging severity levels see \code{\link{Severity.Levels}}.
+#' For a documentation of the different logging severity levels see \code{\link{Severity.Levels}}.
 #'
 #' @param error.log.func      The logging function for ERROR severity level
 #' @param warn.log.func       The logging function for WARN severity level
@@ -57,12 +57,12 @@
 #'                        warn.log.func  = function(msg) invisible(),
 #'                        info.log.func  = function(msg) invisible())
 #'
-set.logging.functions <- function(  error.log.func = function(msg) tryCatchLog:::log2console(Severity.Levels$ERROR,  msg)
-                                  , warn.log.func  = function(msg) tryCatchLog:::log2console(Severity.Levels$WARN,   msg)
-                                  , info.log.func  = function(msg) tryCatchLog:::log2console(Severity.Levels$INFO,   msg)
-                                  , debug.log.func = function(msg) tryCatchLog:::log2console(Severity.Levels$DEBUG,  msg)
-                                  , trace.log.func = function(msg) tryCatchLog:::log2console(Severity.Levels$TRACE,  msg)
-                                  , fatal.log.func = function(msg) tryCatchLog:::log2console(Severity.Levels$FATAL,  msg)
+set.logging.functions <- function(  error.log.func = function(msg) tryCatchLog::log2console(tryCatchLog::Severity.Levels$ERROR,  msg)
+                                  , warn.log.func  = function(msg) tryCatchLog::log2console(tryCatchLog::Severity.Levels$WARN,   msg)
+                                  , info.log.func  = function(msg) tryCatchLog::log2console(tryCatchLog::Severity.Levels$INFO,   msg)
+                                  , debug.log.func = function(msg) tryCatchLog::log2console(tryCatchLog::Severity.Levels$DEBUG,  msg)
+                                  , trace.log.func = function(msg) tryCatchLog::log2console(tryCatchLog::Severity.Levels$TRACE,  msg)
+                                  , fatal.log.func = function(msg) tryCatchLog::log2console(tryCatchLog::Severity.Levels$FATAL,  msg)
                                   , logger.package.name = "tryCatchLog"
 ) {
 

@@ -20,7 +20,7 @@ source("disable_logging_output.R")
 
 
 # Creating user-defined conditions is currently only an internal feature of tryCatchLog...
-# Do not use rlang or another package for this to minimize the depedencies!
+# Do not use rlang or another package for this to minimize the dependencies!
 udc1 <- tryCatchLog:::condition("my_condition_class", "message1")
 udc2 <- tryCatchLog:::condition("my_other_condition_class")
 
