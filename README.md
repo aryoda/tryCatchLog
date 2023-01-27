@@ -341,7 +341,7 @@ flog.threshold(ERROR)    # TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 
 ### How can I suppress the full (and even the compact) call stack trace to simplify my log?
 
-Since version 1.1.5 (Oct. 2019) `tryCatchLog` and `tryCatch` have two additional arguments named
+Since version 1.1.5 (Oct. 2019) `tryCatchLog` and `tryLog` have two additional arguments named
 `include.full.call.stack` and `include.compact.call.stack` which can also be configured globally
 via options.
 
