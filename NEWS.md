@@ -5,6 +5,12 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
+## Most-recent changes (not yet published)
+
+* Fix #80 (CRAN check note about ::: calls to internal functions)
+* `log2console()` is exported now (required to fix #80)
+
+
 ## Version 1.3.2 (July 25, 2022)
 
 * Implement feature request #74: Add support for `lgr` logging package.

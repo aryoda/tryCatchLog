@@ -22,16 +22,16 @@
 #' The logging functions must have at least one parameter: The logging message (as character)
 #' which must be the first argument.
 #'
-#' The default logging functions are internal functions without any dependencies to other
+#' The default logging functions do work without any dependencies to other
 #' logging packages. They use the same logging output format as \pkg{futile.logger} version 1.4.3.
 #'
-#' If you want to disable any logging output you should use a decent logging framework
+#' If you want to disable any logging output you should use a logging package
 #' which allows to set the logging threshold (e. g. futile.logger's \code{\link[futile.logger]{flog.threshold}}).
 #'
-#' The package-internal default logging functions are only a minimal implementation
-#' and are not meant to replace a decent logging framework.
-#'
 #' To activate another logging package that is supported by \code{tryCatchLog} use \code{\link{set.logging.package}}.
+#'
+#' The default logging functions are only a minimal implementation
+#' and are not meant to replace a decent logging framework.
 #'
 #' @param error.log.func      The logging function for errors
 #' @param warn.log.func       The logging function for warning
@@ -52,9 +52,9 @@
 #'                        warn.log.func  = function(msg) invisible(),
 #'                        info.log.func  = function(msg) invisible())
 #'
-set.logging.functions <- function(error.log.func   = function(msg) tryCatchLog:::log2console("ERROR", msg)
-                                  , warn.log.func  = function(msg) tryCatchLog:::log2console("WARN",  msg)
-                                  , info.log.func  = function(msg) tryCatchLog:::log2console("INFO",  msg)
+set.logging.functions <- function(error.log.func   = function(msg) tryCatchLog::log2console("ERROR", msg)
+                                  , warn.log.func  = function(msg) tryCatchLog::log2console("WARN",  msg)
+                                  , info.log.func  = function(msg) tryCatchLog::log2console("INFO",  msg)
                                   , logger.package.name = "tryCatchLog"
 ) {
 

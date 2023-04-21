@@ -19,8 +19,6 @@
 
 #' Prints a time-stamped log message to the console incl. the severity level
 #'
-#' This is a package-internal function.
-#'
 #' @param severity.level  String containing the severity level
 #'                        (\code{ERROR}, \code{WARN} or \code{INFO}) of the message
 #' @param msg             The message to be printed (as character).
@@ -31,6 +29,7 @@
 #' @examples
 #' tryCatchLog:::log2console("WARN", "this is my last warning")
 #'
+#' @export
 log2console <- function(severity.level, msg) {
 
   if (is.na(msg))

@@ -5,9 +5,9 @@
 \title{Sets the logging functions that shall be used by \code{tryCatchLog} for the different severity levels}
 \usage{
 set.logging.functions(
-  error.log.func = function(msg) tryCatchLog:::log2console("ERROR", msg),
-  warn.log.func = function(msg) tryCatchLog:::log2console("WARN", msg),
-  info.log.func = function(msg) tryCatchLog:::log2console("INFO", msg),
+  error.log.func = function(msg) tryCatchLog::log2console("ERROR", msg),
+  warn.log.func = function(msg) tryCatchLog::log2console("WARN", msg),
+  info.log.func = function(msg) tryCatchLog::log2console("INFO", msg),
   logger.package.name = "tryCatchLog"
 )
 }
@@ -30,16 +30,16 @@ The logging functions must have at least one parameter: The logging message (as 
 which must be the first argument.
 }
 \details{
-The default logging functions are internal functions without any dependencies to other
+The default logging functions do work without any dependencies to other
 logging packages. They use the same logging output format as \pkg{futile.logger} version 1.4.3.
 
-If you want to disable any logging output you should use a decent logging framework
+If you want to disable any logging output you should use a logging package
 which allows to set the logging threshold (e. g. futile.logger's \code{\link[futile.logger]{flog.threshold}}).
 
-The package-internal default logging functions are only a minimal implementation
-and are not meant to replace a decent logging framework.
-
 To activate another logging package that is supported by \code{tryCatchLog} use \code{\link{set.logging.package}}.
+
+The default logging functions are only a minimal implementation
+and are not meant to replace a decent logging framework.
 }
 \examples{
 # To disable any logging you could use "empty" functions

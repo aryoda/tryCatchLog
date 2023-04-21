@@ -17,7 +17,7 @@ The log message as it was printed to the console.
                        \code{NA} is printed as empty string.
 }
 \description{
-This is a package-internal function.
+Prints a time-stamped log message to the console incl. the severity level
 }
 \examples{
 tryCatchLog:::log2console("WARN", "this is my last warning")
