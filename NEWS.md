@@ -9,6 +9,10 @@ https://www.gnu.org/prep/standards/standards.html#Documentation
 
 * Fix #80 (CRAN check note about ::: calls to internal functions)
 * `log2console()` is exported now (required to fix #80)
+* Fix redirected links found by CRAN precheck:
+  * Found the following (possibly) invalid URLs:
+    URL: https://rstudio.com/products/rstudio/ (moved to https://posit.co/products/open-source/rstudio/)
+    From: inst/doc/tryCatchLog-intro.html
 
 
 ## Version 1.3.2 (July 25, 2022)

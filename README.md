@@ -250,7 +250,7 @@ To run the demo source code open the file in the demo sub folder of the source c
 ```R
 demo/tryCatchLog_demo.R
 ```
-with the [RStudio IDE](https://www.rstudio.com/products/rstudio/).
+with the [RStudio IDE](https://posit.co/products/open-source/rstudio/).
 
 
 If you have installed `tryCatchLog` as a package you could also run a demo with
@@ -613,13 +613,13 @@ Note: `tryCatchLog` does also allow you to write a memory dump for every catched
 ## Build the `tryCatchLog` package from source code using RStudio
 
 If you want to inspect or modify the source code you should clone the project
-using [RStudio IDE](https://www.rstudio.com/products/rstudio/).
+using [RStudio IDE](https://posit.co/products/open-source/rstudio/).
 
 
 
 ### Clone the github repository:
 
-Open the [RStudio IDE](https://www.rstudio.com/products/rstudio/) and select the menu items
+Use e.g. [RStudio IDE](https://posit.co/products/open-source/rstudio/) and select the menu items
 
 File > New Project... > Version Control > Git
 
@@ -633,7 +633,7 @@ into the text field "Repository URL".
 
 ### Build the `tryCatchLog` package
 
-* Open the included *tryCatchLog.Rproj* project file with the [RStudio IDE](https://www.rstudio.com/products/rstudio/)
+* Open the included *tryCatchLog.Rproj* project file with the [RStudio IDE](https://posit.co/products/open-source/rstudio/)
 
 * Increment the package's version number in the file `DESCRIPTION` (Attribute `Version`).
 
