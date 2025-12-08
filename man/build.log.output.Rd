@@ -7,8 +7,7 @@
 build.log.output(
   log.results,
   include.full.call.stack = getOption("tryCatchLog.include.full.call.stack", TRUE),
-  include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack",
-    TRUE),
+  include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack", TRUE),
   include.severity = TRUE,
   include.timestamp = FALSE,
   use.platform.newline = FALSE

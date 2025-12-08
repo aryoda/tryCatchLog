@@ -31,6 +31,7 @@
 #' @examples
 #' tryCatchLog:::log2console("WARN", "this is my last warning")
 #'
+#' @export
 log2console <- function(severity.level, msg) {
 
   if (is.na(msg))

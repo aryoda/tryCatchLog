@@ -5,6 +5,15 @@ For the conventions for files NEWS and ChangeLog in the GNU project see
 https://www.gnu.org/prep/standards/standards.html#Documentation
 -->
 
+## Version 1.3.3 (Dec 03, 2025) for CRAN
+
+* Migrate mocking of unit tests from "defunct" `with_mock()` to `with_mocked_bindings()`
+  which also lifts the dependency of `testthat` to at least version 3.2.0.
+  See issues #82 and #83.
+  This also fixes the CRAN check notes for `with_mock()`.
+* Fix some dead links to external documentations
+* `log2console` is exported now to fix #80 ("There are ::: calls to the package's namespace in its code")
+
 ## Version 1.3.2 (July 25, 2022)
 
 * Implement feature request #74: Add support for `lgr` logging package.

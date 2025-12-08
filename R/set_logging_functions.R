@@ -52,9 +52,9 @@
 #'                        warn.log.func  = function(msg) invisible(),
 #'                        info.log.func  = function(msg) invisible())
 #'
-set.logging.functions <- function(error.log.func   = function(msg) tryCatchLog:::log2console("ERROR", msg)
-                                  , warn.log.func  = function(msg) tryCatchLog:::log2console("WARN",  msg)
-                                  , info.log.func  = function(msg) tryCatchLog:::log2console("INFO",  msg)
+set.logging.functions <- function(error.log.func   = function(msg) tryCatchLog::log2console("ERROR", msg)
+                                  , warn.log.func  = function(msg) tryCatchLog::log2console("WARN",  msg)
+                                  , info.log.func  = function(msg) tryCatchLog::log2console("INFO",  msg)
                                   , logger.package.name = "tryCatchLog"
 ) {
 

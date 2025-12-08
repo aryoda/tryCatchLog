@@ -129,13 +129,16 @@ test_that("platform-specific newline works", {
 
 
 
-  with_mock(
-    platform.NewLine = function() return("<platform_newline>"),
-    # print(tryCatchLog::platform.NewLine()),
-    out <- build.log.output(log.entry, use.platform.newline = TRUE),
-    # print(out),
-    expect_false(grepl("\n", out, fixed = TRUE)),
-    expect_true(grepl("<platform_newline>", out, fixed = TRUE))
+  with_mocked_bindings(
+    code = {
+      # print(tryCatchLog::platform.NewLine()),
+      out <- build.log.output(log.entry, use.platform.newline = TRUE)
+      # print(out)
+      expect_false(grepl("\n", out, fixed = TRUE))
+      expect_true(grepl("<platform_newline>", out, fixed = TRUE))
+    }
+    , platform.NewLine = function() return("<platform_newline>")
+
   )
 
 })

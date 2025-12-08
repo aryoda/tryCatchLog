@@ -14,11 +14,15 @@ test_that("conflict in Windows OS recognition throws a warning", {
 
   # qualified func names are required otherwise R CMD CHECK will fail in testthat
   # (not finding the functions)
-  with_mock(
-      `tryCatchLog:::get.sys.name`         = function() return("windows"),
-      `tryCatchLog:::get.platform.OS.type` = function() return("Clever OS"),
+  with_mocked_bindings(
+    code = {
       expect_warning(tryCatchLog:::is.windows(),
                      "could not be recognized for sure", fixed = TRUE)
+
+    }
+    # mock internal functions (not exported by the tryCatchLog package!)
+    , get.sys.name         = function() return("windows")
+    , get.platform.OS.type = function() return("Clever OS")
   )
 
 })

@@ -14,8 +14,7 @@ tryCatchLog(
   silent.warnings = getOption("tryCatchLog.silent.warnings", FALSE),
   silent.messages = getOption("tryCatchLog.silent.messages", FALSE),
   include.full.call.stack = getOption("tryCatchLog.include.full.call.stack", TRUE),
-  include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack",
-    TRUE),
+  include.compact.call.stack = getOption("tryCatchLog.include.compact.call.stack", TRUE),
   logged.conditions = getOption("tryCatchLog.logged.conditions", NULL)
 )
 }

@@ -5,9 +5,9 @@
 \title{Sets the logging functions that shall be used by \code{tryCatchLog} for the different severity levels}
 \usage{
 set.logging.functions(
-  error.log.func = function(msg) tryCatchLog:::log2console("ERROR", msg),
-  warn.log.func = function(msg) tryCatchLog:::log2console("WARN", msg),
-  info.log.func = function(msg) tryCatchLog:::log2console("INFO", msg),
+  error.log.func = function(msg) tryCatchLog::log2console("ERROR", msg),
+  warn.log.func = function(msg) tryCatchLog::log2console("WARN", msg),
+  info.log.func = function(msg) tryCatchLog::log2console("INFO", msg),
   logger.package.name = "tryCatchLog"
 )
 }

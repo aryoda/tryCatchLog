@@ -46,8 +46,8 @@
 #'                 This function is based on the undocumented \code{\link{limitedLabels}} function of the base package.
 #'                 The source code can be viewed by entering \code{limitedLabels} in the R console.
 #'                 The attributes required to add source file names and line numbers to the calls (srcref and srcfile)
-#'                 and how they are created internally are explained in this article:
-#'                 \url{https://journal.r-project.org/archive/2010-2/RJournal_2010-2_Murdoch.pdf}
+#'                 and how they are created internally are explained in this article (Duncan Murdoch: Source References):
+#'                 \url{https://journal.r-project.org/articles/RJ-2010-010/}
 #'
 #' @seealso        \code{\link{sys.calls}}, \code{\link{tryCatchLog}}, \code{\link{get.pretty.call.stack}}
 #' @examples

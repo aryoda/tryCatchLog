@@ -688,7 +688,7 @@ To contribute code changes and extensions:
   http://adv-r.had.co.nz/beyond-exception-handling.html
 
 * Source [Code] References in R (Duncan Murdoch, 2010):
-  https://journal.r-project.org/archive/2010-2/RJournal_2010-2_Murdoch.pdf
+  https://journal.r-project.org/articles/RJ-2010-010/
 
 * Beyond Exception Handling: Conditions and Restarts (Peter Seibel, 2003 - 2005):
   http://www.gigamonkeys.com/book/beyond-exception-handling-conditions-and-restarts.html
